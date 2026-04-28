@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Referral System - SmartSathi</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .refer-container { max-width: 600px; margin: 50px auto; padding: 30px; background: white; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; }
+        .refer-code-box { background: linear-gradient(135deg, #FF6B35, #8B5CF6); color: white; padding: 20px; border-radius: 20px; margin: 20px 0; }
+        .refer-code { font-size: 2rem; font-weight: bold; letter-spacing: 5px; }
+        .copy-btn { background: white; color: #FF6B35; border: none; padding: 8px 20px; border-radius: 40px; cursor: pointer; margin-top: 10px; }
+        .stats { display: flex; justify-content: center; gap: 40px; margin: 30px 0; }
+        .stat { text-align: center; }
+        .stat-number { font-size: 2rem; font-weight: bold; color: #FF6B35; }
+        .share-buttons { display: flex; gap: 15px; justify-content: center; margin: 20px 0; }
+        .share-btn { background: #F3F4F6; padding: 10px 20px; border-radius: 40px; text-decoration: none; color: #333; }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/" class="logo-nav"><div class="logo-nav-icon">⚡</div><div class="logo-nav-text"><span class="smart">Smart</span><span class="sathi">Sathi</span></div></a>
+    <div class="nav-links">
+        <a href="/">Home</a><a href="/shopping">Shopping</a><a href="/food">Food</a><a href="/study">Study</a>
+        <a href="/upload">📁 Upload</a><a href="/pdf_generator">📄 PDF</a><a href="/referral">🔗 Refer</a>
+        <a href="/gamification">🏆 Rewards</a><a href="/location">📍 Near Me</a><a href="/qr_tool">📱 QR</a><a href="/price_compare">💰 Compare</a>
+        {% if logged_in %}<a href="/logout">Logout</a>{% else %}<a href="/login">Login</a>{% endif %}
+    </div>
+</div>
+
+<div class="refer-container">
+    <h1>🔗 Refer & Earn</h1>
+    <p>Invite friends and get rewards!</p>
+    
+    <div class="stats">
+        <div class="stat"><div class="stat-number">{{ points }}</div>Your Points</div>
+        <div class="stat"><div class="stat-number">{{ count }}</div>Friends Joined</div>
+    </div>
+    
+    <div class="refer-code-box">
+        <p>Your Referral Code</p>
+        <div class="refer-code">{{ refer_code or 'Login to get code' }}</div>
+        {% if refer_code %}
+            <button class="copy-btn" onclick="copyCode()">📋 Copy Code</button>
+        {% endif %}
+    </div>
+    
+    <div class="share-buttons">
+        <a href="https://wa.me/?text=Join SmartSathi using my referral code: {{ refer_code }} - Get bonus points!" class="share-btn">💚 WhatsApp</a>
+        <a href="https://t.me/share/url?url=Join%20SmartSathi%20using%20code%3A%20{{ refer_code }}" class="share-btn">📨 Telegram</a>
+    </div>
+    
+    <div style="margin-top: 30px;">
+        <h3>🎁 Referral Benefits</h3>
+        <p>✓ Your friend gets +25 points</p>
+        <p>✓ You get +50 points per referral</p>
+        <p>✓ Unlock special badges</p>
+    </div>
+</div>
+
+<script>
+    function copyCode() {
+        const code = "{{ refer_code }}";
+        navigator.clipboard.writeText(code);
+        alert('✅ Referral code copied!');
+        addPoints('Shared referral code', 5);
+    }
+    
+    function addPoints(activity, points) {
+        fetch('/api/add_points', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ activity: activity, points: points })
+        });
+    }
+</script>
+
+<footer><p>© 2024 SmartSathi — Referral Program | Earn up to 500 points!</p></footer>
+</body>
+</html>

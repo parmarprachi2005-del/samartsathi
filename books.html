@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSathi - Books Hub | E-books & Audiobooks</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .app-icon { height: 130px; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+        .kindle .app-icon { background: linear-gradient(135deg, #1A1A2E, #16213E); }
+        .amazonbooks .app-icon { background: linear-gradient(135deg, #FF9900, #FF6600); }
+        .flipkartbooks .app-icon { background: linear-gradient(135deg, #2874F0, #0B5FDB); }
+        .goodreads .app-icon { background: linear-gradient(135deg, #372213, #2A180E); }
+        .audible .app-icon { background: linear-gradient(135deg, #F3A900, #D48C00); }
+        .kobo .app-icon { background: linear-gradient(135deg, #007B5D, #005A45); }
+        .scribd .app-icon { background: linear-gradient(135deg, #1E22AA, #0F1290); }
+        .storytel .app-icon { background: linear-gradient(135deg, #FF6B35, #E85D04); }
+        .googlebooks .app-icon { background: linear-gradient(135deg, #4285F4, #1967D2); }
+        .archive .app-icon { background: linear-gradient(135deg, #00B4DB, #0083B0); }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/" class="logo-nav"><div class="logo-nav-icon">⚡</div><div class="logo-nav-text"><span class="smart">Smart</span><span class="sathi">Sathi</span></div></a>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/shopping">🛍️ Shopping</a>
+        <a href="/food">🍔 Food</a>
+        <a href="/study">📚 Study</a>
+        <a href="/farming">🌾 Farming</a>
+        <a href="/medicine">💊 Medicine</a>
+        <a href="/skincare">✨ Skincare</a>
+        <a href="/entertainment">🎬 OTT</a>
+        <a href="/music">🎵 Music</a>
+        <a href="/gaming">🎮 Gaming</a>
+        <a href="/travel">🚗 Travel</a>
+        <a href="/hotels">🏨 Hotels</a>
+        <a href="/finance">💰 Finance</a>
+        <a href="/news">📰 News</a>
+        <a href="/sports">🏏 Sports</a>
+        <a href="/jobs">💼 Jobs</a>
+        <a href="/fitness">🏋️ Fitness</a>
+        <a href="/tools">🛠️ Tools</a>
+        <a href="/photo">🎨 Photo</a>
+        <a href="/social">🌐 Social</a>
+        <a href="/delivery">🚚 Delivery</a>
+        <a href="/books">📚 Books</a>
+        {% if logged_in %}
+            <a href="/dashboard">👤 Dashboard</a>
+            <a href="/logout">🚪 Logout</a>
+        {% else %}
+            <a href="/login">🔐 Login</a>
+            <a href="/signup">📝 Signup</a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="page-hero">
+    <h1>📚 Books & Reading Hub</h1>
+    <p>Read Books, Audiobooks, E-books & Magazines | Best Online Book Stores</p>
+</div>
+
+<div class="app-grid">
+    <div class="app-card kindle" data-app="kindle" data-url="https://read.amazon.com" data-name="Amazon Kindle">
+        <div class="app-icon">📖</div>
+        <div class="app-info">
+            <div class="app-name">Amazon Kindle</div>
+            <div class="app-category">E-books Store</div>
+            <div class="app-description">Millions of e-books, bestsellers, unlimited reading</div>
+            <div class="open-btn">📖 Read Now →</div>
+        </div>
+    </div>
+
+    <div class="app-card amazonbooks" data-app="amazonbooks" data-url="https://www.amazon.in/books" data-name="Amazon Books">
+        <div class="app-icon">📚</div>
+        <div class="app-info">
+            <div class="app-name">Amazon Books</div>
+            <div class="app-category">Book Store</div>
+            <div class="app-description">Buy physical books online, best prices, fast delivery</div>
+            <div class="open-btn">📚 Shop Now →</div>
+        </div>
+    </div>
+
+    <div class="app-card flipkartbooks" data-app="flipkartbooks" data-url="https://www.flipkart.com/books" data-name="Flipkart Books">
+        <div class="app-icon">🛒</div>
+        <div class="app-info">
+            <div class="app-name">Flipkart Books</div>
+            <div class="app-category">Book Store</div>
+            <div class="app-description">Textbooks, novels, competitive exam books</div>
+            <div class="open-btn">🛒 Shop Now →</div>
+        </div>
+    </div>
+
+    <div class="app-card goodreads" data-app="goodreads" data-url="https://www.goodreads.com" data-name="Goodreads">
+        <div class="app-icon">⭐</div>
+        <div class="app-info">
+            <div class="app-name">Goodreads</div>
+            <div class="app-category">Book Reviews</div>
+            <div class="app-description">Discover books, read reviews, track your reading</div>
+            <div class="open-btn">⭐ Explore →</div>
+        </div>
+    </div>
+
+    <div class="app-card audible" data-app="audible" data-url="https://www.audible.in" data-name="Audible">
+        <div class="app-icon">🎧</div>
+        <div class="app-info">
+            <div class="app-name">Audible</div>
+            <div class="app-category">Audiobooks</div>
+            <div class="app-description">Listen to audiobooks anywhere, anytime</div>
+            <div class="open-btn">🎧 Listen Now →</div>
+        </div>
+    </div>
+
+    <div class="app-card kobo" data-app="kobo" data-url="https://www.kobo.com" data-name="Kobo">
+        <div class="app-icon">📱</div>
+        <div class="app-info">
+            <div class="app-name">Kobo</div>
+            <div class="app-category">E-books</div>
+            <div class="app-description">E-reader, e-books store, free samples</div>
+            <div class="open-btn">📱 Read Now →</div>
+        </div>
+    </div>
+
+    <div class="app-card scribd" data-app="scribd" data-url="https://www.scribd.com" data-name="Scribd">
+        <div class="app-icon">📄</div>
+        <div class="app-info">
+            <div class="app-name">Scribd</div>
+            <div class="app-category">Reading Subscription</div>
+            <div class="app-description">Unlimited books, audiobooks, documents</div>
+            <div class="open-btn">📄 Read Now →</div>
+        </div>
+    </div>
+
+    <div class="app-card storytel" data-app="storytel" data-url="https://www.storytel.com" data-name="Storytel">
+        <div class="app-icon">🎙️</div>
+        <div class="app-info">
+            <div class="app-name">Storytel</div>
+            <div class="app-category">Audiobooks</div>
+            <div class="app-description">Unlimited audiobooks streaming</div>
+            <div class="open-btn">🎙️ Listen Now →</div>
+        </div>
+    </div>
+
+    <div class="app-card googlebooks" data-app="googlebooks" data-url="https://books.google.com" data-name="Google Books">
+        <div class="app-icon">🔍</div>
+        <div class="app-info">
+            <div class="app-name">Google Books</div>
+            <div class="app-category">Book Search</div>
+            <div class="app-description">Search and preview millions of books</div>
+            <div class="open-btn">🔍 Search →</div>
+        </div>
+    </div>
+
+    <div class="app-card archive" data-app="archive" data-url="https://archive.org" data-name="Internet Archive">
+        <div class="app-icon">📀</div>
+        <div class="app-info">
+            <div class="app-name">Internet Archive</div>
+            <div class="app-category">Free Library</div>
+            <div class="app-description">Free books, movies, software, music</div>
+            <div class="open-btn">📀 Explore →</div>
+        </div>
+    </div>
+</div>
+
+<div id="appModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-app-icon" id="modalIcon">📚</div>
+        <h3 id="modalAppName">Open App</h3>
+        <p id="modalMessage">Open reading app?</p>
+        <div class="modal-buttons">
+            <button class="modal-btn open-app-btn" id="confirmOpen">✅ Open Now</button>
+            <button class="modal-btn cancel-btn" onclick="closeModal()">❌ Cancel</button>
+        </div>
+    </div>
+</div>
+
+<a href="#" class="fab" id="pageFab">📚</a>
+
+<footer>
+    <p>© 2024 SmartSathi — Your Reading Companion 📚</p>
+    <p style="margin-top: 8px;">Read anywhere, anytime with your favorite books!</p>
+</footer>
+
+<script>
+    let currentApp = null;
+    const appLinks = {
+        kindle: { web: 'https://read.amazon.com', app: 'kindle://' },
+        amazonbooks: { web: 'https://www.amazon.in/books', app: 'amazon://' },
+        flipkartbooks: { web: 'https://www.flipkart.com/books', app: 'flipkart://' },
+        goodreads: { web: 'https://www.goodreads.com', app: 'goodreads://' },
+        audible: { web: 'https://www.audible.in', app: 'audible://' },
+        kobo: { web: 'https://www.kobo.com', app: 'kobo://' },
+        scribd: { web: 'https://www.scribd.com', app: 'scribd://' },
+        storytel: { web: 'https://www.storytel.com', app: 'storytel://' },
+        googlebooks: { web: 'https://books.google.com', app: 'googlebooks://' },
+        archive: { web: 'https://archive.org', app: 'archive://' }
+    };
+    
+    document.querySelectorAll('.app-card').forEach(card => {
+        card.addEventListener('click', function(e) {
+            if(e.target.classList.contains('open-btn')) return;
+            currentApp = { 
+                name: this.getAttribute('data-name'), 
+                url: this.getAttribute('data-url'), 
+                appKey: this.getAttribute('data-app'), 
+                icon: this.querySelector('.app-icon')?.innerHTML || '📚' 
+            };
+            showModal(currentApp);
+        });
+        
+        const btn = card.querySelector('.open-btn');
+        if(btn) {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                currentApp = { 
+                    name: card.getAttribute('data-name'), 
+                    url: card.getAttribute('data-url'), 
+                    appKey: card.getAttribute('data-app'), 
+                    icon: card.querySelector('.app-icon')?.innerHTML || '📚' 
+                };
+                showModal(currentApp);
+            });
+        }
+    });
+    
+    document.getElementById('pageFab').addEventListener('click', (e) => {
+        e.preventDefault();
+        currentApp = { name: 'Amazon Kindle', url: 'https://read.amazon.com', appKey: 'kindle', icon: '📚' };
+        showModal(currentApp);
+    });
+    
+    function showModal(app) {
+        document.getElementById('modalAppName').innerText = app.name;
+        document.getElementById('modalIcon').innerHTML = app.icon || '📚';
+        document.getElementById('modalMessage').innerHTML = `Open ${app.name} to read?`;
+        document.getElementById('appModal').style.display = 'flex';
+        document.getElementById('confirmOpen').onclick = () => openApp(app);
+    }
+    
+    function openApp(app) {
+        closeModal();
+        const appLink = appLinks[app.appKey];
+        if(appLink && appLink.app) {
+            const a = document.createElement('a');
+            a.href = appLink.app;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(() => { 
+                window.open(app.url, '_blank'); 
+            }, 1500);
+        } else {
+            window.open(app.url, '_blank');
+        }
+        showToast(`📚 Opening ${app.name}...`);
+    }
+    
+    function closeModal() {
+        document.getElementById('appModal').style.display = 'none';
+    }
+    
+    function showToast(msg) {
+        let t = document.createElement('div');
+        t.className = 'toast';
+        t.innerHTML = msg;
+        t.style.position = 'fixed';
+        t.style.bottom = '30px';
+        t.style.left = '50%';
+        t.style.transform = 'translateX(-50%)';
+        t.style.background = '#1F2937';
+        t.style.color = 'white';
+        t.style.padding = '12px 24px';
+        t.style.borderRadius = '50px';
+        t.style.zIndex = '9999';
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 3000);
+    }
+    
+    window.onclick = function(e) {
+        if(e.target === document.getElementById('appModal')) {
+            closeModal();
+        }
+    }
+    
+    // Add missing styles
+    const style = document.createElement('style');
+    style.textContent = `
+        .page-hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FFB347 100%);
+            position: relative;
+        }
+        .page-hero h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .page-hero p {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1rem;
+        }
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 30px;
+            padding: 40px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+        .app-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            position: relative;
+            border: 1px solid rgba(255, 107, 53, 0.1);
+        }
+        .app-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(255, 107, 53, 0.15);
+        }
+        .open-btn {
+            background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            margin-top: 5px;
+        }
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+            transition: all 0.3s;
+            color: white;
+            font-size: 1.5rem;
+            text-decoration: none;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 35px;
+            border-radius: 28px;
+            text-align: center;
+            max-width: 360px;
+            animation: popIn 0.3s ease;
+        }
+        @keyframes popIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+        .modal-btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .open-app-btn {
+            background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
+            color: white;
+        }
+        .cancel-btn {
+            background: #F3F4F6;
+            color: #4B5563;
+        }
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 50px;
+            z-index: 2001;
+            animation: fadeUp 0.3s ease;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        @keyframes fadeUp {
+            from { bottom: 0; opacity: 0; }
+            to { bottom: 30px; opacity: 1; }
+        }
+        @media (max-width: 768px) {
+            .app-grid { padding: 20px; gap: 15px; }
+            .page-hero h1 { font-size: 1.6rem; }
+        }
+    `;
+    document.head.appendChild(style);
+</script>
+</body>
+</html>

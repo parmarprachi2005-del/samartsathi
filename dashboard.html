@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSathi - My Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .welcome-card {
+            background: linear-gradient(135deg, #FF6B35, #FF8C42);
+            color: white;
+            padding: 40px;
+            border-radius: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .welcome-card h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .stat-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #FF6B35;
+        }
+        .stat-card .label {
+            color: #666;
+            margin-top: 5px;
+        }
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .action-card {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s;
+            border: 1px solid #eee;
+        }
+        .action-card:hover {
+            background: linear-gradient(135deg, #FF6B35, #FF8C42);
+            color: white;
+            transform: translateY(-3px);
+        }
+        .action-card .icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        body.dark-mode .stat-card,
+        body.dark-mode .action-card {
+            background: #1E293B;
+            color: #F1F5F9;
+            border-color: #334155;
+        }
+        body.dark-mode .stat-card .label {
+            color: #94A3B8;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/" class="logo-nav"><div class="logo-nav-icon">⚡</div><div class="logo-nav-text"><span class="smart">Smart</span><span class="sathi">Sathi</span></div></a>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/shopping">🛍️ Shopping</a>
+        <a href="/food">🍔 Food</a>
+        <a href="/study">📚 Study</a>
+        <a href="/farming">🌾 Farming</a>
+        <a href="/medicine">💊 Medicine</a>
+        <a href="/skincare">✨ Skincare</a>
+        <a href="/entertainment">🎬 OTT</a>
+        <a href="/music">🎵 Music</a>
+        <a href="/gaming">🎮 Gaming</a>
+        <a href="/travel">🚗 Travel</a>
+        <a href="/hotels">🏨 Hotels</a>
+        <a href="/finance">💰 Finance</a>
+        <a href="/news">📰 News</a>
+        <a href="/sports">🏏 Sports</a>
+        <a href="/jobs">💼 Jobs</a>
+        <a href="/fitness">🏋️ Fitness</a>
+        <a href="/tools">🛠️ Tools</a>
+        <a href="/photo">🎨 Photo</a>
+        <a href="/social">🌐 Social</a>
+        <a href="/delivery">🚚 Delivery</a>
+        <a href="/books">📚 Books</a>
+        <a href="/dashboard">👤 Dashboard</a>
+        <a href="/logout">🚪 Logout</a>
+    </div>
+</div>
+
+<div class="dashboard-container">
+    <div class="welcome-card">
+        <h1>👋 Welcome, {{ username }}!</h1>
+        <p>Your personalized SmartSathi dashboard is ready</p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="icon">👀</div>
+            <div class="number" id="visitsCount">0</div>
+            <div class="label">Total Visits</div>
+        </div>
+        <div class="stat-card">
+            <div class="icon">⭐</div>
+            <div class="number" id="ratingCount">0</div>
+            <div class="label">Your Rating</div>
+        </div>
+        <div class="stat-card">
+            <div class="icon">📱</div>
+            <div class="number" id="appsCount">0</div>
+            <div class="label">Apps Opened</div>
+        </div>
+        <div class="stat-card">
+            <div class="icon">📅</div>
+            <div class="number" id="memberSince">2024</div>
+            <div class="label">Member Since</div>
+        </div>
+    </div>
+
+    <h2 style="margin: 30px 0 20px;">🚀 Quick Actions</h2>
+    <div class="action-grid">
+        <a href="/shopping" class="action-card">
+            <div class="icon">🛍️</div>
+            <div>Shop Now</div>
+        </a>
+        <a href="/food" class="action-card">
+            <div class="icon">🍔</div>
+            <div>Order Food</div>
+        </a>
+        <a href="/entertainment" class="action-card">
+            <div class="icon">🎬</div>
+            <div>Watch Movies</div>
+        </a>
+        <a href="/music" class="action-card">
+            <div class="icon">🎵</div>
+            <div>Listen Music</div>
+        </a>
+        <a href="/study" class="action-card">
+            <div class="icon">📚</div>
+            <div>Start Learning</div>
+        </a>
+        <a href="/travel" class="action-card">
+            <div class="icon">🚗</div>
+            <div>Book Travel</div>
+        </a>
+        <a href="/fitness" class="action-card">
+            <div class="icon">🏋️</div>
+            <div>Workout</div>
+        </a>
+        <a href="/tools" class="action-card">
+            <div class="icon">🛠️</div>
+            <div>Use Tools</div>
+        </a>
+    </div>
+
+    <h2 style="margin: 40px 0 20px;">📊 Your Activity</h2>
+    <div class="action-grid">
+        <div class="action-card">
+            <div class="icon">💬</div>
+            <div>Send Feedback</div>
+        </div>
+        <div class="action-card">
+            <div class="icon">📤</div>
+            <div>Share Website</div>
+        </div>
+        <div class="action-card">
+            <div class="icon">⭐</div>
+            <div>Rate Us</div>
+        </div>
+        <div class="action-card">
+            <div class="icon">❓</div>
+            <div>Help & Support</div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>© 2024 SmartSathi — Your Intelligent Companion</p>
+</footer>
+
+<script>
+    // Load stats from localStorage
+    let totalVisits = localStorage.getItem('totalVisits') || 0;
+    document.getElementById('visitsCount').innerText = totalVisits;
+    
+    let userRating = localStorage.getItem('userRating') || 0;
+    document.getElementById('ratingCount').innerText = userRating + ' ⭐';
+    
+    let appsOpened = localStorage.getItem('appsOpened') || 0;
+    document.getElementById('appsCount').innerText = appsOpened;
+    
+    // Dark mode sync
+    if(localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('dark-mode');
+    }
+    
+    // Member since (from localStorage or default)
+    let memberSince = localStorage.getItem('memberSince');
+    if(!memberSince) {
+        memberSince = new Date().getFullYear();
+        localStorage.setItem('memberSince', memberSince);
+    }
+    document.getElementById('memberSince').innerText = memberSince;
+</script>
+</body>
+</html>

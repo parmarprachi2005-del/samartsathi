@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .error-container {
+            text-align: center;
+            padding: 100px 20px;
+            min-height: 60vh;
+        }
+        .error-container h1 {
+            font-size: 6rem;
+            color: #FF6B35;
+            margin-bottom: 20px;
+        }
+        .error-container h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .error-container p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .home-btn {
+            background: linear-gradient(135deg, #FF6B35, #FF8C42);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 40px;
+            text-decoration: none;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/" class="logo-nav"><div class="logo-nav-icon">⚡</div><div class="logo-nav-text"><span class="smart">Smart</span><span class="sathi">Sathi</span></div></a>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/shopping">Shopping</a>
+        <a href="/food">Food</a>
+        <a href="/study">Study</a>
+        <a href="/farming">Farming</a>
+        <a href="/medicine">Medicine</a>
+        <a href="/skincare">Skincare</a>
+        <a href="/login">Login</a>
+    </div>
+</div>
+
+<div class="error-container">
+    <h1>404</h1>
+    <h2>Oops! Page Not Found</h2>
+    <p>The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.</p>
+    <a href="/" class="home-btn">🏠 Back to Home</a>
+</div>
+
+<footer><p>© 2024 SmartSathi — Your Intelligent Companion</p></footer>
+</body>
+</html>

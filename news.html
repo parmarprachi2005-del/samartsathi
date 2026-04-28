@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSathi - News Hub | Latest Updates</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .app-icon { height: 130px; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+        .google-news .app-icon { background: linear-gradient(135deg, #4285F4, #1967D2); }
+        .inshorts .app-icon { background: linear-gradient(135deg, #E31837, #B20710); }
+        .dailyhunt .app-icon { background: linear-gradient(135deg, #FF6B35, #E85D04); }
+        .bbc .app-icon { background: linear-gradient(135deg, #000000, #333333); }
+        .times .app-icon { background: linear-gradient(135deg, #1A56DB, #1E3A8A); }
+        .zee .app-icon { background: linear-gradient(135deg, #1F7B4D, #0F5A38); }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/" class="logo-nav"><div class="logo-nav-icon">⚡</div><div class="logo-nav-text"><span class="smart">Smart</span><span class="sathi">Sathi</span></div></a>
+    <div class="nav-links">
+        <a href="/">Home</a><a href="/shopping">🛍️ Shopping</a><a href="/food">🍔 Food</a><a href="/study">📚 Study</a>
+        <a href="/farming">🌾 Farming</a><a href="/medicine">💊 Medicine</a><a href="/skincare">✨ Skincare</a>
+        <div class="dropdown"><a href="#">📱 More ▼</a><div class="dropdown-content">
+            <a href="/entertainment">🎬 Entertainment</a><a href="/music">🎵 Music</a><a href="/gaming">🎮 Gaming</a>
+            <a href="/travel">🚗 Travel</a><a href="/hotels">🏨 Hotels</a><a href="/finance">💰 Finance</a>
+            <a href="/news">📰 News</a><a href="/sports">🏏 Sports</a><a href="/jobs">💼 Jobs</a>
+            <a href="/fitness">🏋️ Fitness</a><a href="/tools">🛠️ Tools</a><a href="/photo">🎨 Photo</a>
+            <a href="/social">🌐 Social</a><a href="/delivery">🚚 Delivery</a><a href="/books">📚 Books</a>
+        </div></div>
+        {% if logged_in %}<a href="/dashboard">👤 Dashboard</a><a href="/logout">🚪 Logout</a>
+        {% else %}<a href="/login">🔐 Login</a><a href="/signup">📝 Signup</a>{% endif %}
+    </div>
+</div>
+
+<div class="page-hero"><h1>📰 News Hub</h1><p>Stay Updated with Latest News from India & World</p></div>
+
+<div class="app-grid">
+    <div class="app-card google-news" data-app="googlenews" data-url="https://news.google.com" data-name="Google News"><div class="app-icon">📰</div><div class="app-info"><div class="app-name">Google News</div><div class="app-category">Personalized News</div><div class="app-description">Top stories from trusted sources</div><div class="open-btn">📰 Read Now →</div></div></div>
+    <div class="app-card inshorts" data-app="inshorts" data-url="https://inshorts.com" data-name="InShorts"><div class="app-icon">📱</div><div class="app-info"><div class="app-name">InShorts</div><div class="app-category">60 Word News</div><div class="app-description">News in 60 words summary</div><div class="open-btn">📰 Read Now →</div></div></div>
+    <div class="app-card dailyhunt" data-app="dailyhunt" data-url="https://www.dailyhunt.in" data-name="DailyHunt"><div class="app-icon">📖</div><div class="app-info"><div class="app-name">DailyHunt</div><div class="app-category">Regional News</div><div class="app-description">News in 14 Indian languages</div><div class="open-btn">📰 Read Now →</div></div></div>
+    <div class="app-card bbc" data-app="bbc" data-url="https://www.bbc.com/news" data-name="BBC News"><div class="app-icon">🌍</div><div class="app-info"><div class="app-name">BBC News</div><div class="app-category">World News</div><div class="app-description">International news & analysis</div><div class="open-btn">📰 Read Now →</div></div></div>
+    <div class="app-card times" data-app="times" data-url="https://timesofindia.indiatimes.com" data-name="Times of India"><div class="app-icon">🗞️</div><div class="app-info"><div class="app-name">Times of India</div><div class="app-category">Indian News</div><div class="app-description">India's leading newspaper</div><div class="open-btn">📰 Read Now →</div></div></div>
+    <div class="app-card zee" data-app="zee" data-url="https://zeenews.india.com" data-name="Zee News"><div class="app-icon">📺</div><div class="app-info"><div class="app-name">Zee News</div><div class="app-category">TV News</div><div class="app-description">Breaking news & live TV</div><div class="open-btn">📰 Read Now →</div></div></div>
+</div>
+
+<div id="appModal" class="modal"><div class="modal-content"><div class="modal-app-icon" id="modalIcon">📰</div><h3 id="modalAppName">Open App</h3><p id="modalMessage">Open news app?</p><div class="modal-buttons"><button class="modal-btn open-app-btn" id="confirmOpen">✅ Open Now</button><button class="modal-btn cancel-btn" onclick="closeModal()">❌ Cancel</button></div></div></div>
+
+<a href="#" class="fab" id="pageFab">📰</a>
+<footer><p>© 2024 SmartSathi — Your News Companion 📰</p></footer>
+
+<script>
+    let currentApp = null;
+    const appLinks = { googlenews: { web: 'https://news.google.com', app: 'googlenews://' }, inshorts: { web: 'https://inshorts.com', app: 'inshorts://' }, dailyhunt: { web: 'https://www.dailyhunt.in', app: 'dailyhunt://' }, bbc: { web: 'https://www.bbc.com/news', app: 'bbcnews://' }, times: { web: 'https://timesofindia.indiatimes.com', app: 'toi://' }, zee: { web: 'https://zeenews.india.com', app: 'zeenews://' } };
+    document.querySelectorAll('.app-card').forEach(card => { card.addEventListener('click', function(e) { if(e.target.classList.contains('open-btn')) return; currentApp = { name: this.getAttribute('data-name'), url: this.getAttribute('data-url'), appKey: this.getAttribute('data-app'), icon: this.querySelector('.app-icon')?.innerHTML || '📰' }; showModal(currentApp); }); const btn = card.querySelector('.open-btn'); if(btn) btn.addEventListener('click', (e) => { e.stopPropagation(); currentApp = { name: card.getAttribute('data-name'), url: card.getAttribute('data-url'), appKey: card.getAttribute('data-app'), icon: card.querySelector('.app-icon')?.innerHTML || '📰' }; showModal(currentApp); }); });
+    document.getElementById('pageFab').addEventListener('click', (e) => { e.preventDefault(); currentApp = { name: 'Google News', url: 'https://news.google.com', appKey: 'googlenews', icon: '📰' }; showModal(currentApp); });
+    function showModal(app) { document.getElementById('modalAppName').innerText = app.name; document.getElementById('modalIcon').innerHTML = app.icon || '📰'; document.getElementById('modalMessage').innerHTML = `Open ${app.name} for news?`; document.getElementById('appModal').style.display = 'flex'; document.getElementById('confirmOpen').onclick = () => openApp(app); }
+    function openApp(app) { closeModal(); const appLink = appLinks[app.appKey]; if(appLink && appLink.app) { const a = document.createElement('a'); a.href = appLink.app; document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(() => { window.open(app.url, '_blank'); }, 1500); } else { window.open(app.url, '_blank'); } showToast(`📰 Opening ${app.name}...`); }
+    function closeModal() { document.getElementById('appModal').style.display = 'none'; }
+    function showToast(msg) { let t = document.createElement('div'); t.className = 'toast'; t.innerHTML = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
+    window.onclick = function(e) { if(e.target === document.getElementById('appModal')) closeModal(); }
+</script>
+</body>
+</html>

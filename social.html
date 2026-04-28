@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSathi - Social Media Hub</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .app-icon { height: 130px; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+        .instagram .app-icon { background: linear-gradient(135deg, #F58529, #DD2A7B, #8134AF); }
+        .facebook .app-icon { background: linear-gradient(135deg, #1877F2, #145DBA); }
+        .twitter .app-icon { background: linear-gradient(135deg, #1DA1F2, #0D8BD9); }
+        .whatsapp .app-icon { background: linear-gradient(135deg, #25D366, #128C7E); }
+        .telegram .app-icon { background: linear-gradient(135deg, #26A5E4, #0088CC); }
+        .snapchat .app-icon { background: linear-gradient(135deg, #FFFC00, #E6E600); }
+        .linkedin .app-icon { background: linear-gradient(135deg, #0A66C2, #004182); }
+        .youtube .app-icon { background: linear-gradient(135deg, #FF0000, #CC0000); }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/" class="logo-nav"><div class="logo-nav-icon">⚡</div><div class="logo-nav-text"><span class="smart">Smart</span><span class="sathi">Sathi</span></div></a>
+    <div class="nav-links">
+        <a href="/">Home</a><a href="/shopping">🛍️ Shopping</a><a href="/food">🍔 Food</a><a href="/study">📚 Study</a>
+        <a href="/farming">🌾 Farming</a><a href="/medicine">💊 Medicine</a><a href="/skincare">✨ Skincare</a>
+        <div class="dropdown"><a href="#">📱 More ▼</a><div class="dropdown-content">
+            <a href="/entertainment">🎬 Entertainment</a><a href="/music">🎵 Music</a><a href="/gaming">🎮 Gaming</a>
+            <a href="/travel">🚗 Travel</a><a href="/hotels">🏨 Hotels</a><a href="/finance">💰 Finance</a>
+            <a href="/news">📰 News</a><a href="/sports">🏏 Sports</a><a href="/jobs">💼 Jobs</a>
+            <a href="/fitness">🏋️ Fitness</a><a href="/tools">🛠️ Tools</a><a href="/photo">🎨 Photo</a>
+            <a href="/social">🌐 Social</a><a href="/delivery">🚚 Delivery</a><a href="/books">📚 Books</a>
+        </div></div>
+        {% if logged_in %}<a href="/dashboard">👤 Dashboard</a><a href="/logout">🚪 Logout</a>
+        {% else %}<a href="/login">🔐 Login</a><a href="/signup">📝 Signup</a>{% endif %}
+    </div>
+</div>
+
+<div class="page-hero"><h1>🌐 Social Media Hub</h1><p>Connect with Friends, Share Moments, Stay Updated</p></div>
+
+<div class="app-grid">
+    <div class="app-card instagram" data-app="instagram" data-url="https://www.instagram.com" data-name="Instagram">
+        <div class="app-icon">📸</div>
+        <div class="app-info">
+            <div class="app-name">Instagram</div>
+            <div class="app-category">Photo & Video Sharing</div>
+            <div class="app-description">Share photos, stories, reels</div>
+            <div class="open-btn">📸 Open →</div>
+        </div>
+    </div>
+    
+    <div class="app-card facebook" data-app="facebook" data-url="https://www.facebook.com" data-name="Facebook">
+        <div class="app-icon">👍</div>
+        <div class="app-info">
+            <div class="app-name">Facebook</div>
+            <div class="app-category">Social Network</div>
+            <div class="app-description">Connect with friends & family</div>
+            <div class="open-btn">👍 Open →</div>
+        </div>
+    </div>
+    
+    <div class="app-card twitter" data-app="twitter" data-url="https://twitter.com" data-name="Twitter (X)">
+        <div class="app-icon">🐦</div>
+        <div class="app-info">
+            <div class="app-name">Twitter (X)</div>
+            <div class="app-category">Micro-blogging</div>
+            <div class="app-description">News, trends, live updates</div>
+            <div class="open-btn">🐦 Open →</div>
+        </div>
+    </div>
+    
+    <div class="app-card whatsapp" data-app="whatsapp" data-url="https://www.whatsapp.com" data-name="WhatsApp">
+        <div class="app-icon">💬</div>
+        <div class="app-info">
+            <div class="app-name">WhatsApp</div>
+            <div class="app-category">Messaging</div>
+            <div class="app-description">Chat, voice & video calls</div>
+            <div class="open-btn">💬 Open →</div>
+        </div>
+    </div>
+    
+    <div class="app-card telegram" data-app="telegram" data-url="https://telegram.org" data-name="Telegram">
+        <div class="app-icon">📨</div>
+        <div class="app-info">
+            <div class="app-name">Telegram</div>
+            <div class="app-category">Secure Messaging</div>
+            <div class="app-description">Fast, secure, cloud-based</div>
+            <div class="open-btn">📨 Open →</div>
+        </div>
+    </div>
+    
+    <div class="app-card snapchat" data-app="snapchat" data-url="https://www.snapchat.com" data-name="Snapchat">
+        <div class="app-icon">👻</div>
+        <div class="app-info">
+            <div class="app-name">Snapchat</div>
+            <div class="app-category">Ephemeral Messaging</div>
+            <div class="app-description">Fun filters, disappearing messages</div>
+            <div class="open-btn">👻 Open →</div>
+        </div>
+    </div>
+    
+    <div class="app-card linkedin" data-app="linkedin" data-url="https://www.linkedin.com" data-name="LinkedIn">
+        <div class="app-icon">💼</div>
+        <div class="app-info">
+            <div class="app-name">LinkedIn</div>
+            <div class="app-category">Professional Network</div>
+            <div class="app-description">Jobs, career, networking</div>
+            <div class="open-btn">💼 Open →</div>
+        </div>
+    </div>
+    
+    <div class="app-card youtube" data-app="youtube" data-url="https://www.youtube.com" data-name="YouTube">
+        <div class="app-icon">📹</div>
+        <div class="app-info">
+            <div class="app-name">YouTube</div>
+            <div class="app-category">Video Sharing</div>
+            <div class="app-description">Watch videos, subscribe to channels</div>
+            <div class="open-btn">📹 Open →</div>
+        </div>
+    </div>
+</div>
+
+<div id="appModal" class="modal"><div class="modal-content"><div class="modal-app-icon" id="modalIcon">🌐</div><h3 id="modalAppName">Open App</h3><p id="modalMessage">Open social media app?</p><div class="modal-buttons"><button class="modal-btn open-app-btn" id="confirmOpen">✅ Open Now</button><button class="modal-btn cancel-btn" onclick="closeModal()">❌ Cancel</button></div></div></div>
+
+<a href="#" class="fab" id="pageFab">🌐</a>
+<footer><p>© 2024 SmartSathi — Your Social Media Companion 🌐</p></footer>
+
+<script>
+    let currentApp = null;
+    const appLinks = {
+        instagram: { web: 'https://www.instagram.com', app: 'instagram://' },
+        facebook: { web: 'https://www.facebook.com', app: 'fb://' },
+        twitter: { web: 'https://twitter.com', app: 'twitter://' },
+        whatsapp: { web: 'https://www.whatsapp.com', app: 'whatsapp://' },
+        telegram: { web: 'https://telegram.org', app: 'tg://' },
+        snapchat: { web: 'https://www.snapchat.com', app: 'snapchat://' },
+        linkedin: { web: 'https://www.linkedin.com', app: 'linkedin://' },
+        youtube: { web: 'https://www.youtube.com', app: 'youtube://' }
+    };
+    
+    document.querySelectorAll('.app-card').forEach(card => {
+        card.addEventListener('click', function(e) {
+            if(e.target.classList.contains('open-btn')) return;
+            currentApp = { name: this.getAttribute('data-name'), url: this.getAttribute('data-url'), appKey: this.getAttribute('data-app'), icon: this.querySelector('.app-icon')?.innerHTML || '🌐' };
+            showModal(currentApp);
+        });
+        const btn = card.querySelector('.open-btn');
+        if(btn) btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            currentApp = { name: card.getAttribute('data-name'), url: card.getAttribute('data-url'), appKey: card.getAttribute('data-app'), icon: card.querySelector('.app-icon')?.innerHTML || '🌐' };
+            showModal(currentApp);
+        });
+    });
+    
+    document.getElementById('pageFab').addEventListener('click', (e) => {
+        e.preventDefault();
+        currentApp = { name: 'Instagram', url: 'https://www.instagram.com', appKey: 'instagram', icon: '🌐' };
+        showModal(currentApp);
+    });
+    
+    function showModal(app) {
+        document.getElementById('modalAppName').innerText = app.name;
+        document.getElementById('modalIcon').innerHTML = app.icon || '🌐';
+        document.getElementById('modalMessage').innerHTML = `Open ${app.name} to connect?`;
+        document.getElementById('appModal').style.display = 'flex';
+        document.getElementById('confirmOpen').onclick = () => openApp(app);
+    }
+    
+    function openApp(app) {
+        closeModal();
+        const appLink = appLinks[app.appKey];
+        if(appLink && appLink.app) {
+            const a = document.createElement('a');
+            a.href = appLink.app;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(() => { window.open(app.url, '_blank'); }, 1500);
+        } else {
+            window.open(app.url, '_blank');
+        }
+        showToast(`🌐 Opening ${app.name}...`);
+    }
+    
+    function closeModal() { document.getElementById('appModal').style.display = 'none'; }
+    function showToast(msg) { let t = document.createElement('div'); t.className = 'toast'; t.innerHTML = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
+    window.onclick = function(e) { if(e.target === document.getElementById('appModal')) closeModal(); }
+</script>
+</body>
+</html>

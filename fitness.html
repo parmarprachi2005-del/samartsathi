@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSathi - Fitness Hub | Health & Wellness</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .app-icon { height: 130px; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+        .cult .app-icon { background: linear-gradient(135deg, #00B4DB, #0083B0); }
+        .healthify .app-icon { background: linear-gradient(135deg, #FF6B35, #E85D04); }
+        .nike .app-icon { background: linear-gradient(135deg, #1E293B, #0F172A); }
+        .fitbit .app-icon { background: linear-gradient(135deg, #FF8C42, #E86A1A); }
+        .yoga .app-icon { background: linear-gradient(135deg, #8B5CF6, #6D28D9); }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/" class="logo-nav"><div class="logo-nav-icon">⚡</div><div class="logo-nav-text"><span class="smart">Smart</span><span class="sathi">Sathi</span></div></a>
+    <div class="nav-links">
+        <a href="/">Home</a><a href="/shopping">🛍️ Shopping</a><a href="/food">🍔 Food</a><a href="/study">📚 Study</a>
+        <a href="/farming">🌾 Farming</a><a href="/medicine">💊 Medicine</a><a href="/skincare">✨ Skincare</a>
+        <div class="dropdown"><a href="#">📱 More ▼</a><div class="dropdown-content">
+            <a href="/entertainment">🎬 Entertainment</a><a href="/music">🎵 Music</a><a href="/gaming">🎮 Gaming</a>
+            <a href="/travel">🚗 Travel</a><a href="/hotels">🏨 Hotels</a><a href="/finance">💰 Finance</a>
+            <a href="/news">📰 News</a><a href="/sports">🏏 Sports</a><a href="/jobs">💼 Jobs</a>
+            <a href="/fitness">🏋️ Fitness</a><a href="/tools">🛠️ Tools</a><a href="/photo">🎨 Photo</a>
+            <a href="/social">🌐 Social</a><a href="/delivery">🚚 Delivery</a><a href="/books">📚 Books</a>
+        </div></div>
+        {% if logged_in %}<a href="/dashboard">👤 Dashboard</a><a href="/logout">🚪 Logout</a>
+        {% else %}<a href="/login">🔐 Login</a><a href="/signup">📝 Signup</a>{% endif %}
+    </div>
+</div>
+
+<div class="page-hero"><h1>🏋️ Fitness & Wellness Hub</h1><p>Workout, Yoga, Meditation & Healthy Living</p></div>
+
+<div class="app-grid">
+    <div class="app-card cult" data-app="cult" data-url="https://www.cult.fit" data-name="Cult.fit"><div class="app-icon">💪</div><div class="app-info"><div class="app-name">Cult.fit</div><div class="app-category">Workout & Fitness</div><div class="app-description">Live workouts, yoga, meditation</div><div class="open-btn">💪 Join Now →</div></div></div>
+    <div class="app-card healthify" data-app="healthify" data-url="https://www.healthifyme.com" data-name="HealthifyMe"><div class="app-icon">🥗</div><div class="app-info"><div class="app-name">HealthifyMe</div><div class="app-category">Diet & Nutrition</div><div class="app-description">Track calories, lose weight</div><div class="open-btn">🥗 Start Now →</div></div></div>
+    <div class="app-card nike" data-app="nike" data-url="https://www.nike.com" data-name="Nike Training Club"><div class="app-icon">👟</div><div class="app-info"><div class="app-name">Nike Training Club</div><div class="app-category">Workout App</div><div class="app-description">Free workout plans for all levels</div><div class="open-btn">👟 Start Now →</div></div></div>
+    <div class="app-card fitbit" data-app="fitbit" data-url="https://www.fitbit.com" data-name="Fitbit"><div class="app-icon">⌚</div><div class="app-info"><div class="app-name">Fitbit</div><div class="app-category">Activity Tracker</div><div class="app-description">Track steps, sleep, heart rate</div><div class="open-btn">⌚ Track Now →</div></div></div>
+    <div class="app-card yoga" data-app="yoga" data-url="https://www.yogago.com" data-name="Yoga Go"><div class="app-icon">🧘</div><div class="app-info"><div class="app-name">Yoga Go</div><div class="app-category">Yoga & Meditation</div><div class="app-description">Daily yoga routines for everyone</div><div class="open-btn">🧘 Start Yoga →</div></div></div>
+</div>
+
+<div id="appModal" class="modal"><div class="modal-content"><div class="modal-app-icon" id="modalIcon">🏋️</div><h3 id="modalAppName">Open App</h3><p id="modalMessage">Open fitness app?</p><div class="modal-buttons"><button class="modal-btn open-app-btn" id="confirmOpen">✅ Open Now</button><button class="modal-btn cancel-btn" onclick="closeModal()">❌ Cancel</button></div></div></div>
+
+<a href="#" class="fab" id="pageFab">🏋️</a>
+<footer><p>© 2024 SmartSathi — Your Fitness Companion 🏋️</p></footer>
+
+<script>
+    let currentApp = null;
+    const appLinks = { cult: { web: 'https://www.cult.fit', app: 'cultfit://' }, healthify: { web: 'https://www.healthifyme.com', app: 'healthifyme://' }, nike: { web: 'https://www.nike.com', app: 'nike://' }, fitbit: { web: 'https://www.fitbit.com', app: 'fitbit://' }, yoga: { web: 'https://www.yogago.com', app: 'yogago://' } };
+    document.querySelectorAll('.app-card').forEach(card => { card.addEventListener('click', function(e) { if(e.target.classList.contains('open-btn')) return; currentApp = { name: this.getAttribute('data-name'), url: this.getAttribute('data-url'), appKey: this.getAttribute('data-app'), icon: this.querySelector('.app-icon')?.innerHTML || '🏋️' }; showModal(currentApp); }); const btn = card.querySelector('.open-btn'); if(btn) btn.addEventListener('click', (e) => { e.stopPropagation(); currentApp = { name: card.getAttribute('data-name'), url: card.getAttribute('data-url'), appKey: card.getAttribute('data-app'), icon: card.querySelector('.app-icon')?.innerHTML || '🏋️' }; showModal(currentApp); }); });
+    document.getElementById('pageFab').addEventListener('click', (e) => { e.preventDefault(); currentApp = { name: 'Cult.fit', url: 'https://www.cult.fit', appKey: 'cult', icon: '🏋️' }; showModal(currentApp); });
+    function showModal(app) { document.getElementById('modalAppName').innerText = app.name; document.getElementById('modalIcon').innerHTML = app.icon || '🏋️'; document.getElementById('modalMessage').innerHTML = `Open ${app.name} for fitness?`; document.getElementById('appModal').style.display = 'flex'; document.getElementById('confirmOpen').onclick = () => openApp(app); }
+    function openApp(app) { closeModal(); const appLink = appLinks[app.appKey]; if(appLink && appLink.app) { const a = document.createElement('a'); a.href = appLink.app; document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(() => { window.open(app.url, '_blank'); }, 1500); } else { window.open(app.url, '_blank'); } showToast(`🏋️ Opening ${app.name}...`); }
+    function closeModal() { document.getElementById('appModal').style.display = 'none'; }
+    function showToast(msg) { let t = document.createElement('div'); t.className = 'toast'; t.innerHTML = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
+    window.onclick = function(e) { if(e.target === document.getElementById('appModal')) closeModal(); }
+</script>
+</body>
+</html>

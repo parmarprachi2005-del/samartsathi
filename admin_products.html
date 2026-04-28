@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management - Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .admin-sidebar {
+            background: #1a1a2e;
+            width: 250px;
+            position: fixed;
+            height: 100%;
+            left: 0;
+            top: 0;
+            padding-top: 80px;
+        }
+        .admin-sidebar a {
+            display: block;
+            color: white;
+            padding: 15px 25px;
+            text-decoration: none;
+        }
+        .admin-sidebar a:hover { background: #ff5e3a; }
+        .admin-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .product-admin-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .product-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .product-price {
+            color: #ff5e3a;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .stock-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-top: 10px;
+        }
+        .in-stock { background: #10b981; color: white; }
+        .low-stock { background: #f59e0b; color: white; }
+    </style>
+</head>
+<body>
+
+<div class="admin-sidebar">
+    <h2 style="text-align: center; color: white;">🛡️ Admin Panel</h2>
+    <a href="/admin">📊 Dashboard</a>
+    <a href="/admin/users">👥 User Management</a>
+    <a href="/admin/products">🛍️ Products</a>
+    <a href="/admin/stats">📈 Analytics</a>
+    <a href="/">🏠 Back to Site</a>
+    <a href="/logout">🚪 Logout</a>
+</div>
+
+<div class="admin-content">
+    <div style="background: white; padding: 20px; border-radius: 15px;">
+        <h1>🛍️ Bathu Product Management</h1>
+        <p>Manage your sneaker collection</p>
+        <button class="card-btn" style="margin-top: 15px;">➕ Add New Product</button>
+    </div>
+    
+    <div class="product-grid">
+        {% for product in products %}
+        <div class="product-admin-card">
+            <div class="product-name">👟 {{ product.name }}</div>
+            <div class="product-price">₹{{ product.price }}</div>
+            <div>Category: {{ product.category }}</div>
+            <div>Stock: {{ product.stock }} units</div>
+            <div class="stock-badge {% if product.stock > 30 %}in-stock{% else %}low-stock{% endif %}">
+                {% if product.stock > 30 %}✅ In Stock{% else %}⚠️ Low Stock{% endif %}
+            </div>
+            <div style="margin-top: 15px;">
+                <button class="btn-edit">✏️ Edit</button>
+                <button class="btn-delete">🗑️ Delete</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+</body>
+</html>

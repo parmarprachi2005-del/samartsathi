@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User - Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .admin-sidebar {
+            background: #1a1a2e;
+            width: 250px;
+            position: fixed;
+            height: 100%;
+            left: 0;
+            top: 0;
+            padding-top: 80px;
+        }
+        .admin-sidebar a {
+            display: block;
+            color: white;
+            padding: 15px 25px;
+            text-decoration: none;
+        }
+        .admin-sidebar a:hover { background: #ff5e3a; }
+        .admin-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        .edit-form {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="admin-sidebar">
+    <h2 style="text-align: center; color: white;">🛡️ Admin Panel</h2>
+    <a href="/admin">📊 Dashboard</a>
+    <a href="/admin/users">👥 User Management</a>
+    <a href="/admin/products">🛍️ Products</a>
+    <a href="/admin/stats">📈 Analytics</a>
+    <a href="/">🏠 Back to Site</a>
+    <a href="/logout">🚪 Logout</a>
+</div>
+
+<div class="admin-content">
+    <div class="edit-form">
+        <h2>✏️ Edit User</h2>
+        <form method="POST">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" name="username" value="{{ user[1] }}" required>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" name="email" value="{{ user[2] }}" required>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="is_admin" {% if user[4] == 1 %}checked{% endif %}>
+                    Administrator privileges
+                </label>
+            </div>
+            <button type="submit" class="auth-btn">💾 Save Changes</button>
+            <a href="/admin/users" class="auth-btn" style="background: #666; text-decoration: none; display: inline-block; text-align: center;">↩️ Cancel</a>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

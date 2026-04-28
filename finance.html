@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSathi - Finance Hub | Banking & UPI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .app-icon { height: 130px; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+        .gpay .app-icon { background: linear-gradient(135deg, #4285F4, #1967D2); }
+        .phonepe .app-icon { background: linear-gradient(135deg, #5C4EE5, #3B2FC0); }
+        .paytm .app-icon { background: linear-gradient(135deg, #00B4DB, #0083B0); }
+        .bhim .app-icon { background: linear-gradient(135deg, #1F7B4D, #0F5A38); }
+        .zerodha .app-icon { background: linear-gradient(135deg, #164863, #0A2A3F); }
+        .groww .app-icon { background: linear-gradient(135deg, #0F172A, #1E293B); }
+        .angel .app-icon { background: linear-gradient(135deg, #1A56DB, #1E3A8A); }
+        .upstox .app-icon { background: linear-gradient(135deg, #FF6B35, #E85D04); }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/" class="logo-nav"><div class="logo-nav-icon">⚡</div><div class="logo-nav-text"><span class="smart">Smart</span><span class="sathi">Sathi</span></div></a>
+    <div class="nav-links">
+        <a href="/">Home</a><a href="/shopping">🛍️ Shopping</a><a href="/food">🍔 Food</a><a href="/study">📚 Study</a>
+        <a href="/farming">🌾 Farming</a><a href="/medicine">💊 Medicine</a><a href="/skincare">✨ Skincare</a>
+        <div class="dropdown"><a href="#">📱 More ▼</a><div class="dropdown-content">
+            <a href="/entertainment">🎬 Entertainment</a><a href="/music">🎵 Music</a><a href="/gaming">🎮 Gaming</a>
+            <a href="/travel">🚗 Travel</a><a href="/hotels">🏨 Hotels</a><a href="/finance">💰 Finance</a>
+            <a href="/news">📰 News</a><a href="/sports">🏏 Sports</a><a href="/jobs">💼 Jobs</a>
+            <a href="/fitness">🏋️ Fitness</a><a href="/tools">🛠️ Tools</a><a href="/photo">🎨 Photo</a>
+            <a href="/social">🌐 Social</a><a href="/delivery">🚚 Delivery</a><a href="/books">📚 Books</a>
+        </div></div>
+        {% if logged_in %}<a href="/dashboard">👤 Dashboard</a><a href="/logout">🚪 Logout</a>
+        {% else %}<a href="/login">🔐 Login</a><a href="/signup">📝 Signup</a>{% endif %}
+    </div>
+</div>
+
+<div class="page-hero"><h1>💰 Finance & Banking Hub</h1><p>UPI Payments, Banking, Investments & Stock Trading</p></div>
+
+<div class="app-grid">
+    <div class="app-card gpay" data-app="gpay" data-url="https://pay.google.com" data-name="Google Pay"><div class="app-icon">📱</div><div class="app-info"><div class="app-name">Google Pay</div><div class="app-category">UPI Payment</div><div class="app-description">Fast, simple, secure payments</div><div class="open-btn">💸 Open App →</div></div></div>
+    <div class="app-card phonepe" data-app="phonepe" data-url="https://www.phonepe.com" data-name="PhonePe"><div class="app-icon">📲</div><div class="app-info"><div class="app-name">PhonePe</div><div class="app-category">UPI & Banking</div><div class="app-description">Pay bills, recharge, invest</div><div class="open-btn">💸 Open App →</div></div></div>
+    <div class="app-card paytm" data-app="paytm" data-url="https://paytm.com" data-name="Paytm"><div class="app-icon">🏦</div><div class="app-info"><div class="app-name">Paytm</div><div class="app-category">Digital Wallet</div><div class="app-description">Recharge, bill payment, banking</div><div class="open-btn">💸 Open App →</div></div></div>
+    <div class="app-card bhim" data-app="bhim" data-url="https://www.bhimupi.org.in" data-name="BHIM UPI"><div class="app-icon">🇮🇳</div><div class="app-info"><div class="app-name">BHIM UPI</div><div class="app-category">Government UPI</div><div class="app-description">Official government payment app</div><div class="open-btn">💸 Open App →</div></div></div>
+    <div class="app-card zerodha" data-app="zerodha" data-url="https://zerodha.com" data-name="Zerodha"><div class="app-icon">📈</div><div class="app-info"><div class="app-name">Zerodha</div><div class="app-category">Stock Trading</div><div class="app-description">India's largest stock broker</div><div class="open-btn">📈 Open App →</div></div></div>
+    <div class="app-card groww" data-app="groww" data-url="https://groww.in" data-name="Groww"><div class="app-icon">🌱</div><div class="app-info"><div class="app-name">Groww</div><div class="app-category">Investments</div><div class="app-description">Mutual funds, stocks, gold</div><div class="open-btn">📈 Open App →</div></div></div>
+    <div class="app-card angel" data-app="angel" data-url="https://www.angelone.in" data-name="Angel One"><div class="app-icon">📊</div><div class="app-info"><div class="app-name">Angel One</div><div class="app-category">Trading App</div><div class="app-description">Stock trading & investment</div><div class="open-btn">📈 Open App →</div></div></div>
+    <div class="app-card upstox" data-app="upstox" data-url="https://upstox.com" data-name="Upstox"><div class="app-icon">⚡</div><div class="app-info"><div class="app-name">Upstox</div><div class="app-category">Discount Broker</div><div class="app-description">Low cost trading platform</div><div class="open-btn">📈 Open App →</div></div></div>
+</div>
+
+<div id="appModal" class="modal"><div class="modal-content"><div class="modal-app-icon" id="modalIcon">💰</div><h3 id="modalAppName">Open App</h3><p id="modalMessage">Open finance app?</p><div class="modal-buttons"><button class="modal-btn open-app-btn" id="confirmOpen">✅ Open Now</button><button class="modal-btn cancel-btn" onclick="closeModal()">❌ Cancel</button></div></div></div>
+
+<a href="#" class="fab" id="pageFab">💰</a>
+<footer><p>© 2024 SmartSathi — Your Finance Companion 💰</p></footer>
+
+<script>
+    let currentApp = null;
+    const appLinks = { gpay: { web: 'https://pay.google.com', app: 'googlepay://' }, phonepe: { web: 'https://www.phonepe.com', app: 'phonepe://' }, paytm: { web: 'https://paytm.com', app: 'paytm://' }, bhim: { web: 'https://www.bhimupi.org.in', app: 'bhim://' }, zerodha: { web: 'https://zerodha.com', app: 'zerodha://' }, groww: { web: 'https://groww.in', app: 'groww://' }, angel: { web: 'https://www.angelone.in', app: 'angelone://' }, upstox: { web: 'https://upstox.com', app: 'upstox://' } };
+    document.querySelectorAll('.app-card').forEach(card => { card.addEventListener('click', function(e) { if(e.target.classList.contains('open-btn')) return; currentApp = { name: this.getAttribute('data-name'), url: this.getAttribute('data-url'), appKey: this.getAttribute('data-app'), icon: this.querySelector('.app-icon')?.innerHTML || '💰' }; showModal(currentApp); }); const btn = card.querySelector('.open-btn'); if(btn) btn.addEventListener('click', (e) => { e.stopPropagation(); currentApp = { name: card.getAttribute('data-name'), url: card.getAttribute('data-url'), appKey: card.getAttribute('data-app'), icon: card.querySelector('.app-icon')?.innerHTML || '💰' }; showModal(currentApp); }); });
+    document.getElementById('pageFab').addEventListener('click', (e) => { e.preventDefault(); currentApp = { name: 'Google Pay', url: 'https://pay.google.com', appKey: 'gpay', icon: '💰' }; showModal(currentApp); });
+    function showModal(app) { document.getElementById('modalAppName').innerText = app.name; document.getElementById('modalIcon').innerHTML = app.icon || '💰'; document.getElementById('modalMessage').innerHTML = `Open ${app.name} for finance?`; document.getElementById('appModal').style.display = 'flex'; document.getElementById('confirmOpen').onclick = () => openApp(app); }
+    function openApp(app) { closeModal(); const appLink = appLinks[app.appKey]; if(appLink && appLink.app) { const a = document.createElement('a'); a.href = appLink.app; document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(() => { window.open(app.url, '_blank'); }, 1500); } else { window.open(app.url, '_blank'); } showToast(`💰 Opening ${app.name}...`); }
+    function closeModal() { document.getElementById('appModal').style.display = 'none'; }
+    function showToast(msg) { let t = document.createElement('div'); t.className = 'toast'; t.innerHTML = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
+    window.onclick = function(e) { if(e.target === document.getElementById('appModal')) closeModal(); }
+</script>
+</body>
+</html>

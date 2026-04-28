@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rewards & Badges - SmartSathi</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .gamify-container { max-width: 1000px; margin: 50px auto; padding: 20px; }
+        .points-card { background: linear-gradient(135deg, #FF6B35, #8B5CF6); color: white; padding: 30px; border-radius: 30px; text-align: center; margin-bottom: 30px; }
+        .points-number { font-size: 3rem; font-weight: bold; }
+        .badges-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; margin-top: 20px; }
+        .badge-card { background: white; border-radius: 20px; padding: 20px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s; }
+        .badge-card:hover { transform: translateY(-5px); }
+        .badge-icon { font-size: 3rem; margin-bottom: 10px; }
+        .badge-name { font-weight: bold; margin-bottom: 5px; }
+        .badge-desc { font-size: 0.7rem; color: #888; }
+        .locked { opacity: 0.5; filter: grayscale(0.5); }
+        .activity-list { margin-top: 30px; }
+        .activity-item { background: #F8FAFC; padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/" class="logo-nav"><div class="logo-nav-icon">⚡</div><div class="logo-nav-text"><span class="smart">Smart</span><span class="sathi">Sathi</span></div></a>
+    <div class="nav-links">
+        <a href="/">Home</a><a href="/shopping">Shopping</a><a href="/food">Food</a><a href="/study">Study</a>
+        <a href="/upload">📁 Upload</a><a href="/pdf_generator">📄 PDF</a><a href="/referral">🔗 Refer</a>
+        <a href="/gamification">🏆 Rewards</a><a href="/location">📍 Near Me</a><a href="/qr_tool">📱 QR</a><a href="/price_compare">💰 Compare</a>
+        {% if logged_in %}<a href="/logout">Logout</a>{% else %}<a href="/login">Login</a>{% endif %}
+    </div>
+</div>
+
+<div class="gamify-container">
+    <div class="points-card">
+        <div class="points-number">{{ points }} pts</div>
+        <p>Your Total Points</p>
+        <small>Keep exploring to earn more!</small>
+    </div>
+    
+    <h2>🏆 Your Badges</h2>
+    <div class="badges-grid">
+        <div class="badge-card {% if points < 100 %}locked{% endif %}">
+            <div class="badge-icon">🎯</div>
+            <div class="badge-name">Explorer</div>
+            <div class="badge-desc">Reach 100 points</div>
+        </div>
+        <div class="badge-card {% if points < 500 %}locked{% endif %}">
+            <div class="badge-icon">⭐</div>
+            <div class="badge-name">Star User</div>
+            <div class="badge-desc">Reach 500 points</div>
+        </div>
+        <div class="badge-card {% if points < 1000 %}locked{% endif %}">
+            <div class="badge-icon">👑</div>
+            <div class="badge-name">Legend</div>
+            <div class="badge-desc">Reach 1000 points</div>
+        </div>
+        <div class="badge-card">
+            <div class="badge-icon">📤</div>
+            <div class="badge-name">Sharer</div>
+            <div class="badge-desc">Share referral code</div>
+        </div>
+    </div>
+    
+    <h2>🎯 Ways to Earn Points</h2>
+    <div class="activity-list">
+        <div class="activity-item"><span>📝 Daily Login</span><span>+10 points</span></div>
+        <div class="activity-item"><span>🔗 Share Referral</span><span>+5 points</span></div>
+        <div class="activity-item"><span>📄 Generate PDF</span><span>+10 points</span></div>
+        <div class="activity-item"><span>👥 Friend Joins</span><span>+50 points</span></div>
+        <div class="activity-item"><span>⭐ Rate App</span><span>+20 points</span></div>
+        <div class="activity-item"><span>📝 Send Feedback</span><span>+15 points</span></div>
+    </div>
+</div>
+
+<script>
+    // Add daily login points if not claimed today
+    const lastLogin = localStorage.getItem('lastLoginDate');
+    const today = new Date().toDateString();
+    if(lastLogin !== today) {
+        localStorage.setItem('lastLoginDate', today);
+        fetch('/api/add_points', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ activity: 'Daily Login', points: 10 })
+        });
+    }
+</script>
+
+<footer><p>© 2024 SmartSathi — Gamification | Level up your experience! 🎮</p></footer>
+</body>
+</html>

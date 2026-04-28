@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - Admin Panel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .admin-sidebar {
+            background: #1a1a2e;
+            width: 250px;
+            position: fixed;
+            height: 100%;
+            left: 0;
+            top: 0;
+            padding-top: 80px;
+        }
+        .admin-sidebar a {
+            display: block;
+            color: white;
+            padding: 15px 25px;
+            text-decoration: none;
+        }
+        .admin-sidebar a:hover { background: #ff5e3a; }
+        .admin-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        .chart-container {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="admin-sidebar">
+    <h2 style="text-align: center; color: white;">🛡️ Admin Panel</h2>
+    <a href="/admin">📊 Dashboard</a>
+    <a href="/admin/users">👥 User Management</a>
+    <a href="/admin/products">🛍️ Products</a>
+    <a href="/admin/stats">📈 Analytics</a>
+    <a href="/">🏠 Back to Site</a>
+    <a href="/logout">🚪 Logout</a>
+</div>
+
+<div class="admin-content">
+    <div class="chart-container">
+        <h2>📈 SmartSathi Analytics</h2>
+        <p>Real-time statistics and insights</p>
+    </div>
+    
+    <div class="chart-container">
+        <h3>👥 User Growth</h3>
+        <div style="height: 300px; background: linear-gradient(to top, #667eea, #764ba2); border-radius: 15px; padding: 20px; color: white;">
+            <p style="text-align: center; padding-top: 100px;">📊 User Analytics Chart (Interactive coming soon)</p>
+        </div>
+    </div>
+    
+    <div class="chart-container">
+        <h3>👟 Top Selling Bathu Products</h3>
+        <ul style="margin-top: 15px;">
+            <li>🏆 Bathu Wave Runner - 1,234 units</li>
+            <li>🥈 Bathu Tribe Edition - 987 units</li>
+            <li>🥉 Bathu Classic OG - 756 units</li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>

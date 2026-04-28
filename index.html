@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSathi - Your Intelligent Companion</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: linear-gradient(135deg, #FFFFFF 0%, #F5F3FF 50%, #FFF7ED 100%); min-height: 100vh; transition: all 0.3s ease; }
+        
+        /* Navbar */
+        .navbar { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px); padding: 16px 32px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); position: sticky; top: 0; z-index: 1000; border-bottom: 2px solid rgba(255, 107, 53, 0.2); }
+        .logo-nav { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo-nav-icon { width: 44px; height: 44px; background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white; box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3); transition: all 0.3s; }
+        .logo-nav-icon:hover { transform: scale(1.05) rotate(5deg); }
+        .logo-nav-text { font-size: 1.4rem; font-weight: 700; }
+        .logo-nav-text .smart { background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .logo-nav-text .sathi { background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .nav-links { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+        .navbar a { color: #4B5563; text-decoration: none; font-weight: 500; font-size: 0.9rem; padding: 8px 18px; border-radius: 40px; transition: all 0.3s ease; }
+        .navbar a:hover { background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%); color: white; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3); }
+        
+        /* AI Nav Button */
+        .ai-nav-btn { background: linear-gradient(135deg, #FF6B35, #8B5CF6); color: white !important; animation: pulse 2s infinite; }
+        .ai-nav-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4); }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
+        
+        /* Hero Section */
+        .hero { text-align: center; padding: 80px 20px; background: linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FFB347 100%); position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.1"><path fill="white" d="M20,50 Q30,40 40,50 T60,50 T80,50" stroke="white" stroke-width="2" fill="none"/><circle cx="50" cy="50" r="2" fill="white"/></svg>') repeat; background-size: 60px; }
+        .hero-logo-icon { width: 90px; height: 90px; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border-radius: 28px; display: inline-flex; align-items: center; justify-content: center; font-size: 3rem; color: white; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15); margin-bottom: 25px; animation: floatIcon 3s ease-in-out infinite; border: 1px solid rgba(255,255,255,0.3); }
+        @keyframes floatIcon { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        .hero h1 { font-size: 3rem; font-weight: 700; color: white; margin-bottom: 15px; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
+        .hero p { font-size: 1.1rem; color: rgba(255, 255, 255, 0.95); max-width: 550px; margin: 0 auto; }
+        
+        /* Search Bar */
+        .search-container { display: flex; justify-content: center; margin: -25px auto 20px; padding: 0 20px; position: relative; z-index: 10; }
+        .search-box { display: flex; background: white; border-radius: 60px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15); padding: 5px 5px 5px 25px; width: 100%; max-width: 550px; align-items: center; border: none; transition: all 0.3s; }
+        .search-box:focus-within { box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); transform: translateY(-2px); }
+        .search-box input { flex: 1; padding: 14px 10px; font-size: 0.95rem; border: none; outline: none; background: transparent; }
+        .search-box button { background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%); border: none; padding: 12px 32px; border-radius: 50px; color: white; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .search-box button:hover { transform: scale(0.98); box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4); }
+        
+        /* Language Switcher */
+        .lang-switcher { position: fixed; top: 80px; right: 20px; z-index: 1001; background: white; border-radius: 50px; padding: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: flex; gap: 5px; }
+        .lang-btn { background: none; border: none; padding: 8px 15px; cursor: pointer; border-radius: 40px; font-size: 0.85rem; transition: 0.3s; }
+        .lang-btn:hover { background: linear-gradient(135deg, #FF6B35, #FF8C42); color: white; }
+        .lang-active { background: linear-gradient(135deg, #FF6B35, #FF8C42); color: white; }
+        
+        /* Sections */
+        .section { padding: 50px 20px; }
+        .section-title { text-align: center; font-size: 2rem; font-weight: 700; background: linear-gradient(135deg, #FF6B35 0%, #8B5CF6 100%); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 40px; }
+        .card-grid, .app-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; max-width: 1250px; margin: 0 auto; padding: 0 20px; }
+        .service-card, .app-card { background: white; border-radius: 24px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; text-decoration: none; color: inherit; display: block; border: 1px solid rgba(255, 107, 53, 0.1); position: relative; }
+        .service-card:hover, .app-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(255, 107, 53, 0.15); border-color: rgba(255, 107, 53, 0.3); }
+        .card-icon, .app-icon { height: 130px; display: flex; align-items: center; justify-content: center; font-size: 3.2rem; background: linear-gradient(135deg, rgba(255, 107, 53, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%); border-bottom: 1px solid rgba(255, 107, 53, 0.1); }
+        .card-info, .app-info { padding: 24px; text-align: center; }
+        .card-title, .app-name { font-size: 1.25rem; font-weight: 700; margin-bottom: 8px; color: #1F2937; }
+        .card-description, .app-description { color: #6B7280; font-size: 0.85rem; margin-bottom: 15px; line-height: 1.5; }
+        .apps-count { font-size: 0.75rem; color: #9CA3AF; margin-top: 10px; }
+        .card-badge { display: inline-block; background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%); color: white; padding: 6px 18px; border-radius: 30px; font-size: 0.75rem; font-weight: 600; margin-top: 10px; }
+        .trending-badge { position: absolute; top: 10px; right: 10px; background: #EF4444; color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; z-index: 1; }
+        
+        /* Quote & Visitor Section */
+        .quote-section { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 20px; border-radius: 20px; padding: 20px; text-align: center; color: white; }
+        .quote-flex { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .quote-text { flex: 2; text-align: left; }
+        .visitor-box { background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 50px; text-align: center; }
+        .visitor-count { font-size: 1.5rem; font-weight: bold; }
+        
+        /* Bonus Section */
+        .bonus-section { background: linear-gradient(135deg, #FF6B35, #F7931E); margin: 20px; border-radius: 20px; padding: 20px; color: white; transition: 0.3s; }
+        .bonus-section:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        
+        /* Slider Styles */
+        .slider-container { position: relative; max-width: 1200px; margin: 30px auto; overflow: hidden; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .slider { display: flex; transition: transform 0.5s ease-in-out; }
+        .slide { min-width: 100%; }
+        .slider-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; padding: 12px 18px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; z-index: 10; opacity: 0.7; transition: 0.3s; }
+        .slider-btn:hover { opacity: 1; background: rgba(0,0,0,0.8); }
+        .prev { left: 20px; }
+        .next { right: 20px; }
+        .slider-dots { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 10; }
+        .dot { width: 12px; height: 12px; background: white; border-radius: 50%; cursor: pointer; opacity: 0.5; transition: 0.3s; }
+        .dot.active, .dot:hover { opacity: 1; }
+        
+        /* AI Assistant - Left Sidebar Style */
+        .ai-sidebar {
+            position: fixed;
+            left: 20px;
+            bottom: 180px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .ai-chat-btn-side {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, #FF6B35, #8B5CF6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+            transition: all 0.3s;
+            color: white;
+            font-size: 1.6rem;
+            border: none;
+            animation: pulseGlow 2s infinite;
+            position: relative;
+        }
+        
+        .ai-chat-btn-side::after {
+            content: "🤖 AI";
+            position: absolute;
+            left: 65px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            white-space: nowrap;
+            opacity: 0;
+            transition: 0.3s;
+            pointer-events: none;
+        }
+        
+        .ai-chat-btn-side:hover::after {
+            opacity: 1;
+        }
+        
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4); }
+            50% { box-shadow: 0 6px 30px rgba(255, 107, 53, 0.8); transform: scale(1.02); }
+        }
+        
+        .ai-chat-btn-side:hover { transform: scale(1.08); }
+        
+        .ai-chat-box {
+            display: none;
+            position: fixed;
+            left: 90px;
+            bottom: 100px;
+            width: 360px;
+            height: 500px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            z-index: 1000;
+            flex-direction: column;
+            overflow: hidden;
+            animation: slideInLeft 0.3s ease;
+        }
+        
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .ai-chat-header { background: linear-gradient(135deg, #FF6B35, #8B5CF6); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .ai-chat-header h4 { margin: 0; font-size: 1.1rem; }
+        .ai-chat-header .close-chat { background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer; }
+        .ai-chat-messages { flex: 1; padding: 15px; overflow-y: auto; background: #F8FAFC; max-height: 380px; }
+        .ai-message { display: flex; margin-bottom: 15px; }
+        .ai-message .ai-avatar { width: 35px; height: 35px; background: linear-gradient(135deg, #FF6B35, #8B5CF6); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1rem; margin-right: 10px; flex-shrink: 0; }
+        .ai-message .ai-text { background: white; padding: 10px 15px; border-radius: 15px; border-top-left-radius: 5px; max-width: 75%; font-size: 0.85rem; color: #333; box-shadow: 0 1px 2px rgba(0,0,0,0.05); line-height: 1.4; }
+        .user-message { display: flex; justify-content: flex-end; margin-bottom: 15px; }
+        .user-message .user-text { background: linear-gradient(135deg, #FF6B35, #8B5CF6); color: white; padding: 10px 15px; border-radius: 15px; border-top-right-radius: 5px; max-width: 75%; font-size: 0.85rem; }
+        .ai-chat-input { padding: 15px; background: white; border-top: 1px solid #E2E8F0; display: flex; gap: 10px; }
+        .ai-chat-input input { flex: 1; padding: 10px; border: 1px solid #E2E8F0; border-radius: 25px; outline: none; font-size: 0.85rem; }
+        .ai-chat-input button { background: linear-gradient(135deg, #FF6B35, #8B5CF6); border: none; padding: 10px 15px; border-radius: 25px; color: white; cursor: pointer; font-weight: bold; }
+        .typing-indicator { display: flex; gap: 5px; padding: 10px; }
+        .typing-indicator span { width: 8px; height: 8px; background: #FF6B35; border-radius: 50%; animation: typing 1.4s infinite; }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typing { 0%, 60%, 100% { transform: translateY(0); opacity: 0.5; } 30% { transform: translateY(-10px); opacity: 1; } }
+        
+        /* Rate Us Section */
+        .rate-us-section { background: white; margin: 20px; border-radius: 20px; padding: 30px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .star { font-size: 2rem; cursor: pointer; color: #ccc; transition: all 0.2s; }
+        .star:hover { transform: scale(1.1); }
+        
+        /* Stats Chart */
+        .stats-chart { background: white; margin: 20px; border-radius: 20px; padding: 30px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .stat-box { display: flex; justify-content: center; gap: 40px; margin: 20px 0; flex-wrap: wrap; }
+        .stat-box-number { font-size: 2rem; font-weight: bold; color: #FF6B35; }
+        
+        /* Newsletter Section */
+        .newsletter-section { background: linear-gradient(135deg, #FF6B35, #8B5CF6); padding: 40px; text-align: center; margin: 30px; border-radius: 30px; }
+        .newsletter-section h3 { color: white; font-size: 1.5rem; margin-bottom: 15px; }
+        .newsletter-input-group { display: flex; max-width: 400px; margin: 0 auto; }
+        .newsletter-input-group input { flex: 1; padding: 12px 20px; border-radius: 50px 0 0 50px; border: none; font-size: 1rem; }
+        .newsletter-input-group button { background: white; color: #FF6B35; border: none; padding: 12px 25px; border-radius: 0 50px 50px 0; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .newsletter-input-group button:hover { background: #1F2937; color: white; }
+        
+        /* Feedback Section */
+        .feedback-section { background: white; margin: 20px; border-radius: 20px; padding: 30px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .feedback-textarea { width: 100%; max-width: 500px; padding: 12px; border-radius: 15px; border: 1px solid #ddd; margin-bottom: 15px; font-family: inherit; }
+        
+        /* Bathu Banner */
+        .bathu-banner { background: linear-gradient(135deg, rgba(255, 107, 53, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%); margin: 30px; border-radius: 32px; padding: 40px; text-align: center; border: 1px solid rgba(255, 107, 53, 0.2); }
+        .bathu-banner h2 { font-size: 1.8rem; background: linear-gradient(135deg, #FF6B35 0%, #8B5CF6 100%); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 10px; }
+        .bathu-btn { background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%); color: white; padding: 12px 32px; border-radius: 50px; text-decoration: none; font-weight: 600; display: inline-block; transition: all 0.3s; box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3); }
+        .bathu-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255, 107, 53, 0.4); }
+        
+        /* Stats Section */
+        .stats-section { display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; padding: 50px; background: white; margin: 30px; border-radius: 32px; box-shadow: 0 10px 35px rgba(0, 0, 0, 0.05); border: 1px solid rgba(255, 107, 53, 0.1); }
+        .stat-item { text-align: center; flex: 1; min-width: 130px; }
+        .stat-number { font-size: 2.3rem; font-weight: 800; background: linear-gradient(135deg, #FF6B35 0%, #8B5CF6 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .stat-label { color: #6B7280; font-size: 0.85rem; margin-top: 8px; font-weight: 500; }
+        
+        /* Footer */
+        footer { background: linear-gradient(135deg, #1F2937 0%, #111827 100%); color: #9CA3AF; text-align: center; padding: 40px; margin-top: 60px; }
+        
+        /* Share Button & Modal */
+        .share-btn-container { position: fixed; bottom: 30px; right: 30px; z-index: 999; }
+        .share-btn { width: 55px; height: 55px; background: linear-gradient(135deg, #FF6B35, #8B5CF6); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,0.2); transition: all 0.3s; color: white; font-size: 1.5rem; border: none; }
+        .share-btn:hover { transform: scale(1.08); }
+        
+        /* Dark Mode Toggle */
+        .dark-mode-toggle { position: fixed; bottom: 30px; left: 20px; background: linear-gradient(135deg, #FF6B35, #8B5CF6); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 999; transition: 0.3s; border: none; color: white; font-size: 1.3rem; }
+        .dark-mode-toggle:hover { transform: scale(1.08); }
+        
+        /* Color Picker Button */
+        .color-picker-btn { position: fixed; bottom: 30px; right: 100px; background: linear-gradient(135deg, #FF6B35, #8B5CF6); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 999; transition: 0.3s; border: none; color: white; font-size: 1.3rem; }
+        .color-picker-btn:hover { transform: scale(1.08); }
+        
+        /* WhatsApp Chat */
+        .whatsapp-chat { position: fixed; bottom: 100px; left: 20px; background: #25D366; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; text-decoration: none; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 999; transition: 0.3s; }
+        .whatsapp-chat:hover { transform: scale(1.08); }
+        
+        /* Modals */
+        .share-modal, .color-modal, .feedback-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 10000; justify-content: center; align-items: center; }
+        .modal-content { background: white; border-radius: 30px; padding: 30px; max-width: 420px; width: 90%; text-align: center; animation: modalPop 0.3s ease; }
+        @keyframes modalPop { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .close-modal { background: none; border: none; font-size: 1.8rem; cursor: pointer; color: #9CA3AF; }
+        .qr-container { background: #F8FAFC; padding: 20px; border-radius: 20px; margin: 20px 0; display: inline-block; }
+        #qrcode { display: flex; justify-content: center; }
+        .website-link { background: #F3F4F6; padding: 12px 16px; border-radius: 50px; margin: 20px 0; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .copy-btn { background: linear-gradient(135deg, #FF6B35, #FF8C42); border: none; padding: 8px 20px; border-radius: 40px; color: white; font-weight: 600; cursor: pointer; }
+        .share-options { display: flex; gap: 12px; justify-content: center; margin: 20px 0; flex-wrap: wrap; }
+        .share-option { background: #F3F4F6; padding: 10px 18px; border-radius: 50px; cursor: pointer; border: none; font-size: 0.85rem; }
+        .share-option:hover { background: linear-gradient(135deg, #FF6B35, #FF8C42); color: white; }
+        
+        /* Color Picker Colors */
+        .color-option { width: 50px; height: 50px; border-radius: 10px; cursor: pointer; transition: 0.2s; }
+        .color-option:hover { transform: scale(1.05); }
+        
+        /* APK Popup */
+        .apk-popup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 25px; z-index: 10002; text-align: center; max-width: 350px; width: 90%; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .popup-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10001; }
+        .apk-download-btn { background: linear-gradient(135deg, #FF6B35, #FF8C42); color: white; border: none; padding: 12px 25px; border-radius: 40px; font-weight: 600; cursor: pointer; width: 100%; margin-bottom: 10px; }
+        .apk-close-btn { background: #F3F4F6; color: #4B5563; border: none; padding: 10px 20px; border-radius: 40px; cursor: pointer; width: 100%; }
+        
+        /* Toast */
+        .toast-share { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #1F2937; color: white; padding: 10px 20px; border-radius: 50px; z-index: 10001; animation: fadeUp 0.3s ease; font-size: 0.85rem; }
+        @keyframes fadeUp { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
+        
+        /* Dark Mode Styles */
+        body.dark-mode { background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0F172A 100%); }
+        body.dark-mode .navbar { background: rgba(15, 23, 42, 0.98); border-bottom: 2px solid rgba(255, 107, 53, 0.3); }
+        body.dark-mode .navbar a { color: #CBD5E1; }
+        body.dark-mode .service-card, body.dark-mode .app-card { background: #1E293B; border-color: rgba(255, 107, 53, 0.2); }
+        body.dark-mode .card-title, body.dark-mode .app-name { color: #F1F5F9; }
+        body.dark-mode .card-description, body.dark-mode .app-description { color: #94A3B8; }
+        body.dark-mode .stats-section, body.dark-mode .rate-us-section, body.dark-mode .stats-chart, body.dark-mode .feedback-section { background: #1E293B; }
+        body.dark-mode .bathu-banner { background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%); }
+        body.dark-mode .search-box { background: #1E293B; border-color: #334155; }
+        body.dark-mode .search-box input { color: white; }
+        body.dark-mode .apk-popup, body.dark-mode .modal-content { background: #1E293B; }
+        body.dark-mode .rate-us-section p, body.dark-mode .feedback-section p { color: #94A3B8; }
+        body.dark-mode .website-link { background: #334155; }
+        body.dark-mode .share-option { background: #334155; color: #CBD5E1; }
+        body.dark-mode .ai-chat-box { background: #1E293B; }
+        body.dark-mode .ai-chat-messages { background: #1E293B; }
+        body.dark-mode .ai-message .ai-text { background: #334155; color: #F1F5F9; }
+        body.dark-mode .ai-chat-input { background: #1E293B; border-top-color: #334155; }
+        body.dark-mode .ai-chat-input input { background: #1E293B; border-color: #334155; color: white; }
+        
+        .more-services { margin-top: 20px; }
+        @media (max-width: 768px) { .hero h1 { font-size: 2rem; } .card-grid { padding: 0 15px; gap: 20px; } .lang-switcher { top: 70px; right: 10px; padding: 3px; } .lang-btn { padding: 5px 10px; font-size: 0.7rem; } .slider-btn { padding: 8px 12px; font-size: 0.9rem; } .slide div { padding: 30px; } .slide h2 { font-size: 1.2rem; } .ai-chat-box { width: 300px; height: 450px; left: 75px; bottom: 80px; } .ai-chat-btn-side { width: 45px; height: 45px; font-size: 1.3rem; } .ai-chat-btn-side::after { display: none; } }
+        
+        @keyframes fall { to { transform: translateY(100vh); opacity: 0; } }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/" class="logo-nav">
+        <div class="logo-nav-icon">⚡</div>
+        <div class="logo-nav-text"><span class="smart">Smart</span><span class="sathi">Sathi</span></div>
+    </a>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/shopping">🛍️ Shopping</a>
+        <a href="/food">🍔 Food</a>
+        <a href="/study">📚 Study</a>
+        <a href="/farming">🌾 Farming</a>
+        <a href="/medicine">💊 Medicine</a>
+        <a href="/skincare">✨ Skincare</a>
+        <a href="/entertainment">🎬 OTT</a>
+        <a href="/music">🎵 Music</a>
+        <a href="/gaming">🎮 Gaming</a>
+        <a href="/travel">🚗 Travel</a>
+        <a href="/hotels">🏨 Hotels</a>
+        <a href="/finance">💰 Finance</a>
+        <a href="/news">📰 News</a>
+        <a href="/sports">🏏 Sports</a>
+        <a href="/jobs">💼 Jobs</a>
+        <a href="/fitness">🏋️ Fitness</a>
+        <a href="/tools">🛠️ Tools</a>
+        <a href="/photo">🎨 Photo</a>
+        <a href="/social">🌐 Social</a>
+        <a href="/delivery">🚚 Delivery</a>
+        <a href="/books">📚 Books</a>
+        <a href="#" class="ai-nav-btn" onclick="toggleAIChat()">🤖 AI Assistant</a>
+        {% if logged_in %}
+            <a href="/dashboard">👤 Dashboard</a>
+            <a href="/logout">🚪 Logout</a>
+        {% else %}
+            <a href="/login">🔐 Login</a>
+            <a href="/signup">📝 Signup</a>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Language Switcher -->
+<div class="lang-switcher">
+    <button class="lang-btn" id="langEn" onclick="changeLanguage('en')">🇬🇧 English</button>
+    <button class="lang-btn" id="langHi" onclick="changeLanguage('hi')">🇮🇳 हिंदी</button>
+    <button class="lang-btn" id="langGu" onclick="changeLanguage('gu')">🇮🇳 ગુજરાતી</button>
+</div>
+
+<div class="hero">
+    <div class="hero-logo-icon">⚡</div>
+    <h1 id="heroTitle">SmartSathi — Your Intelligent Companion</h1>
+    <p id="heroSubtitle">One App for Everything | 21+ Services at Your Fingertips</p>
+</div>
+
+<div class="search-container">
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="🔍 Search for apps, services, or products...">
+        <button id="searchBtn">Search</button>
+    </div>
+</div>
+
+<!-- Daily Quote & Visitor Counter -->
+<div class="quote-section">
+    <div class="quote-flex">
+        <div class="quote-text">
+            <p style="font-size: 0.8rem; opacity: 0.8;" id="quoteLabel">✨ Daily Motivation</p>
+            <p style="font-size: 1.1rem; font-style: italic;" id="dailyQuote">Loading...</p>
+            <p style="font-size: 0.8rem; opacity: 0.8;" id="quoteAuthor">- Unknown</p>
+        </div>
+        <div class="visitor-box">
+            <div class="visitor-count" id="visitorCount">0</div>
+            <div id="visitorLabel" style="font-size: 0.7rem;">Total Visitors</div>
+        </div>
+    </div>
+</div>
+
+<!-- Feature 17: Daily Bonus / Rewards -->
+<div class="bonus-section">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+        <div>
+            <div style="font-size: 2rem;">🎁</div>
+            <div style="font-weight: bold;">Daily Bonus</div>
+        </div>
+        <div>
+            <div style="font-size: 1.8rem; font-weight: bold;" id="bonusPoints">0</div>
+            <div style="font-size: 0.7rem;">Your Points</div>
+        </div>
+        <div>
+            <div style="font-size: 1.5rem; font-weight: bold;" id="streakCount">0</div>
+            <div style="font-size: 0.7rem;">Day Streak 🔥</div>
+        </div>
+        <div>
+            <button onclick="claimDailyBonus()" id="claimBonusBtn" style="background: white; color: #FF6B35; border: none; padding: 10px 25px; border-radius: 50px; font-weight: bold; cursor: pointer;">🎁 Claim Bonus</button>
+        </div>
+    </div>
+    <div style="font-size: 0.7rem; margin-top: 10px;" id="bonusMessage"></div>
+</div>
+
+<!-- Image Slider -->
+<div class="slider-container">
+    <div class="slider" id="slider">
+        <div class="slide"><div style="background: linear-gradient(135deg, #FF6B35, #F7931E); padding: 60px; text-align: center; color: white;"><div style="font-size: 3rem;">🛍️</div><h2 style="font-size: 2rem; margin: 15px 0;">Big Diwali Sale!</h2><p>Up to 80% OFF on all shopping</p><button onclick="location.href='/shopping'" style="background: white; color: #FF6B35; border: none; padding: 12px 30px; border-radius: 50px; cursor: pointer;">Shop Now →</button></div></div>
+        <div class="slide"><div style="background: linear-gradient(135deg, #8B5CF6, #6D28D9); padding: 60px; text-align: center; color: white;"><div style="font-size: 3rem;">🍕</div><h2 style="font-size: 2rem; margin: 15px 0;">Food Fest!</h2><p>Buy 1 Get 1 Free</p><button onclick="location.href='/food'" style="background: white; color: #8B5CF6; border: none; padding: 12px 30px; border-radius: 50px; cursor: pointer;">Order Now →</button></div></div>
+        <div class="slide"><div style="background: linear-gradient(135deg, #10B981, #059669); padding: 60px; text-align: center; color: white;"><div style="font-size: 3rem;">📚</div><h2 style="font-size: 2rem; margin: 15px 0;">Learning Sale!</h2><p>Up to 90% OFF</p><button onclick="location.href='/study'" style="background: white; color: #10B981; border: none; padding: 12px 30px; border-radius: 50px; cursor: pointer;">Learn Now →</button></div></div>
+        <div class="slide"><div style="background: linear-gradient(135deg, #EC489A, #F472B6); padding: 60px; text-align: center; color: white;"><div style="font-size: 3rem;">💄</div><h2 style="font-size: 2rem; margin: 15px 0;">Beauty Bonanza!</h2><p>Min 50% OFF</p><button onclick="location.href='/skincare'" style="background: white; color: #EC489A; border: none; padding: 12px 30px; border-radius: 50px; cursor: pointer;">Shop Now →</button></div></div>
+    </div>
+    <button class="slider-btn prev" onclick="prevSlide()">❮</button>
+    <button class="slider-btn next" onclick="nextSlide()">❯</button>
+    <div class="slider-dots"><span class="dot" onclick="goToSlide(0)"></span><span class="dot" onclick="goToSlide(1)"></span><span class="dot" onclick="goToSlide(2)"></span><span class="dot" onclick="goToSlide(3)"></span></div>
+</div>
+
+<!-- Trending Section -->
+<div class="section">
+    <h2 class="section-title" id="trendingTitle">🔥 Trending Now</h2>
+    <div class="card-grid">
+        <div class="service-card" onclick="location.href='/shopping'"><div class="trending-badge">🔥 #1</div><div class="card-icon">👟</div><div class="card-info"><div class="card-title">Bathu Sneakers</div><div class="card-description">Limited Edition</div><div class="card-badge">Shop Now</div></div></div>
+        <div class="service-card" onclick="location.href='/food'"><div class="trending-badge">🔥 #2</div><div class="card-icon">🍕</div><div class="card-info"><div class="card-title">Zomato</div><div class="card-description">50% OFF</div><div class="card-badge">Order Now</div></div></div>
+        <div class="service-card" onclick="location.href='/entertainment'"><div class="trending-badge">🔥 #3</div><div class="card-icon">🎬</div><div class="card-info"><div class="card-title">Netflix</div><div class="card-description">New Movies</div><div class="card-badge">Watch Now</div></div></div>
+    </div>
+</div>
+
+<!-- Main Services -->
+<div class="section">
+    <h2 class="section-title" id="mainServicesTitle">🌟 Main Services</h2>
+    <div class="card-grid">
+        <a href="/shopping" class="service-card"><div class="card-icon">🛍️</div><div class="card-info"><div class="card-title">Online Shopping</div><div class="card-description">Amazon, Flipkart, Myntra</div><div class="card-badge">Shop Now</div></div></a>
+        <a href="/food" class="service-card"><div class="card-icon">🍔</div><div class="card-info"><div class="card-title">Food Delivery</div><div class="card-description">Zomato, Swiggy, Domino's</div><div class="card-badge">Order Food</div></div></a>
+        <a href="/study" class="service-card"><div class="card-icon">📚</div><div class="card-info"><div class="card-title">Online Learning</div><div class="card-description">Coursera, Udemy, BYJU'S</div><div class="card-badge">Start Learning</div></div></a>
+        <a href="/farming" class="service-card"><div class="card-icon">🌾</div><div class="card-info"><div class="card-title">Farming & Agri</div><div class="card-description">BigBasket, Ninjacart</div><div class="card-badge">Explore</div></div></a>
+        <a href="/medicine" class="service-card"><div class="card-icon">💊</div><div class="card-info"><div class="card-title">Medicine</div><div class="card-description">Tata 1mg, PharmEasy</div><div class="card-badge">Order Medicines</div></div></a>
+        <a href="/skincare" class="service-card"><div class="card-icon">✨</div><div class="card-info"><div class="card-title">Skincare & Beauty</div><div class="card-description">Nykaa, Mamaearth</div><div class="card-badge">Shop Beauty</div></div></a>
+    </div>
+</div>
+
+<!-- Most Popular Apps -->
+<div class="section">
+    <h2 class="section-title">🔥 Most Popular Apps</h2>
+    <div class="card-grid" id="popularAppsGrid"><div class="service-card"><div class="card-icon">📊</div><div class="card-info"><div class="card-title">Loading...</div><div class="card-description">Start exploring apps</div></div></div></div>
+</div>
+
+<!-- More Services -->
+<div class="section more-services">
+    <h2 class="section-title">🎯 More Services</h2>
+    <div class="card-grid">
+        <a href="/entertainment" class="service-card"><div class="card-icon">🎬</div><div class="card-info"><div class="card-title">Entertainment</div><div class="card-description">Netflix, Prime, Hotstar</div><div class="card-badge">Watch Now</div></div></a>
+        <a href="/music" class="service-card"><div class="card-icon">🎵</div><div class="card-info"><div class="card-title">Music</div><div class="card-description">Spotify, Gaana</div><div class="card-badge">Listen Now</div></div></a>
+        <a href="/gaming" class="service-card"><div class="card-icon">🎮</div><div class="card-info"><div class="card-title">Gaming</div><div class="card-description">BGMI, Free Fire</div><div class="card-badge">Play Now</div></div></a>
+        <a href="/travel" class="service-card"><div class="card-icon">🚗</div><div class="card-info"><div class="card-title">Travel</div><div class="card-description">Uber, Ola, IRCTC</div><div class="card-badge">Book Now</div></div></a>
+        <a href="/hotels" class="service-card"><div class="card-icon">🏨</div><div class="card-info"><div class="card-title">Hotels</div><div class="card-description">OYO, Airbnb</div><div class="card-badge">Book Stay</div></div></a>
+        <a href="/finance" class="service-card"><div class="card-icon">💰</div><div class="card-info"><div class="card-title">Finance</div><div class="card-description">GPay, PhonePe</div><div class="card-badge">Pay Now</div></div></a>
+        <a href="/news" class="service-card"><div class="card-icon">📰</div><div class="card-info"><div class="card-title">News</div><div class="card-description">Google News, InShorts</div><div class="card-badge">Read Now</div></div></a>
+        <a href="/sports" class="service-card"><div class="card-icon">🏏</div><div class="card-info"><div class="card-title">Sports</div><div class="card-description">Cricbuzz, ESPN</div><div class="card-badge">Live Scores</div></div></a>
+        <a href="/jobs" class="service-card"><div class="card-icon">💼</div><div class="card-info"><div class="card-title">Jobs</div><div class="card-description">LinkedIn, Naukri</div><div class="card-badge">Apply Now</div></div></a>
+        <a href="/fitness" class="service-card"><div class="card-icon">🏋️</div><div class="card-info"><div class="card-title">Fitness</div><div class="card-description">Cult.fit, HealthifyMe</div><div class="card-badge">Start Workout</div></div></a>
+        <a href="/tools" class="service-card"><div class="card-icon">🛠️</div><div class="card-info"><div class="card-title">Tools</div><div class="card-description">Google Drive, Zoom</div><div class="card-badge">Use Now</div></div></a>
+        <a href="/photo" class="service-card"><div class="card-icon">🎨</div><div class="card-info"><div class="card-title">Photo</div><div class="card-description">PicsArt, Lightroom</div><div class="card-badge">Edit Now</div></div></a>
+        <a href="/social" class="service-card"><div class="card-icon">🌐</div><div class="card-info"><div class="card-title">Social Media</div><div class="card-description">Instagram, Facebook</div><div class="card-badge">Connect</div></div></a>
+        <a href="/delivery" class="service-card"><div class="card-icon">🚚</div><div class="card-info"><div class="card-title">Delivery</div><div class="card-description">Zomato, Swiggy</div><div class="card-badge">Order Now</div></div></a>
+        <a href="/books" class="service-card"><div class="card-icon">📚</div><div class="card-info"><div class="card-title">Books</div><div class="card-description">Kindle, Audible</div><div class="card-badge">Read Now</div></div></a>
+    </div>
+</div>
+
+<!-- Upcoming Events -->
+<div class="section">
+    <h2 class="section-title">📅 Upcoming Events & Offers</h2>
+    <div class="card-grid" id="eventsGrid"></div>
+</div>
+
+<!-- Rate Us -->
+<div class="rate-us-section"><h3>⭐ Rate SmartSathi</h3><p>How would you rate your experience?</p><div style="display: flex; justify-content: center; gap: 15px;"><span class="star" data-rating="1">★</span><span class="star" data-rating="2">★</span><span class="star" data-rating="3">★</span><span class="star" data-rating="4">★</span><span class="star" data-rating="5">★</span></div><div id="ratingMessage"></div></div>
+
+<!-- Statistics -->
+<div class="stats-chart"><h3>📊 Usage Statistics</h3><div class="stat-box"><div class="stat-box-item"><div class="stat-box-number" id="totalVisitsDisplay">0</div><div>Total Visits</div></div><div class="stat-box-item"><div class="stat-box-number" id="todayVisitsDisplay">0</div><div>Today's Visits</div></div><div class="stat-box-item"><div class="stat-box-number" id="appsOpenedDisplay">0</div><div>Apps Opened</div></div></div></div>
+
+<!-- Feedback -->
+<div class="feedback-section"><h3>📝 Send Feedback</h3><p>Help us improve SmartSathi</p><textarea id="feedbackText" class="feedback-textarea" rows="3" placeholder="Write your feedback..."></textarea><br><button onclick="sendFeedback()" class="card-badge" style="background: linear-gradient(135deg, #FF6B35, #FF8C42); border: none; cursor: pointer;">Send Feedback</button></div>
+
+<!-- Newsletter -->
+<div class="newsletter-section"><h3>📧 Get Updates & Offers</h3><div class="newsletter-input-group"><input type="email" id="newsEmail" placeholder="Enter your email"><button onclick="subscribeNewsletter()">Subscribe</button></div></div>
+
+<!-- Bathu Banner -->
+<div class="bathu-banner"><h2>👟 Bathu Sneakers</h2><p>South Africa's #1 Sneaker Brand</p><a href="/shopping" class="bathu-btn">Shop Bathu Collection →</a></div>
+
+<!-- Stats -->
+<div class="stats-section"><div class="stat-item"><div class="stat-number">50+</div><div>Popular Apps</div></div><div class="stat-item"><div class="stat-number">10K+</div><div>Happy Users</div></div><div class="stat-item"><div class="stat-number">24/7</div><div>Support</div></div><div class="stat-item"><div class="stat-number">4.9⭐</div><div>Rating</div></div></div>
+
+<footer><p>© 2024 SmartSathi — Your Intelligent Companion</p><p>Shopping • Food • Study • Farming • Medicine • Skincare • Entertainment • Music • Gaming • Travel • Hotels • Finance • News • Sports • Jobs • Fitness • Tools • Photo • Social • Delivery • Books</p></footer>
+
+<!-- Share Button -->
+<div class="share-btn-container"><button class="share-btn" onclick="openShareModal()">📤</button></div>
+
+<!-- Dark Mode Toggle -->
+<button class="dark-mode-toggle" onclick="toggleDarkMode()" id="darkModeBtn">🌙</button>
+
+<!-- Color Picker -->
+<button class="color-picker-btn" onclick="openColorPicker()">🎨</button>
+
+<!-- WhatsApp Chat -->
+<a href="https://wa.me/919876543210?text=Hi! I found SmartSathi!" class="whatsapp-chat" target="_blank">💬</a>
+
+<!-- AI Assistant - Left Sidebar -->
+<div class="ai-sidebar">
+    <button class="ai-chat-btn-side" onclick="toggleAIChat()">🤖</button>
+</div>
+
+<!-- AI Chat Box -->
+<div class="ai-chat-box" id="aiChatBox">
+    <div class="ai-chat-header">
+        <h4>🤖 SmartSathi Assistant</h4>
+        <button class="close-chat" onclick="toggleAIChat()">✕</button>
+    </div>
+    <div class="ai-chat-messages" id="aiMessages">
+        <div class="ai-message">
+            <div class="ai-avatar">🤖</div>
+            <div class="ai-text">Hello! I'm SmartSathi Assistant.<br><br>Ask me about:<br>• Shopping apps 🛍️<br>• Food delivery 🍔<br>• Study apps 📚<br>• Medicine 💊<br>• Entertainment 🎬<br><br>Type "Help" to see all!</div>
+        </div>
+    </div>
+    <div class="ai-chat-input">
+        <input type="text" id="aiInput" placeholder="Type your message..." onkeypress="handleAIKeypress(event)">
+        <button onclick="sendAIMessage()">Send</button>
+    </div>
+</div>
+
+<!-- Share Modal -->
+<div id="shareModal" class="share-modal"><div class="modal-content"><div class="modal-header"><h3>📤 Share SmartSathi</h3><button class="close-modal" onclick="closeShareModal()">✕</button></div><div class="qr-container"><div id="qrcode"></div></div><div class="website-link"><span id="websiteUrl">Loading...</span><button class="copy-btn" onclick="copyToClipboard()">📋 Copy Link</button></div><div class="share-options"><button class="share-option" onclick="shareWhatsApp()">💚 WhatsApp</button><button class="share-option" onclick="shareTelegram()">📨 Telegram</button><button class="share-option" onclick="shareEmail()">📧 Email</button><button class="share-option" onclick="shareTwitter()">🐦 Twitter</button><button class="share-option" onclick="shareFacebook()">📘 Facebook</button></div></div></div>
+
+<!-- Color Picker Modal -->
+<div id="colorModal" class="color-modal"><div class="modal-content"><div class="modal-header"><h3>🎨 Choose Background Color</h3><button class="close-modal" onclick="closeColorPicker()">✕</button></div><div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;"><div onclick="changeBgColor('linear-gradient(135deg, #667eea 0%, #764ba2 100%)')" class="color-option" style="background: linear-gradient(135deg, #667eea, #764ba2);"></div><div onclick="changeBgColor('linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)')" class="color-option" style="background: linear-gradient(135deg, #FF6B35, #F7931E);"></div><div onclick="changeBgColor('linear-gradient(135deg, #11998e 0%, #38ef7d 100%)')" class="color-option" style="background: linear-gradient(135deg, #11998e, #38ef7d);"></div><div onclick="changeBgColor('linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)')" class="color-option" style="background: linear-gradient(135deg, #1e3c72, #2a5298);"></div></div></div></div>
+
+<!-- Feedback Modal -->
+<div id="feedbackModal" class="feedback-modal"><div class="modal-content"><h3>✅ Feedback Sent!</h3><p>Thank you for your valuable feedback</p><button onclick="closeFeedbackModal()" style="padding: 10px 25px; background: #10b981; color: white; border: none; border-radius: 40px;">OK</button></div></div>
+
+<!-- APK Popup -->
+<div id="popupOverlay" class="popup-overlay"></div>
+<div id="apkPopup" class="apk-popup"><h3>📱 Download Mobile App</h3><p>Get SmartSathi APK for Android</p><button class="apk-download-btn" onclick="downloadAPK()">⬇️ Download APK (Coming Soon)</button><button class="apk-close-btn" onclick="closeAPKPopup()">Maybe Later</button></div>
+
+<script>
+    // ============ QUOTES ============
+    const quotes = [
+        { quote: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
+        { quote: "The future depends on what you do today.", author: "Mahatma Gandhi" },
+        { quote: "Success is not final, failure is not fatal.", author: "Winston Churchill" },
+        { quote: "Dream it. Wish it. Do it.", author: "Unknown" },
+        { quote: "Stay positive, work hard, make it happen.", author: "Unknown" },
+    ];
+    const today = new Date();
+    const dayIndex = today.getDate() % quotes.length;
+    document.getElementById('dailyQuote').innerText = `"${quotes[dayIndex].quote}"`;
+    document.getElementById('quoteAuthor').innerText = `- ${quotes[dayIndex].author}`;
+    
+    // ============ VISITOR COUNTER ============
+    let totalVisits = parseInt(localStorage.getItem('totalVisits') || 0);
+    totalVisits++;
+    localStorage.setItem('totalVisits', totalVisits);
+    document.getElementById('totalVisitsDisplay').innerText = totalVisits;
+    document.getElementById('visitorCount').innerText = totalVisits;
+    
+    const todayDate = new Date().toDateString();
+    let todayVisits = JSON.parse(localStorage.getItem('todayVisits') || '{"date":"","count":0}');
+    if(todayVisits.date !== todayDate) {
+        todayVisits = { date: todayDate, count: 1 };
+    } else {
+        todayVisits.count++;
+    }
+    localStorage.setItem('todayVisits', JSON.stringify(todayVisits));
+    document.getElementById('todayVisitsDisplay').innerText = todayVisits.count;
+    
+    let appsOpened = parseInt(localStorage.getItem('appsOpened') || 0);
+    document.getElementById('appsOpenedDisplay').innerText = appsOpened;
+    
+    // ============ DAILY BONUS ============
+    let userPoints = parseInt(localStorage.getItem('userPoints') || '0');
+    let lastClaimDate = localStorage.getItem('lastClaimDate');
+    let streak = parseInt(localStorage.getItem('streak') || '0');
+    
+    function updateBonusDisplay() {
+        document.getElementById('bonusPoints').innerText = userPoints;
+        document.getElementById('streakCount').innerText = streak;
+        if(lastClaimDate === todayDate) {
+            document.getElementById('claimBonusBtn').disabled = true;
+            document.getElementById('claimBonusBtn').style.opacity = '0.5';
+            document.getElementById('claimBonusBtn').innerText = '✓ Already Claimed';
+        } else {
+            document.getElementById('claimBonusBtn').disabled = false;
+            document.getElementById('claimBonusBtn').style.opacity = '1';
+            let bonusAmount = 10 + (streak * 2);
+            if(bonusAmount > 50) bonusAmount = 50;
+            document.getElementById('bonusMessage').innerHTML = `+${bonusAmount} points (Streak: ${streak} days)`;
+        }
+    }
+    
+    function claimDailyBonus() {
+        if(lastClaimDate === todayDate) {
+            showToast('Already claimed today! Come back tomorrow.');
+            return;
+        }
+        let bonusAmount = 10 + (streak * 2);
+        if(bonusAmount > 50) bonusAmount = 50;
+        userPoints += bonusAmount;
+        streak++;
+        localStorage.setItem('userPoints', userPoints);
+        localStorage.setItem('streak', streak);
+        localStorage.setItem('lastClaimDate', todayDate);
+        updateBonusDisplay();
+        showToast(`🎉 You earned ${bonusAmount} points!`);
+        for(let i=0;i<30;i++) {
+            let confetti = document.createElement('div');
+            confetti.innerHTML = '🎉';
+            confetti.style.position = 'fixed';
+            confetti.style.left = Math.random() * 100 + '%';
+            confetti.style.top = '-20px';
+            confetti.style.fontSize = '20px';
+            confetti.style.animation = 'fall 2s linear';
+            document.body.appendChild(confetti);
+            setTimeout(() => confetti.remove(), 2000);
+        }
+    }
+    updateBonusDisplay();
+    
+    // ============ MOST POPULAR APPS ============
+    let appClicks = JSON.parse(localStorage.getItem('appClicks') || '{}');
+    function updatePopularApps() {
+        const topApps = Object.entries(appClicks).sort((a,b) => b[1] - a[1]).slice(0, 6);
+        const popularGrid = document.getElementById('popularAppsGrid');
+        if(topApps.length === 0) {
+            popularGrid.innerHTML = `<div class="service-card"><div class="card-icon">📊</div><div class="card-info"><div class="card-title">No Data Yet</div><div class="card-description">Click on apps to see popular ones!</div></div></div>`;
+            return;
+        }
+        const appUrls = { 'Online Shopping': '/shopping', 'Food Delivery': '/food', 'Online Learning': '/study', 'Farming & Agri': '/farming', 'Medicine': '/medicine', 'Skincare': '/skincare' };
+        popularGrid.innerHTML = topApps.map(([name, count], idx) => `
+            <div class="service-card" onclick="location.href='${appUrls[name] || '/'}'" style="cursor:pointer; position:relative;">
+                <div class="trending-badge" style="background:#EF4444;">#${idx+1}</div>
+                <div class="card-icon">${name === 'Online Shopping' ? '🛍️' : name === 'Food Delivery' ? '🍔' : name === 'Online Learning' ? '📚' : '📱'}</div>
+                <div class="card-info"><div class="card-title">${name}</div><div class="card-description">Clicked ${count} times</div><div class="card-badge">Popular 🔥</div></div>
+            </div>
+        `).join('');
+    }
+    updatePopularApps();
+    
+    // ============ EVENTS ============
+    const events = [
+        { name: "🎉 Diwali Sale", date: "Nov 12", discount: "80% OFF", icon: "🪔", link: "/shopping", daysLeft: "5 days" },
+        { name: "🍕 Pizza Fest", date: "Nov 10", discount: "Buy 1 Get 1", icon: "🍕", link: "/food", daysLeft: "3 days" },
+        { name: "⭐ Myntra EORS", date: "Nov 20", discount: "50% OFF", icon: "👗", link: "/shopping", daysLeft: "13 days" },
+        { name: "📚 Education Week", date: "Nov 25", discount: "90% OFF", icon: "📚", link: "/study", daysLeft: "18 days" },
+    ];
+    document.getElementById('eventsGrid').innerHTML = events.map(e => `
+        <div class="service-card" onclick="location.href='${e.link}'" style="cursor:pointer; position:relative;">
+            <div class="trending-badge" style="background:#10B981;">${e.daysLeft}</div>
+            <div class="card-icon" style="font-size:3rem;">${e.icon}</div>
+            <div class="card-info"><div class="card-title">${e.name}</div><div class="card-description">${e.discount}</div><div style="font-size:0.7rem; color:#888;">📅 ${e.date}</div><div class="card-badge">View Offer →</div></div>
+        </div>
+    `).join('');
+    
+    // ============ SLIDER ============
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot');
+    const slider = document.getElementById('slider');
+    let autoInterval;
+    function updateSlider() { slider.style.transform = `translateX(-${currentSlide * 100}%)`; dots.forEach((d,i) => d.style.opacity = i === currentSlide ? '1' : '0.5'); }
+    function nextSlide() { currentSlide = (currentSlide + 1) % slides.length; updateSlider(); resetAuto(); }
+    function prevSlide() { currentSlide = (currentSlide - 1 + slides.length) % slides.length; updateSlider(); resetAuto(); }
+    function goToSlide(i) { currentSlide = i; updateSlider(); resetAuto(); }
+    function startAuto() { autoInterval = setInterval(nextSlide, 5000); }
+    function resetAuto() { clearInterval(autoInterval); startAuto(); }
+    startAuto();
+    const sliderContainer = document.querySelector('.slider-container');
+    if(sliderContainer) {
+        sliderContainer.addEventListener('mouseenter', () => clearInterval(autoInterval));
+        sliderContainer.addEventListener('mouseleave', startAuto);
+    }
+    
+    // ============ AI ASSISTANT ============
+    function toggleAIChat() {
+        const chatBox = document.getElementById('aiChatBox');
+        chatBox.style.display = chatBox.style.display === 'flex' ? 'none' : 'flex';
+    }
+    function handleAIKeypress(e) { if(e.key === 'Enter') sendAIMessage(); }
+    function addAIMessage(text) {
+        const div = document.createElement('div');
+        div.className = 'ai-message';
+        div.innerHTML = `<div class="ai-avatar">🤖</div><div class="ai-text">${text}</div>`;
+        document.getElementById('aiMessages').appendChild(div);
+        div.scrollIntoView();
+    }
+    function addUserMessage(text) {
+        const div = document.createElement('div');
+        div.className = 'user-message';
+        div.innerHTML = `<div class="user-text">${escapeHtml(text)}</div>`;
+        document.getElementById('aiMessages').appendChild(div);
+        div.scrollIntoView();
+    }
+    function escapeHtml(text) { return text.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+    function getAIResponse(msg) {
+        const m = msg.toLowerCase();
+        if(m.includes('shopping')) return "🛍️ Shopping Apps: Amazon, Flipkart, Myntra, Ajio, Meesho";
+        if(m.includes('food')) return "🍔 Food Apps: Zomato, Swiggy, Domino's, KFC, McDonald's";
+        if(m.includes('study') || m.includes('learn')) return "📚 Study Apps: Coursera, Udemy, BYJU'S, Unacademy, Khan Academy";
+        if(m.includes('medicine')) return "💊 Medicine Apps: Tata 1mg, PharmEasy, Practo, Apollo Pharmacy";
+        if(m.includes('skincare') || m.includes('beauty')) return "✨ Skincare Apps: Nykaa, Mamaearth, Sugar, Plum";
+        if(m.includes('movie') || m.includes('entertainment')) return "🎬 Entertainment: Netflix, Prime Video, Hotstar, YouTube";
+        if(m.includes('music')) return "🎵 Music Apps: Spotify, Gaana, JioSaavn, Wynk";
+        if(m.includes('game')) return "🎮 Gaming Apps: BGMI, Free Fire, Clash of Clans, Ludo King";
+        if(m.includes('travel')) return "🚗 Travel Apps: Uber, Ola, IRCTC, redBus, MakeMyTrip";
+        if(m.includes('help')) return "🤖 I can help with: Shopping, Food, Study, Medicine, Skincare, Entertainment, Music, Gaming, Travel, Hotels, Finance, News, Sports, Jobs, Fitness, Tools, Photo, Social, Delivery, Books";
+        return "I can help you find apps! Try: 'Shopping apps', 'Food delivery', 'Study apps', 'Movies', 'Music', 'Games', or 'Help'";
+    }
+    let isThinking = false;
+    function sendAIMessage() {
+        if(isThinking) return;
+        const input = document.getElementById('aiInput');
+        const msg = input.value.trim();
+        if(!msg) return;
+        addUserMessage(msg);
+        input.value = '';
+        isThinking = true;
+        const typing = document.createElement('div');
+        typing.className = 'ai-message';
+        typing.id = 'typing';
+        typing.innerHTML = `<div class="ai-avatar">🤖</div><div class="typing-indicator"><span></span><span></span><span></span></div>`;
+        document.getElementById('aiMessages').appendChild(typing);
+        setTimeout(() => {
+            typing.remove();
+            addAIMessage(getAIResponse(msg));
+            isThinking = false;
+        }, 800);
+    }
+    
+    // ============ RATING ============
+    let selectedRating = 0;
+    document.querySelectorAll('.star').forEach(star => {
+        star.addEventListener('click', function() {
+            selectedRating = this.getAttribute('data-rating');
+            document.querySelectorAll('.star').forEach(s => {
+                if(parseInt(s.getAttribute('data-rating')) <= selectedRating) s.style.color = '#FFD700';
+                else s.style.color = '#ccc';
+            });
+            document.getElementById('ratingMessage').innerHTML = `Thank you for ${selectedRating} stars! ⭐`;
+            localStorage.setItem('userRating', selectedRating);
+        });
+    });
+    if(localStorage.getItem('userRating')) {
+        let saved = localStorage.getItem('userRating');
+        document.querySelectorAll('.star').forEach(s => {
+            if(parseInt(s.getAttribute('data-rating')) <= saved) s.style.color = '#FFD700';
+        });
+    }
+    
+    // ============ DARK MODE ============
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        localStorage.setItem('darkMode', document.body.classList.contains('dark-mode') ? 'enabled' : 'disabled');
+        document.getElementById('darkModeBtn').innerHTML = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+    }
+    if(localStorage.getItem('darkMode') === 'enabled') toggleDarkMode();
+    
+    // ============ COLOR PICKER ============
+    function openColorPicker() { document.getElementById('colorModal').style.display = 'flex'; }
+    function closeColorPicker() { document.getElementById('colorModal').style.display = 'none'; }
+    function changeBgColor(color) { document.body.style.background = color; localStorage.setItem('bgColor', color); closeColorPicker(); showToast('Background changed!'); }
+    if(localStorage.getItem('bgColor')) document.body.style.background = localStorage.getItem('bgColor');
+    
+    // ============ NEWSLETTER & FEEDBACK ============
+    function subscribeNewsletter() {
+        let email = document.getElementById('newsEmail').value;
+        if(email && email.includes('@')) { showToast('✅ Subscribed!'); document.getElementById('newsEmail').value = ''; }
+        else showToast('❌ Enter valid email');
+    }
+    function sendFeedback() {
+        let fb = document.getElementById('feedbackText').value;
+        if(fb) { showToast('✅ Thank you!'); document.getElementById('feedbackText').value = ''; document.getElementById('feedbackModal').style.display = 'flex'; setTimeout(() => document.getElementById('feedbackModal').style.display = 'none', 2000); }
+        else showToast('❌ Write something');
+    }
+    function closeFeedbackModal() { document.getElementById('feedbackModal').style.display = 'none'; }
+    
+    // ============ APK POPUP ============
+    if(!localStorage.getItem('popupShown')) {
+        setTimeout(() => { document.getElementById('popupOverlay').style.display = 'block'; document.getElementById('apkPopup').style.display = 'block'; }, 3000);
+    }
+    function closeAPKPopup() { document.getElementById('popupOverlay').style.display = 'none'; document.getElementById('apkPopup').style.display = 'none'; localStorage.setItem('popupShown', 'true'); }
+    function downloadAPK() { showToast('📱 APK coming soon!'); }
+    
+    // ============ SHARE FUNCTIONS ============
+    let publicUrl = window.location.href;
+    let qrGenerated = false;
+    function openShareModal() {
+        document.getElementById('shareModal').style.display = 'flex';
+        if(!qrGenerated) { document.getElementById('qrcode').innerHTML = ''; new QRCode(document.getElementById('qrcode'), { text: publicUrl, width: 180, height: 180, colorDark: "#FF6B35" }); qrGenerated = true; }
+        document.getElementById('websiteUrl').innerText = publicUrl;
+    }
+    function closeShareModal() { document.getElementById('shareModal').style.display = 'none'; }
+    function copyToClipboard() { navigator.clipboard.writeText(publicUrl).then(() => showToast('✅ Copied!')); }
+    function shareWhatsApp() { window.open(`https://wa.me/?text=SmartSathi - ${publicUrl}`); closeShareModal(); }
+    function shareTelegram() { window.open(`https://t.me/share/url?url=${publicUrl}`); closeShareModal(); }
+    function shareEmail() { window.open(`mailto:?subject=SmartSathi&body=${publicUrl}`); closeShareModal(); }
+    function shareTwitter() { window.open(`https://twitter.com/intent/tweet?text=SmartSathi&url=${publicUrl}`); closeShareModal(); }
+    function shareFacebook() { window.open(`https://www.facebook.com/sharer/sharer.php?u=${publicUrl}`); closeShareModal(); }
+    
+    // ============ SEARCH ============
+    function showToast(msg) {
+        let t = document.createElement('div');
+        t.className = 'toast-share';
+        t.innerHTML = msg;
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 3000);
+    }
+    document.getElementById('searchBtn').onclick = function() {
+        let q = document.getElementById('searchInput').value.toLowerCase();
+        let c = 0;
+        document.querySelectorAll('.service-card').forEach(card => {
+            if(card.innerText.toLowerCase().includes(q)) { card.style.display = 'block'; c++; }
+            else card.style.display = 'none';
+        });
+        showToast(c === 0 ? '❌ No results' : `✅ Found ${c} results`);
+    };
+    
+    // ============ WINDOW CLICK ============
+    window.onclick = function(e) {
+        if(e.target === document.getElementById('shareModal')) closeShareModal();
+        if(e.target === document.getElementById('colorModal')) closeColorPicker();
+        if(e.target === document.getElementById('popupOverlay')) closeAPKPopup();
+    };
+    
+    setTimeout(() => showToast('🎉 Welcome to SmartSathi!'), 2000);
+</script>
+</body>
+</html>

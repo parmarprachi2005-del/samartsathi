@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSathi - Photo Editing Hub</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .app-icon { height: 130px; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+        .picsart .app-icon { background: linear-gradient(135deg, #4F46E5, #7C3AED); }
+        .lightroom .app-icon { background: linear-gradient(135deg, #31A8FF, #0055FF); }
+        .snapseed .app-icon { background: linear-gradient(135deg, #3D5A80, #293241); }
+        .canva .app-icon { background: linear-gradient(135deg, #00C4CC, #0099A3); }
+        .inshot .app-icon { background: linear-gradient(135deg, #FF6B35, #E85D04); }
+        .vsco .app-icon { background: linear-gradient(135deg, #1A1A2E, #16213E); }
+        .remini .app-icon { background: linear-gradient(135deg, #FFB703, #FB8500); }
+        .faceapp .app-icon { background: linear-gradient(135deg, #8B5CF6, #6D28D9); }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/" class="logo-nav"><div class="logo-nav-icon">⚡</div><div class="logo-nav-text"><span class="smart">Smart</span><span class="sathi">Sathi</span></div></a>
+    <div class="nav-links">
+        <a href="/">Home</a><a href="/shopping">🛍️ Shopping</a><a href="/food">🍔 Food</a><a href="/study">📚 Study</a>
+        <a href="/farming">🌾 Farming</a><a href="/medicine">💊 Medicine</a><a href="/skincare">✨ Skincare</a>
+        <div class="dropdown"><a href="#">📱 More ▼</a><div class="dropdown-content">
+            <a href="/entertainment">🎬 Entertainment</a><a href="/music">🎵 Music</a><a href="/gaming">🎮 Gaming</a>
+            <a href="/travel">🚗 Travel</a><a href="/hotels">🏨 Hotels</a><a href="/finance">💰 Finance</a>
+            <a href="/news">📰 News</a><a href="/sports">🏏 Sports</a><a href="/jobs">💼 Jobs</a>
+            <a href="/fitness">🏋️ Fitness</a><a href="/tools">🛠️ Tools</a><a href="/photo">🎨 Photo</a>
+            <a href="/social">🌐 Social</a><a href="/delivery">🚚 Delivery</a><a href="/books">📚 Books</a>
+        </div></div>
+        {% if logged_in %}<a href="/dashboard">👤 Dashboard</a><a href="/logout">🚪 Logout</a>
+        {% else %}<a href="/login">🔐 Login</a><a href="/signup">📝 Signup</a>{% endif %}
+    </div>
+</div>
+
+<div class="page-hero"><h1>🎨 Photo Editing Hub</h1><p>Edit Photos, Create Designs, Apply Filters & More</p></div>
+
+<div class="app-grid">
+    <div class="app-card picsart" data-app="picsart" data-url="https://picsart.com" data-name="PicsArt">
+        <div class="app-icon">🎨</div>
+        <div class="app-info">
+            <div class="app-name">PicsArt</div>
+            <div class="app-category">Photo Editor</div>
+            <div class="app-description">All-in-one photo editor, collage maker</div>
+            <div class="open-btn">🎨 Edit Now →</div>
+        </div>
+    </div>
+    
+    <div class="app-card lightroom" data-app="lightroom" data-url="https://lightroom.adobe.com" data-name="Lightroom">
+        <div class="app-icon">📸</div>
+        <div class="app-info">
+            <div class="app-name">Adobe Lightroom</div>
+            <div class="app-category">Photo Editing</div>
+            <div class="app-description">Professional photo editing, presets</div>
+            <div class="open-btn">📸 Edit Now →</div>
+        </div>
+    </div>
+    
+    <div class="app-card snapseed" data-app="snapseed" data-url="https://snapseed.online" data-name="Snapseed">
+        <div class="app-icon">✨</div>
+        <div class="app-info">
+            <div class="app-name">Snapseed</div>
+            <div class="app-category">Photo Filters</div>
+            <div class="app-description">Google's professional photo editor</div>
+            <div class="open-btn">✨ Edit Now →</div>
+        </div>
+    </div>
+    
+    <div class="app-card canva" data-app="canva" data-url="https://www.canva.com" data-name="Canva">
+        <div class="app-icon">🖼️</div>
+        <div class="app-info">
+            <div class="app-name">Canva</div>
+            <div class="app-category">Graphic Design</div>
+            <div class="app-description">Create social media posts, logos, flyers</div>
+            <div class="open-btn">🖼️ Create Now →</div>
+        </div>
+    </div>
+    
+    <div class="app-card inshot" data-app="inshot" data-url="https://inshot.com" data-name="InShot">
+        <div class="app-icon">🎬</div>
+        <div class="app-info">
+            <div class="app-name">InShot</div>
+            <div class="app-category">Video Editor</div>
+            <div class="app-description">Video editing, cuts, transitions, music</div>
+            <div class="open-btn">🎬 Edit Now →</div>
+        </div>
+    </div>
+    
+    <div class="app-card vsco" data-app="vsco" data-url="https://vsco.co" data-name="VSCO">
+        <div class="app-icon">📷</div>
+        <div class="app-info">
+            <div class="app-name">VSCO</div>
+            <div class="app-category">Photo Filters</div>
+            <div class="app-description">Beautiful presets & editing tools</div>
+            <div class="open-btn">📷 Edit Now →</div>
+        </div>
+    </div>
+    
+    <div class="app-card remini" data-app="remini" data-url="https://remini.ai" data-name="Remini">
+        <div class="app-icon">🔮</div>
+        <div class="app-info">
+            <div class="app-name">Remini</div>
+            <div class="app-category">AI Photo Enhancer</div>
+            <div class="app-description">Enhance blurry photos with AI</div>
+            <div class="open-btn">🔮 Enhance →</div>
+        </div>
+    </div>
+    
+    <div class="app-card faceapp" data-app="faceapp" data-url="https://faceapp.com" data-name="FaceApp">
+        <div class="app-icon">😊</div>
+        <div class="app-info">
+            <div class="app-name">FaceApp</div>
+            <div class="app-category">Face Editor</div>
+            <div class="app-description">AI face editing, filters, effects</div>
+            <div class="open-btn">😊 Edit Now →</div>
+        </div>
+    </div>
+</div>
+
+<div id="appModal" class="modal"><div class="modal-content"><div class="modal-app-icon" id="modalIcon">🎨</div><h3 id="modalAppName">Open App</h3><p id="modalMessage">Open photo editing app?</p><div class="modal-buttons"><button class="modal-btn open-app-btn" id="confirmOpen">✅ Open Now</button><button class="modal-btn cancel-btn" onclick="closeModal()">❌ Cancel</button></div></div></div>
+
+<a href="#" class="fab" id="pageFab">🎨</a>
+<footer><p>© 2024 SmartSathi — Your Photo Editing Companion 🎨</p></footer>
+
+<script>
+    let currentApp = null;
+    const appLinks = {
+        picsart: { web: 'https://picsart.com', app: 'picsart://' },
+        lightroom: { web: 'https://lightroom.adobe.com', app: 'lightroom://' },
+        snapseed: { web: 'https://snapseed.online', app: 'snapseed://' },
+        canva: { web: 'https://www.canva.com', app: 'canva://' },
+        inshot: { web: 'https://inshot.com', app: 'inshot://' },
+        vsco: { web: 'https://vsco.co', app: 'vsco://' },
+        remini: { web: 'https://remini.ai', app: 'remini://' },
+        faceapp: { web: 'https://faceapp.com', app: 'faceapp://' }
+    };
+    
+    document.querySelectorAll('.app-card').forEach(card => {
+        card.addEventListener('click', function(e) {
+            if(e.target.classList.contains('open-btn')) return;
+            currentApp = { name: this.getAttribute('data-name'), url: this.getAttribute('data-url'), appKey: this.getAttribute('data-app'), icon: this.querySelector('.app-icon')?.innerHTML || '🎨' };
+            showModal(currentApp);
+        });
+        const btn = card.querySelector('.open-btn');
+        if(btn) btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            currentApp = { name: card.getAttribute('data-name'), url: card.getAttribute('data-url'), appKey: card.getAttribute('data-app'), icon: card.querySelector('.app-icon')?.innerHTML || '🎨' };
+            showModal(currentApp);
+        });
+    });
+    
+    document.getElementById('pageFab').addEventListener('click', (e) => {
+        e.preventDefault();
+        currentApp = { name: 'PicsArt', url: 'https://picsart.com', appKey: 'picsart', icon: '🎨' };
+        showModal(currentApp);
+    });
+    
+    function showModal(app) {
+        document.getElementById('modalAppName').innerText = app.name;
+        document.getElementById('modalIcon').innerHTML = app.icon || '🎨';
+        document.getElementById('modalMessage').innerHTML = `Open ${app.name} to edit photos?`;
+        document.getElementById('appModal').style.display = 'flex';
+        document.getElementById('confirmOpen').onclick = () => openApp(app);
+    }
+    
+    function openApp(app) {
+        closeModal();
+        const appLink = appLinks[app.appKey];
+        if(appLink && appLink.app) {
+            const a = document.createElement('a');
+            a.href = appLink.app;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(() => { window.open(app.url, '_blank'); }, 1500);
+        } else {
+            window.open(app.url, '_blank');
+        }
+        showToast(`🎨 Opening ${app.name}...`);
+    }
+    
+    function closeModal() { document.getElementById('appModal').style.display = 'none'; }
+    function showToast(msg) { let t = document.createElement('div'); t.className = 'toast'; t.innerHTML = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
+    window.onclick = function(e) { if(e.target === document.getElementById('appModal')) closeModal(); }
+</script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSathi - Sports Hub | Live Scores</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .app-icon { height: 130px; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+        .cricbuzz .app-icon { background: linear-gradient(135deg, #1E8C3C, #166534); }
+        .espn .app-icon { background: linear-gradient(135deg, #D62326, #B20710); }
+        .hotstar-sports .app-icon { background: linear-gradient(135deg, #1F7B4D, #0F5A38); }
+        .fancode .app-icon { background: linear-gradient(135deg, #FF6B35, #E85D04); }
+        .sportskeeda .app-icon { background: linear-gradient(135deg, #8B5CF6, #6D28D9); }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/" class="logo-nav"><div class="logo-nav-icon">⚡</div><div class="logo-nav-text"><span class="smart">Smart</span><span class="sathi">Sathi</span></div></a>
+    <div class="nav-links">
+        <a href="/">Home</a><a href="/shopping">🛍️ Shopping</a><a href="/food">🍔 Food</a><a href="/study">📚 Study</a>
+        <a href="/farming">🌾 Farming</a><a href="/medicine">💊 Medicine</a><a href="/skincare">✨ Skincare</a>
+        <div class="dropdown"><a href="#">📱 More ▼</a><div class="dropdown-content">
+            <a href="/entertainment">🎬 Entertainment</a><a href="/music">🎵 Music</a><a href="/gaming">🎮 Gaming</a>
+            <a href="/travel">🚗 Travel</a><a href="/hotels">🏨 Hotels</a><a href="/finance">💰 Finance</a>
+            <a href="/news">📰 News</a><a href="/sports">🏏 Sports</a><a href="/jobs">💼 Jobs</a>
+            <a href="/fitness">🏋️ Fitness</a><a href="/tools">🛠️ Tools</a><a href="/photo">🎨 Photo</a>
+            <a href="/social">🌐 Social</a><a href="/delivery">🚚 Delivery</a><a href="/books">📚 Books</a>
+        </div></div>
+        {% if logged_in %}<a href="/dashboard">👤 Dashboard</a><a href="/logout">🚪 Logout</a>
+        {% else %}<a href="/login">🔐 Login</a><a href="/signup">📝 Signup</a>{% endif %}
+    </div>
+</div>
+
+<div class="page-hero"><h1>🏏 Sports Hub</h1><p>Live Cricket Scores, Football, Kabaddi & More</p></div>
+
+<div class="app-grid">
+    <div class="app-card cricbuzz" data-app="cricbuzz" data-url="https://www.cricbuzz.com" data-name="Cricbuzz"><div class="app-icon">🏏</div><div class="app-info"><div class="app-name">Cricbuzz</div><div class="app-category">Cricket Scores</div><div class="app-description">Live cricket scores, news, analysis</div><div class="open-btn">🏏 Open App →</div></div></div>
+    <div class="app-card espn" data-app="espn" data-url="https://www.espn.com" data-name="ESPN"><div class="app-icon">⚽</div><div class="app-info"><div class="app-name">ESPN</div><div class="app-category">Sports News</div><div class="app-description">Global sports coverage</div><div class="open-btn">⚽ Open App →</div></div></div>
+    <div class="app-card hotstar-sports" data-app="hotstar" data-url="https://www.hotstar.com/sports" data-name="Disney+ Hotstar Sports"><div class="app-icon">📺</div><div class="app-info"><div class="app-name">Hotstar Sports</div><div class="app-category">Live Sports</div><div class="app-description">IPL, Cricket, Football live</div><div class="open-btn">📺 Watch Live →</div></div></div>
+    <div class="app-card fancode" data-app="fancode" data-url="https://www.fancode.com" data-name="FanCode"><div class="app-icon">🎯</div><div class="app-info"><div class="app-name">FanCode</div><div class="app-category">Sports Streaming</div><div class="app-description">Domestic cricket, football</div><div class="open-btn">🎯 Watch Now →</div></div></div>
+    <div class="app-card sportskeeda" data-app="sportskeeda" data-url="https://www.sportskeeda.com" data-name="Sportskeeda"><div class="app-icon">📰</div><div class="app-info"><div class="app-name">Sportskeeda</div><div class="app-category">Sports News</div><div class="app-description">Latest sports articles & opinions</div><div class="open-btn">📰 Read Now →</div></div></div>
+</div>
+
+<div id="appModal" class="modal"><div class="modal-content"><div class="modal-app-icon" id="modalIcon">🏏</div><h3 id="modalAppName">Open App</h3><p id="modalMessage">Open sports app?</p><div class="modal-buttons"><button class="modal-btn open-app-btn" id="confirmOpen">✅ Open Now</button><button class="modal-btn cancel-btn" onclick="closeModal()">❌ Cancel</button></div></div></div>
+
+<a href="#" class="fab" id="pageFab">🏏</a>
+<footer><p>© 2024 SmartSathi — Your Sports Companion 🏏</p></footer>
+
+<script>
+    let currentApp = null;
+    const appLinks = { cricbuzz: { web: 'https://www.cricbuzz.com', app: 'cricbuzz://' }, espn: { web: 'https://www.espn.com', app: 'espn://' }, hotstar: { web: 'https://www.hotstar.com/sports', app: 'hotstar://' }, fancode: { web: 'https://www.fancode.com', app: 'fancode://' }, sportskeeda: { web: 'https://www.sportskeeda.com', app: 'sportskeeda://' } };
+    document.querySelectorAll('.app-card').forEach(card => { card.addEventListener('click', function(e) { if(e.target.classList.contains('open-btn')) return; currentApp = { name: this.getAttribute('data-name'), url: this.getAttribute('data-url'), appKey: this.getAttribute('data-app'), icon: this.querySelector('.app-icon')?.innerHTML || '🏏' }; showModal(currentApp); }); const btn = card.querySelector('.open-btn'); if(btn) btn.addEventListener('click', (e) => { e.stopPropagation(); currentApp = { name: card.getAttribute('data-name'), url: card.getAttribute('data-url'), appKey: card.getAttribute('data-app'), icon: card.querySelector('.app-icon')?.innerHTML || '🏏' }; showModal(currentApp); }); });
+    document.getElementById('pageFab').addEventListener('click', (e) => { e.preventDefault(); currentApp = { name: 'Cricbuzz', url: 'https://www.cricbuzz.com', appKey: 'cricbuzz', icon: '🏏' }; showModal(currentApp); });
+    function showModal(app) { document.getElementById('modalAppName').innerText = app.name; document.getElementById('modalIcon').innerHTML = app.icon || '🏏'; document.getElementById('modalMessage').innerHTML = `Open ${app.name} for sports?`; document.getElementById('appModal').style.display = 'flex'; document.getElementById('confirmOpen').onclick = () => openApp(app); }
+    function openApp(app) { closeModal(); const appLink = appLinks[app.appKey]; if(appLink && appLink.app) { const a = document.createElement('a'); a.href = appLink.app; document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(() => { window.open(app.url, '_blank'); }, 1500); } else { window.open(app.url, '_blank'); } showToast(`🏏 Opening ${app.name}...`); }
+    function closeModal() { document.getElementById('appModal').style.display = 'none'; }
+    function showToast(msg) { let t = document.createElement('div'); t.className = 'toast'; t.innerHTML = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
+    window.onclick = function(e) { if(e.target === document.getElementById('appModal')) closeModal(); }
+</script>
+</body>
+</html>

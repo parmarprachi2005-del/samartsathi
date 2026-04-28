@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSathi - Entertainment | OTT & Movies</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .app-icon { height: 130px; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+        .netflix .app-icon { background: linear-gradient(135deg, #E50914, #B20710); }
+        .prime .app-icon { background: linear-gradient(135deg, #00A8E1, #1A2A3A); }
+        .hotstar .app-icon { background: linear-gradient(135deg, #1F7B4D, #0F5A38); }
+        .youtube .app-icon { background: linear-gradient(135deg, #FF0000, #CC0000); }
+        .zee5 .app-icon { background: linear-gradient(135deg, #2C3E50, #1A252F); }
+        .sony .app-icon { background: linear-gradient(135deg, #0055A0, #003366); }
+        .jiocinema .app-icon { background: linear-gradient(135deg, #1A2A6C, #0F172A); }
+        .voot .app-icon { background: linear-gradient(135deg, #4A90E2, #2C5F8A); }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/" class="logo-nav"><div class="logo-nav-icon">⚡</div><div class="logo-nav-text"><span class="smart">Smart</span><span class="sathi">Sathi</span></div></a>
+    <div class="nav-links">
+        <a href="/">Home</a><a href="/shopping">🛍️ Shopping</a><a href="/food">🍔 Food</a><a href="/study">📚 Study</a>
+        <a href="/farming">🌾 Farming</a><a href="/medicine">💊 Medicine</a><a href="/skincare">✨ Skincare</a>
+        <a href="/entertainment">🎬 OTT</a><a href="/music">🎵 Music</a><a href="/gaming">🎮 Gaming</a>
+        {% if logged_in %}<a href="/dashboard">👤 Dashboard</a><a href="/logout">🚪 Logout</a>
+        {% else %}<a href="/login">🔐 Login</a><a href="/signup">📝 Signup</a>{% endif %}
+    </div>
+</div>
+
+<div class="page-hero"><h1>🎬 Entertainment Hub</h1><p>Watch Movies, Web Series, Live TV & More</p></div>
+
+<div class="app-grid">
+    <div class="app-card netflix" data-app="netflix" data-url="https://www.netflix.com" data-name="Netflix"><div class="app-icon">🎬</div><div class="app-info"><div class="app-name">Netflix</div><div class="app-category">OTT Platform</div><div class="app-description">Movies, Web Series, Documentaries</div><div class="open-btn">▶️ Watch Now →</div></div></div>
+    <div class="app-card prime" data-app="prime" data-url="https://www.primevideo.com" data-name="Amazon Prime"><div class="app-icon">📺</div><div class="app-info"><div class="app-name">Amazon Prime Video</div><div class="app-category">OTT Platform</div><div class="app-description">Exclusive shows, Movies, Sports</div><div class="open-btn">▶️ Watch Now →</div></div></div>
+    <div class="app-card hotstar" data-app="hotstar" data-url="https://www.hotstar.com" data-name="Disney+ Hotstar"><div class="app-icon">⭐</div><div class="app-info"><div class="app-name">Disney+ Hotstar</div><div class="app-category">OTT + Live Sports</div><div class="app-description">Marvel, Disney, IPL, Web Series</div><div class="open-btn">▶️ Watch Now →</div></div></div>
+    <div class="app-card youtube" data-app="youtube" data-url="https://www.youtube.com" data-name="YouTube"><div class="app-icon">📹</div><div class="app-info"><div class="app-name">YouTube</div><div class="app-category">Video Platform</div><div class="app-description">Free videos, Music, Vlogs, Tutorials</div><div class="open-btn">▶️ Watch Now →</div></div></div>
+    <div class="app-card zee5" data-app="zee5" data-url="https://www.zee5.com" data-name="ZEE5"><div class="app-icon">🎭</div><div class="app-info"><div class="app-name">ZEE5</div><div class="app-category">OTT Platform</div><div class="app-description">Regional content, Web Series, Movies</div><div class="open-btn">▶️ Watch Now →</div></div></div>
+    <div class="app-card sony" data-app="sony" data-url="https://www.sonyliv.com" data-name="Sony LIV"><div class="app-icon">📡</div><div class="app-info"><div class="app-name">Sony LIV</div><div class="app-category">OTT + TV Shows</div><div class="app-description">Live TV, Sports, Originals</div><div class="open-btn">▶️ Watch Now →</div></div></div>
+    <div class="app-card jiocinema" data-app="jiocinema" data-url="https://www.jiocinema.com" data-name="JioCinema"><div class="app-icon">📱</div><div class="app-info"><div class="app-name">JioCinema</div><div class="app-category">Free OTT</div><div class="app-description">Free movies, shows, live TV</div><div class="open-btn">▶️ Watch Now →</div></div></div>
+    <div class="app-card voot" data-app="voot" data-url="https://www.voot.com" data-name="Voot"><div class="app-icon">📺</div><div class="app-info"><div class="app-name">Voot</div><div class="app-category">TV Shows</div><div class="app-description">Colors TV shows, Originals</div><div class="open-btn">▶️ Watch Now →</div></div></div>
+</div>
+
+<div id="appModal" class="modal"><div class="modal-content"><div class="modal-app-icon" id="modalIcon">🎬</div><h3 id="modalAppName">Open App</h3><p id="modalMessage">Open entertainment app?</p><div class="modal-buttons"><button class="modal-btn open-app-btn" id="confirmOpen">✅ Open Now</button><button class="modal-btn cancel-btn" onclick="closeModal()">❌ Cancel</button></div></div></div>
+
+<a href="#" class="fab" id="pageFab">🎬</a>
+<footer><p>© 2024 SmartSathi — Your Entertainment Companion 🎬</p></footer>
+
+<script>
+    let currentApp = null;
+    const appLinks = { netflix: { web: 'https://www.netflix.com', app: 'netflix://' }, prime: { web: 'https://www.primevideo.com', app: 'primevideo://' }, hotstar: { web: 'https://www.hotstar.com', app: 'hotstar://' }, youtube: { web: 'https://www.youtube.com', app: 'youtube://' }, zee5: { web: 'https://www.zee5.com', app: 'zee5://' }, sony: { web: 'https://www.sonyliv.com', app: 'sonyliv://' }, jiocinema: { web: 'https://www.jiocinema.com', app: 'jiocinema://' }, voot: { web: 'https://www.voot.com', app: 'voot://' } };
+    document.querySelectorAll('.app-card').forEach(card => { card.addEventListener('click', function(e) { if(e.target.classList.contains('open-btn')) return; currentApp = { name: this.getAttribute('data-name'), url: this.getAttribute('data-url'), appKey: this.getAttribute('data-app'), icon: this.querySelector('.app-icon')?.innerHTML || '🎬' }; showModal(currentApp); }); const btn = card.querySelector('.open-btn'); if(btn) btn.addEventListener('click', (e) => { e.stopPropagation(); currentApp = { name: card.getAttribute('data-name'), url: card.getAttribute('data-url'), appKey: card.getAttribute('data-app'), icon: card.querySelector('.app-icon')?.innerHTML || '🎬' }; showModal(currentApp); }); });
+    document.getElementById('pageFab').addEventListener('click', (e) => { e.preventDefault(); currentApp = { name: 'Netflix', url: 'https://www.netflix.com', appKey: 'netflix', icon: '🎬' }; showModal(currentApp); });
+    function showModal(app) { document.getElementById('modalAppName').innerText = app.name; document.getElementById('modalIcon').innerHTML = app.icon || '🎬'; document.getElementById('modalMessage').innerHTML = `Open ${app.name} to watch?`; document.getElementById('appModal').style.display = 'flex'; document.getElementById('confirmOpen').onclick = () => openApp(app); }
+    function openApp(app) { closeModal(); const appLink = appLinks[app.appKey]; if(appLink && appLink.app) { const a = document.createElement('a'); a.href = appLink.app; document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(() => { window.open(app.url, '_blank'); }, 1500); } else { window.open(app.url, '_blank'); } showToast(`🎬 Opening ${app.name}...`); }
+    function closeModal() { document.getElementById('appModal').style.display = 'none'; }
+    function showToast(msg) { let t = document.createElement('div'); t.className = 'toast'; t.innerHTML = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
+    window.onclick = function(e) { if(e.target === document.getElementById('appModal')) closeModal(); }
+</script>
+</body>
+</html>

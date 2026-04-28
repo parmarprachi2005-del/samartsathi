@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSathi - Gaming Hub</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .app-icon { height: 130px; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+        .bgmi .app-icon { background: linear-gradient(135deg, #FF6B35, #CC4A1A); }
+        .ff .app-icon { background: linear-gradient(135deg, #00A8E1, #0077B6); }
+        .coc .app-icon { background: linear-gradient(135deg, #FFD700, #CC9900); }
+        .ludo .app-icon { background: linear-gradient(135deg, #4CAF50, #2E7D32); }
+        .dream11 .app-icon { background: linear-gradient(135deg, #1E293B, #0F172A); }
+        .mpl .app-icon { background: linear-gradient(135deg, #8B5CF6, #6D28D9); }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/" class="logo-nav"><div class="logo-nav-icon">⚡</div><div class="logo-nav-text"><span class="smart">Smart</span><span class="sathi">Sathi</span></div></a>
+    <div class="nav-links">
+        <a href="/">Home</a><a href="/shopping">🛍️ Shopping</a><a href="/food">🍔 Food</a><a href="/study">📚 Study</a>
+        <a href="/farming">🌾 Farming</a><a href="/medicine">💊 Medicine</a><a href="/skincare">✨ Skincare</a>
+        <a href="/entertainment">🎬 OTT</a><a href="/music">🎵 Music</a><a href="/gaming">🎮 Gaming</a>
+        {% if logged_in %}<a href="/dashboard">👤 Dashboard</a><a href="/logout">🚪 Logout</a>
+        {% else %}<a href="/login">🔐 Login</a><a href="/signup">📝 Signup</a>{% endif %}
+    </div>
+</div>
+
+<div class="page-hero"><h1>🎮 Gaming Hub</h1><p>Play Online Games, Fantasy Sports & More</p></div>
+
+<div class="app-grid">
+    <div class="app-card bgmi" data-app="bgmi" data-url="https://www.battlegroundsmobileindia.com" data-name="BGMI"><div class="app-icon">🎯</div><div class="app-info"><div class="app-name">BGMI</div><div class="app-category">Battle Royale</div><div class="app-description">India's favorite mobile game</div><div class="open-btn">🎮 Play Now →</div></div></div>
+    <div class="app-card ff" data-app="ff" data-url="https://www.freefire.com" data-name="Free Fire"><div class="app-icon">🔥</div><div class="app-info"><div class="app-name">Free Fire</div><div class="app-category">Battle Royale</div><div class="app-description">Fast-paced survival game</div><div class="open-btn">🎮 Play Now →</div></div></div>
+    <div class="app-card coc" data-app="coc" data-url="https://clashofclans.com" data-name="Clash of Clans"><div class="app-icon">🏰</div><div class="app-info"><div class="app-name">Clash of Clans</div><div class="app-category">Strategy Game</div><div class="app-description">Build your village, raid others</div><div class="open-btn">🎮 Play Now →</div></div></div>
+    <div class="app-card ludo" data-app="ludo" data-url="https://www.ludoking.com" data-name="Ludo King"><div class="app-icon">🎲</div><div class="app-info"><div class="app-name">Ludo King</div><div class="app-category">Board Game</div><div class="app-description">Classic Ludo game with friends</div><div class="open-btn">🎮 Play Now →</div></div></div>
+    <div class="app-card dream11" data-app="dream11" data-url="https://www.dream11.com" data-name="Dream11"><div class="app-icon">🏏</div><div class="app-info"><div class="app-name">Dream11</div><div class="app-category">Fantasy Sports</div><div class="app-description">Create your fantasy team</div><div class="open-btn">🎮 Play Now →</div></div></div>
+    <div class="app-card mpl" data-app="mpl" data-url="https://www.mpl.live" data-name="MPL"><div class="app-icon">⚡</div><div class="app-info"><div class="app-name">MPL</div><div class="app-category">Mobile Premier League</div><div class="app-description">Play games, win cash</div><div class="open-btn">🎮 Play Now →</div></div></div>
+</div>
+
+<div id="appModal" class="modal"><div class="modal-content"><div class="modal-app-icon" id="modalIcon">🎮</div><h3 id="modalAppName">Open App</h3><p id="modalMessage">Open gaming app?</p><div class="modal-buttons"><button class="modal-btn open-app-btn" id="confirmOpen">✅ Open Now</button><button class="modal-btn cancel-btn" onclick="closeModal()">❌ Cancel</button></div></div></div>
+
+<a href="#" class="fab" id="pageFab">🎮</a>
+<footer><p>© 2024 SmartSathi — Your Gaming Companion 🎮</p></footer>
+
+<script>
+    let currentApp = null;
+    const appLinks = { bgmi: { web: 'https://www.battlegroundsmobileindia.com', app: 'bgmi://' }, ff: { web: 'https://www.freefire.com', app: 'freefire://' }, coc: { web: 'https://clashofclans.com', app: 'clashofclans://' }, ludo: { web: 'https://www.ludoking.com', app: 'ludoking://' }, dream11: { web: 'https://www.dream11.com', app: 'dream11://' }, mpl: { web: 'https://www.mpl.live', app: 'mpl://' } };
+    document.querySelectorAll('.app-card').forEach(card => { card.addEventListener('click', function(e) { if(e.target.classList.contains('open-btn')) return; currentApp = { name: this.getAttribute('data-name'), url: this.getAttribute('data-url'), appKey: this.getAttribute('data-app'), icon: this.querySelector('.app-icon')?.innerHTML || '🎮' }; showModal(currentApp); }); const btn = card.querySelector('.open-btn'); if(btn) btn.addEventListener('click', (e) => { e.stopPropagation(); currentApp = { name: card.getAttribute('data-name'), url: card.getAttribute('data-url'), appKey: card.getAttribute('data-app'), icon: card.querySelector('.app-icon')?.innerHTML || '🎮' }; showModal(currentApp); }); });
+    document.getElementById('pageFab').addEventListener('click', (e) => { e.preventDefault(); currentApp = { name: 'BGMI', url: 'https://www.battlegroundsmobileindia.com', appKey: 'bgmi', icon: '🎮' }; showModal(currentApp); });
+    function showModal(app) { document.getElementById('modalAppName').innerText = app.name; document.getElementById('modalIcon').innerHTML = app.icon || '🎮'; document.getElementById('modalMessage').innerHTML = `Open ${app.name} to play?`; document.getElementById('appModal').style.display = 'flex'; document.getElementById('confirmOpen').onclick = () => openApp(app); }
+    function openApp(app) { closeModal(); const appLink = appLinks[app.appKey]; if(appLink && appLink.app) { const a = document.createElement('a'); a.href = appLink.app; document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(() => { window.open(app.url, '_blank'); }, 1500); } else { window.open(app.url, '_blank'); } showToast(`🎮 Opening ${app.name}...`); }
+    function closeModal() { document.getElementById('appModal').style.display = 'none'; }
+    function showToast(msg) { let t = document.createElement('div'); t.className = 'toast'; t.innerHTML = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
+    window.onclick = function(e) { if(e.target === document.getElementById('appModal')) closeModal(); }
+</script>
+</body>
+</html>

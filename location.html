@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nearby Places - SmartSathi</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .location-container { max-width: 800px; margin: 50px auto; padding: 20px; }
+        .place-card { background: white; border-radius: 20px; padding: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .place-name { font-weight: bold; font-size: 1.1rem; }
+        .place-distance { color: #FF6B35; font-size: 0.9rem; }
+        .category-buttons { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; }
+        .cat-btn { background: #F3F4F6; border: none; padding: 10px 20px; border-radius: 40px; cursor: pointer; transition: 0.3s; }
+        .cat-btn.active, .cat-btn:hover { background: linear-gradient(135deg, #FF6B35, #8B5CF6); color: white; }
+        .loading { text-align: center; padding: 40px; }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/" class="logo-nav"><div class="logo-nav-icon">⚡</div><div class="logo-nav-text"><span class="smart">Smart</span><span class="sathi">Sathi</span></div></a>
+    <div class="nav-links">
+        <a href="/">Home</a><a href="/shopping">Shopping</a><a href="/food">Food</a><a href="/study">Study</a>
+        <a href="/upload">📁 Upload</a><a href="/pdf_generator">📄 PDF</a><a href="/referral">🔗 Refer</a>
+        <a href="/gamification">🏆 Rewards</a><a href="/location">📍 Near Me</a><a href="/qr_tool">📱 QR</a><a href="/price_compare">💰 Compare</a>
+        {% if logged_in %}<a href="/logout">Logout</a>{% else %}<a href="/login">Login</a>{% endif %}
+    </div>
+</div>
+
+<div class="location-container">
+    <h1>📍 Discover Nearby Places</h1>
+    <p>Find hotels, restaurants, shops near you</p>
+    
+    <div class="category-buttons">
+        <button class="cat-btn active" onclick="loadPlaces('hotels')">🏨 Hotels</button>
+        <button class="cat-btn" onclick="loadPlaces('restaurants')">🍔 Restaurants</button>
+        <button class="cat-btn" onclick="loadPlaces('shops')">🛍️ Shops</button>
+        <button class="cat-btn" onclick="loadPlaces('farming')">🌾 Farming</button>
+    </div>
+    
+    <div id="placesList" class="loading">📍 Getting your location...</div>
+</div>
+
+<script>
+    let currentType = 'hotels';
+    
+    function loadPlaces(type) {
+        currentType = type;
+        document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        document.getElementById('placesList').innerHTML = '<div class="loading">📍 Loading places...</div>';
+        
+        if(navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+                fetch(`/api/nearby_places?lat=${lat}&lng=${lng}&type=${type}`)
+                    .then(res => res.json())
+                    .then(data => displayPlaces(data));
+            }, () => {
+                fetch(`/api/nearby_places?type=${type}`)
+                    .then(res => res.json())
+                    .then(data => displayPlaces(data));
+            });
+        } else {
+            fetch(`/api/nearby_places?type=${type}`)
+                .then(res => res.json())
+                .then(data => displayPlaces(data));
+        }
+    }
+    
+    function displayPlaces(places) {
+        if(places.length === 0) {
+            document.getElementById('placesList').innerHTML = '<div class="loading">❌ No places found</div>';
+            return;
+        }
+        
+        document.getElementById('placesList').innerHTML = places.map(place => `
+            <div class="place-card">
+                <div>
+                    <div class="place-name">${place.name}</div>
+                    <div class="place-distance">📍 ${place.distance} away</div>
+                    <div>⭐ ${place.rating} rating</div>
+                    <div>💰 ${place.price || place.info || 'Contact for price'}</div>
+                </div>
+                <div><button class="card-badge" onclick="getDirections('${place.name}')">Get Route</button></div>
+            </div>
+        `).join('');
+        addPoints('Used location feature', 5);
+    }
+    
+    function getDirections(placeName) {
+        window.open(`https://maps.google.com/?q=${encodeURIComponent(placeName)}`, '_blank');
+    }
+    
+    function addPoints(activity, points) {
+        fetch('/api/add_points', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ activity: activity, points: points })
+        });
+    }
+    
+    // Load initial places
+    loadPlaces('hotels');
+</script>
+
+<footer><p>© 2024 SmartSathi — Location Services | Find nearby places easily 🗺️</p></footer>
+</body>
+</html>

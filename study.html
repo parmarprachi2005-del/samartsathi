@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSathi - Study Hub | Online Learning</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%); }
+        .page-hero { background: linear-gradient(135deg, #10B981, #059669); padding: 50px 20px; text-align: center; color: white; position: relative; overflow: hidden; }
+        .page-hero::before { content: '📚'; position: absolute; font-size: 8rem; opacity: 0.1; bottom: -20px; right: -20px; }
+        .page-hero h1 { font-size: 2.5rem; margin-bottom: 10px; animation: fadeInDown 0.8s ease; }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .app-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; padding: 40px; max-width: 1300px; margin: 0 auto; }
+        .app-card { background: white; border-radius: 25px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.08); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; text-decoration: none; color: inherit; display: block; position: relative; }
+        .app-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+        .app-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #10B981, #059669, #34D399); }
+        .app-icon { height: 140px; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; transition: transform 0.3s; }
+        .app-card:hover .app-icon { transform: scale(1.1); }
+        .coursera-icon { background: linear-gradient(135deg, #2a73ff, #0052cc); }
+        .udemy-icon { background: linear-gradient(135deg, #a435f0, #8a2be2); }
+        .byjus-icon { background: linear-gradient(135deg, #f15a24, #e8450a); }
+        .unacademy-icon { background: linear-gradient(135deg, #08bd80, #059669); }
+        .khan-icon { background: linear-gradient(135deg, #1e3a5f, #0f2b45); }
+        .pw-icon { background: linear-gradient(135deg, #00b4db, #0083b0); }
+        .app-info { padding: 20px; text-align: center; }
+        .app-name { font-size: 1.3rem; font-weight: 700; margin-bottom: 8px; background: linear-gradient(135deg, #333, #666); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .app-category { display: inline-block; background: #f0f0f0; padding: 5px 12px; border-radius: 20px; font-size: 0.7rem; margin-bottom: 10px; }
+        .app-description { color: #666; font-size: 0.85rem; margin-bottom: 15px; line-height: 1.4; }
+        .open-btn { background: linear-gradient(135deg, #10B981, #059669); color: white; border: none; padding: 10px 20px; border-radius: 25px; font-weight: 600; cursor: pointer; width: 100%; font-size: 0.9rem; transition: 0.3s; }
+        .special-badge { position: absolute; top: 10px; right: 10px; background: #10B981; color: white; padding: 5px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; }
+        .modal-content { background: white; padding: 30px; border-radius: 25px; text-align: center; max-width: 350px; animation: popIn 0.3s ease; }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal-buttons { display: flex; gap: 15px; justify-content: center; margin-top: 20px; }
+        .modal-btn { padding: 10px 20px; border: none; border-radius: 25px; cursor: pointer; font-weight: 600; }
+        .open-app-btn { background: #10b981; color: white; }
+        .cancel-btn { background: #ef4444; color: white; }
+        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #1a1a2e; color: white; padding: 12px 24px; border-radius: 50px; z-index: 2001; animation: fadeUp 0.3s ease; font-family: 'Poppins', sans-serif; z-index: 9999; }
+        @keyframes fadeUp { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
+        .fab { position: fixed; bottom: 30px; right: 30px; background: linear-gradient(135deg, #10B981, #059669); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 999; transition: 0.3s; color: white; font-size: 1.8rem; text-decoration: none; }
+        .fab:hover { transform: scale(1.1); }
+        @media (max-width: 768px) { .app-grid { padding: 20px; gap: 15px; } .page-hero h1 { font-size: 1.8rem; } }
+        .navbar { background: rgba(10, 15, 30, 0.95); backdrop-filter: blur(15px); padding: 12px 30px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px; position: sticky; top: 0; z-index: 1000; }
+        .nav-links { display: flex; flex-wrap: wrap; gap: 10px; }
+        .navbar a { color: #e0e0e0; text-decoration: none; font-weight: 500; font-size: 0.95rem; padding: 8px 16px; border-radius: 30px; transition: all 0.3s ease; }
+        .navbar a:hover { background: linear-gradient(135deg, #FF6B35, #F7931E); color: white; transform: translateY(-2px); }
+        .logo-nav { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .logo-nav-icon { width: 40px; height: 40px; background: linear-gradient(135deg, #FF6B35, #F7931E); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+        .logo-nav-text .smart { background: linear-gradient(135deg, #FF6B35, #FF8C42); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 700; }
+        .logo-nav-text .sathi { background: linear-gradient(135deg, #6A11CB, #2575FC); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 700; }
+        footer { background: linear-gradient(135deg, #0F172A, #1E293B); color: #CBD5E1; text-align: center; padding: 40px; margin-top: 50px; border-top: 3px solid #10B981; }
+    </style>
+</head>
+<body>
+
+<div class="navbar"><a href="/" class="logo-nav"><div class="logo-nav-icon">🚀</div><div class="logo-nav-text"><span class="smart">Smart</span><span class="sathi">Sathi</span></div></a><div class="nav-links"><a href="/">🏠 Home</a><a href="/shopping">🛍️ Shopping</a><a href="/food">🍔 Food</a><a href="/study">📚 Study</a><a href="/farming">🌾 Farming</a><a href="/medicine">💊 Medicine</a><a href="/skincare">✨ Skincare</a>{% if logged_in %}<a href="/dashboard">👤 Dashboard</a><a href="/logout">🚪 Logout</a>{% else %}<a href="/login">🔐 Login</a><a href="/signup">📝 Signup</a>{% endif %}</div></div>
+
+<div class="page-hero"><h1>📚 Study Hub - Learn Anything!</h1><p>Top online learning platforms | Courses from experts worldwide</p></div>
+
+<div class="app-grid">
+    <div class="app-card" data-app="coursera" data-url="https://www.coursera.org" data-name="Coursera"><div class="app-icon coursera-icon">🎓</div><div class="app-info"><div class="app-name">Coursera</div><div class="app-category">University Courses</div><div class="app-description">Degrees, Certificates from top universities</div><div class="open-btn">📖 Learn Now →</div></div></div>
+    <div class="app-card" data-app="udemy" data-url="https://www.udemy.com" data-name="Udemy"><div class="app-icon udemy-icon">📚</div><div class="app-info"><div class="app-name">Udemy</div><div class="app-category">Skill Courses</div><div class="app-description">200,000+ courses | Programming, Business</div><div class="open-btn">💻 Learn Now →</div></div></div>
+    <div class="app-card" data-app="byjus" data-url="https://byjus.com" data-name="BYJU'S"><div class="app-icon byjus-icon">📱</div><div class="app-info"><div class="app-name">BYJU'S</div><div class="app-category">K-12 Learning</div><div class="app-description">India's largest learning app | CBSE, JEE, NEET</div><div class="open-btn">🎒 Learn Now →</div></div></div>
+    <div class="app-card" data-app="unacademy" data-url="https://unacademy.com" data-name="Unacademy"><div class="app-icon unacademy-icon">🎯</div><div class="app-info"><div class="app-name">Unacademy</div><div class="app-category">Competitive Exams</div><div class="app-description">UPSC, SSC, Banking, Govt Exams</div><div class="open-btn">📝 Learn Now →</div></div></div>
+    <div class="app-card" data-app="khanacademy" data-url="https://www.khanacademy.org" data-name="Khan Academy"><div class="app-icon khan-icon">📖</div><div class="app-info"><div class="app-name">Khan Academy</div><div class="app-category">Free Education</div><div class="app-description">Math, Science, Economics - 100% Free</div><div class="open-btn">🎯 Learn Free →</div></div></div>
+    <div class="app-card" data-app="physicswallah" data-url="https://www.pw.live" data-name="Physics Wallah"><div class="special-badge">⭐ POPULAR ⭐</div><div class="app-icon pw-icon">⚡</div><div class="app-info"><div class="app-name">Physics Wallah</div><div class="app-category">JEE, NEET</div><div class="app-description">Affordable coaching | Recorded lectures</div><div class="open-btn">⚡ Start Learning →</div></div></div>
+</div>
+
+<div id="appModal" class="modal"><div class="modal-content"><div class="modal-app-icon" id="modalIcon">📚</div><h3 id="modalAppName">Open App</h3><p id="modalMessage">Open learning platform?</p><div class="modal-buttons"><button class="modal-btn open-app-btn" id="confirmOpen">✅ Open Now</button><button class="modal-btn cancel-btn" onclick="closeModal()">❌ Cancel</button></div></div></div>
+
+<a href="#" class="fab" id="studyFab">📚</a>
+
+<footer><p>🧠 SmartSathi — Your Learning Companion | Study Anywhere 🎓</p><p style="margin-top: 10px;">✨ Click any app to start learning ✨</p></footer>
+
+<script>
+    let currentApp = null;
+    const appLinks = { coursera: { web: 'https://www.coursera.org', app: 'coursera://' }, udemy: { web: 'https://www.udemy.com', app: 'udemy://' }, byjus: { web: 'https://byjus.com', app: 'byjus://' }, unacademy: { web: 'https://unacademy.com', app: 'unacademy://' }, khanacademy: { web: 'https://www.khanacademy.org', app: 'khanacademy://' }, physicswallah: { web: 'https://www.pw.live', app: 'pw://' } };
+    document.querySelectorAll('.app-card').forEach(card => { card.addEventListener('click', function(e) { if(e.target.classList.contains('open-btn')) return; currentApp = { name: this.getAttribute('data-name'), url: this.getAttribute('data-url'), appKey: this.getAttribute('data-app'), icon: this.querySelector('.app-icon')?.innerHTML || '📚' }; showModal(currentApp); }); const btn = card.querySelector('.open-btn'); if(btn) btn.addEventListener('click', (e) => { e.stopPropagation(); currentApp = { name: card.getAttribute('data-name'), url: card.getAttribute('data-url'), appKey: card.getAttribute('data-app'), icon: card.querySelector('.app-icon')?.innerHTML || '📚' }; showModal(currentApp); }); });
+    document.getElementById('studyFab').addEventListener('click', (e) => { e.preventDefault(); currentApp = { name: 'Coursera', url: 'https://www.coursera.org', appKey: 'coursera', icon: '🎓' }; showModal(currentApp); });
+    function showModal(app) { document.getElementById('modalAppName').innerText = app.name; document.getElementById('modalIcon').innerHTML = app.icon || '📚'; document.getElementById('modalMessage').innerHTML = `Open ${app.name} to start learning?`; document.getElementById('appModal').style.display = 'flex'; document.getElementById('confirmOpen').onclick = () => openApp(app); }
+    function openApp(app) { closeModal(); const appLink = appLinks[app.appKey]; if(appLink && appLink.app) { const a = document.createElement('a'); a.href = appLink.app; document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(() => { window.open(app.url, '_blank'); }, 1500); } else { window.open(app.url, '_blank'); } showToast(`📚 Opening ${app.name}...`); }
+    function closeModal() { document.getElementById('appModal').style.display = 'none'; }
+    function showToast(msg) { let t = document.createElement('div'); t.className = 'toast'; t.innerHTML = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
+    window.onclick = function(e) { if(e.target === document.getElementById('appModal')) closeModal(); }
+    setTimeout(() => showToast('📚 Welcome to Study Hub! Click any app to start learning 🎓'), 1000);
+</script>
+</body>
+</html>

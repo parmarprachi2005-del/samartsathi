@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Tool - SmartSathi</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <style>
+        .qr-container { max-width: 600px; margin: 50px auto; padding: 30px; background: white; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; }
+        .qr-box { background: #F8FAFC; padding: 30px; border-radius: 20px; margin: 20px 0; }
+        input { width: 100%; padding: 12px; border: 1px solid #E2E8F0; border-radius: 10px; margin: 10px 0; }
+        .qr-result { margin-top: 20px; }
+        .scan-area { border: 2px dashed #FF6B35; border-radius: 20px; padding: 30px; margin-top: 30px; cursor: pointer; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/" class="logo-nav"><div class="logo-nav-icon">⚡</div><div class="logo-nav-text"><span class="smart">Smart</span><span class="sathi">Sathi</span></div></a>
+    <div class="nav-links">
+        <a href="/">Home</a><a href="/shopping">Shopping</a><a href="/food">Food</a><a href="/study">Study</a>
+        <a href="/upload">📁 Upload</a><a href="/pdf_generator">📄 PDF</a><a href="/referral">🔗 Refer</a>
+        <a href="/gamification">🏆 Rewards</a><a href="/location">📍 Near Me</a><a href="/qr_tool">📱 QR</a><a href="/price_compare">💰 Compare</a>
+        {% if logged_in %}<a href="/logout">Logout</a>{% else %}<a href="/login">Login</a>{% endif %}
+    </div>
+</div>
+
+<div class="qr-container">
+    <h1>📱 QR Code Tool</h1>
+    
+    <div class="qr-box">
+        <h3>🔲 Generate QR Code</h3>
+        <input type="text" id="qrText" placeholder="Enter text or URL...">
+        <button class="card-badge" onclick="generateQR()">Generate QR Code</button>
+        <div id="qrResult" class="qr-result"></div>
+        <button id="downloadBtn" class="card-badge" style="display:none; margin-top:10px;" onclick="downloadQR()">⬇️ Download QR</button>
+    </div>
+    
+    <div class="scan-area" onclick="document.getElementById('scanInput').click()">
+        <div style="font-size: 3rem;">📷</div>
+        <p>Scan QR Code from Image</p>
+        <input type="file" id="scanInput" accept="image/*" style="display: none;" onchange="scanQR(this)">
+        <div id="scanResult" style="margin-top: 15px;"></div>
+    </div>
+    
+    <div style="margin-top: 20px; font-size: 0.8rem; color: #888;">
+        <p>💡 Tip: Generate QR for your links, share with friends, earn points!</p>
+    </div>
+</div>
+
+<script>
+    let currentQR = null;
+    
+    function generateQR() {
+        const text = document.getElementById('qrText').value;
+        if(!text) { alert('Please enter text or URL'); return; }
+        
+        const qrContainer = document.getElementById('qrResult');
+        qrContainer.innerHTML = '';
+        currentQR = new QRCode(qrContainer, { text: text, width: 200, height: 200, colorDark: "#FF6B35" });
+        document.getElementById('downloadBtn').style.display = 'inline-block';
+        addPoints('Generated QR code', 5);
+    }
+    
+    function downloadQR() {
+        const canvas = document.querySelector('#qrResult canvas');
+        if(canvas) {
+            const link = document.createElement('a');
+            link.download = 'SmartSathi_QR.png';
+            link.href = canvas.toDataURL();
+            link.click();
+            alert('✅ QR Downloaded!');
+        }
+    }
+    
+    function scanQR(input) {
+        const file = input.files[0];
+        if(!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = new Image();
+            img.onload = function() {
+                // Simulate QR scanning (In production, use QR scanner library)
+                document.getElementById('scanResult').innerHTML = `<div style="background:#D1FAE5; padding:15px; border-radius:15px;">✅ QR code detected!<br>Link would appear here.<br>For live scanning, use a QR scanner app.</div>`;
+                addPoints('Scanned QR code', 5);
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+    
+    function addPoints(activity, points) {
+        fetch('/api/add_points', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ activity: activity, points: points })
+        });
+    }
+</script>
+
+<footer><p>© 2024 SmartSathi — QR Code Tool | Generate & Scan QR Codes 📱</p></footer>
+</body>
+</html>

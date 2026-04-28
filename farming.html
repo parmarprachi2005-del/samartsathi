@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSathi - Farming Hub | Agri Solutions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%); }
+        .page-hero { background: linear-gradient(135deg, #2E7D32, #1B5E20); padding: 50px 20px; text-align: center; color: white; position: relative; overflow: hidden; }
+        .page-hero::before { content: '🌾'; position: absolute; font-size: 8rem; opacity: 0.1; bottom: -20px; right: -20px; }
+        .page-hero h1 { font-size: 2.5rem; margin-bottom: 10px; animation: fadeInDown 0.8s ease; }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        .app-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; padding: 40px; max-width: 1300px; margin: 0 auto; }
+        .app-card { background: white; border-radius: 25px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.08); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; text-decoration: none; color: inherit; display: block; position: relative; }
+        .app-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+        .app-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #2E7D32, #1B5E20, #4CAF50); }
+        .app-icon { height: 140px; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; transition: transform 0.3s; }
+        .app-card:hover .app-icon { transform: scale(1.1); }
+        .bigbasket-icon { background: linear-gradient(135deg, #4caf50, #2e7d32); }
+        .blinkit-icon { background: linear-gradient(135deg, #ff8c00, #ff6d00); }
+        .ninjacart-icon { background: linear-gradient(135deg, #f9a825, #f57f17); }
+        .agri-icon { background: linear-gradient(135deg, #8bc34a, #689f38); }
+        .app-info { padding: 20px; text-align: center; }
+        .app-name { font-size: 1.3rem; font-weight: 700; margin-bottom: 8px; background: linear-gradient(135deg, #333, #666); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .app-category { display: inline-block; background: #f0f0f0; padding: 5px 12px; border-radius: 20px; font-size: 0.7rem; margin-bottom: 10px; }
+        .app-description { color: #666; font-size: 0.85rem; margin-bottom: 15px; line-height: 1.4; }
+        .open-btn { background: linear-gradient(135deg, #2E7D32, #1B5E20); color: white; border: none; padding: 10px 20px; border-radius: 25px; font-weight: 600; cursor: pointer; width: 100%; font-size: 0.9rem; transition: 0.3s; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; }
+        .modal-content { background: white; padding: 30px; border-radius: 25px; text-align: center; max-width: 350px; animation: popIn 0.3s ease; }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal-buttons { display: flex; gap: 15px; justify-content: center; margin-top: 20px; }
+        .modal-btn { padding: 10px 20px; border: none; border-radius: 25px; cursor: pointer; font-weight: 600; }
+        .open-app-btn { background: #10b981; color: white; }
+        .cancel-btn { background: #ef4444; color: white; }
+        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #1a1a2e; color: white; padding: 12px 24px; border-radius: 50px; z-index: 2001; animation: fadeUp 0.3s ease; z-index: 9999; }
+        @keyframes fadeUp { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
+        .fab { position: fixed; bottom: 30px; right: 30px; background: linear-gradient(135deg, #2E7D32, #1B5E20); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 999; transition: 0.3s; color: white; font-size: 1.8rem; text-decoration: none; }
+        .fab:hover { transform: scale(1.1); }
+        @media (max-width: 768px) { .app-grid { padding: 20px; gap: 15px; } .page-hero h1 { font-size: 1.8rem; } }
+        .navbar { background: rgba(10, 15, 30, 0.95); backdrop-filter: blur(15px); padding: 12px 30px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px; position: sticky; top: 0; z-index: 1000; }
+        .nav-links { display: flex; flex-wrap: wrap; gap: 10px; }
+        .navbar a { color: #e0e0e0; text-decoration: none; font-weight: 500; font-size: 0.95rem; padding: 8px 16px; border-radius: 30px; transition: all 0.3s ease; }
+        .navbar a:hover { background: linear-gradient(135deg, #FF6B35, #F7931E); color: white; transform: translateY(-2px); }
+        .logo-nav { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .logo-nav-icon { width: 40px; height: 40px; background: linear-gradient(135deg, #FF6B35, #F7931E); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+        .logo-nav-text .smart { background: linear-gradient(135deg, #FF6B35, #FF8C42); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 700; }
+        .logo-nav-text .sathi { background: linear-gradient(135deg, #6A11CB, #2575FC); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 700; }
+        footer { background: linear-gradient(135deg, #0F172A, #1E293B); color: #CBD5E1; text-align: center; padding: 40px; margin-top: 50px; border-top: 3px solid #2E7D32; }
+    </style>
+</head>
+<body>
+
+<div class="navbar"><a href="/" class="logo-nav"><div class="logo-nav-icon">🚀</div><div class="logo-nav-text"><span class="smart">Smart</span><span class="sathi">Sathi</span></div></a><div class="nav-links"><a href="/">🏠 Home</a><a href="/shopping">🛍️ Shopping</a><a href="/food">🍔 Food</a><a href="/study">📚 Study</a><a href="/farming">🌾 Farming</a><a href="/medicine">💊 Medicine</a><a href="/skincare">✨ Skincare</a>{% if logged_in %}<a href="/dashboard">👤 Dashboard</a><a href="/logout">🚪 Logout</a>{% else %}<a href="/login">🔐 Login</a><a href="/signup">📝 Signup</a>{% endif %}</div></div>
+
+<div class="page-hero"><h1>🌾 Farming Hub - Grow with Technology</h1><p>Fresh produce, agri inputs, weather updates & more</p></div>
+
+<div class="app-grid">
+    <div class="app-card" data-app="bigbasket" data-url="https://www.bigbasket.com" data-name="BigBasket"><div class="app-icon bigbasket-icon">🥬</div><div class="app-info"><div class="app-name">BigBasket</div><div class="app-category">Fresh Vegetables</div><div class="app-description">Farm fresh produce delivered to your door</div><div class="open-btn">🛒 Shop Now →</div></div></div>
+    <div class="app-card" data-app="blinkit" data-url="https://www.blinkit.com" data-name="Blinkit"><div class="app-icon blinkit-icon">🛵</div><div class="app-info"><div class="app-name">Blinkit</div><div class="app-category">10 Min Delivery</div><div class="app-description">Groceries, vegetables, fruits - superfast</div><div class="open-btn">⚡ Order Now →</div></div></div>
+    <div class="app-card" data-app="ninjacart" data-url="https://ninjacart.com" data-name="Ninjacart"><div class="app-icon ninjacart-icon">📦</div><div class="app-info"><div class="app-name">Ninjacart</div><div class="app-category">B2B Farming</div><div class="app-description">Connect farmers directly with businesses</div><div class="open-btn">🌾 Learn More →</div></div></div>
+    <div class="app-card" data-app="agri" data-url="https://agriapp.gov.in" data-name="AgriApp"><div class="app-icon agri-icon">🇮🇳</div><div class="app-info"><div class="app-name">AgriApp</div><div class="app-category">Government Scheme</div><div class="app-description">Weather, MSP, Schemes, Expert Advice</div><div class="open-btn">📱 Open App →</div></div></div>
+</div>
+
+<div id="appModal" class="modal"><div class="modal-content"><div class="modal-app-icon" id="modalIcon">🌾</div><h3 id="modalAppName">Open App</h3><p id="modalMessage">Open farming app?</p><div class="modal-buttons"><button class="modal-btn open-app-btn" id="confirmOpen">✅ Open Now</button><button class="modal-btn cancel-btn" onclick="closeModal()">❌ Cancel</button></div></div></div>
+
+<a href="#" class="fab" id="farmingFab">🌾</a>
+
+<footer><p>🧠 SmartSathi — Your Farming Companion | Empowering Indian Farmers 🚜</p><p style="margin-top: 10px;">✨ Click any app for farming solutions ✨</p></footer>
+
+<script>
+    let currentApp = null;
+    const appLinks = { bigbasket: { web: 'https://www.bigbasket.com', app: 'bigbasket://' }, blinkit: { web: 'https://www.blinkit.com', app: 'blinkit://' }, ninjacart: { web: 'https://ninjacart.com', app: 'ninjacart://' } };
+    document.querySelectorAll('.app-card').forEach(card => { card.addEventListener('click', function(e) { if(e.target.classList.contains('open-btn')) return; currentApp = { name: this.getAttribute('data-name'), url: this.getAttribute('data-url'), appKey: this.getAttribute('data-app'), icon: this.querySelector('.app-icon')?.innerHTML || '🌾' }; showModal(currentApp); }); const btn = card.querySelector('.open-btn'); if(btn) btn.addEventListener('click', (e) => { e.stopPropagation(); currentApp = { name: card.getAttribute('data-name'), url: card.getAttribute('data-url'), appKey: card.getAttribute('data-app'), icon: card.querySelector('.app-icon')?.innerHTML || '🌾' }; showModal(currentApp); }); });
+    document.getElementById('farmingFab').addEventListener('click', (e) => { e.preventDefault(); currentApp = { name: 'BigBasket', url: 'https://www.bigbasket.com', appKey: 'bigbasket', icon: '🥬' }; showModal(currentApp); });
+    function showModal(app) { document.getElementById('modalAppName').innerText = app.name; document.getElementById('modalIcon').innerHTML = app.icon || '🌾'; document.getElementById('modalMessage').innerHTML = `Open ${app.name} for farming?`; document.getElementById('appModal').style.display = 'flex'; document.getElementById('confirmOpen').onclick = () => openApp(app); }
+    function openApp(app) { closeModal(); const appLink = appLinks[app.appKey]; if(appLink && appLink.app) { const a = document.createElement('a'); a.href = appLink.app; document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(() => { window.open(app.url, '_blank'); }, 1500); } else { window.open(app.url, '_blank'); } showToast(`🌾 Opening ${app.name}...`); }
+    function closeModal() { document.getElementById('appModal').style.display = 'none'; }
+    function showToast(msg) { let t = document.createElement('div'); t.className = 'toast'; t.innerHTML = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
+    window.onclick = function(e) { if(e.target === document.getElementById('appModal')) closeModal(); }
+    setTimeout(() => showToast('🌾 Welcome to Farming Hub! Click any app for agri solutions 🚜'), 1000);
+</script>
+</body>
+</html>

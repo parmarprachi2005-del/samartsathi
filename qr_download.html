@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSathi - QR Code</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            text-align: center;
+            max-width: 450px;
+            width: 100%;
+        }
+        h1 { color: #FF6B35; margin-bottom: 10px; }
+        img { max-width: 100%; border-radius: 15px; margin: 20px 0; }
+        .url {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 50px;
+            font-size: 12px;
+            word-break: break-all;
+            margin: 15px 0;
+        }
+        button {
+            background: #FF6B35;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            margin: 5px;
+            cursor: pointer;
+        }
+        .info {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 20px;
+            text-align: left;
+            font-size: 13px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: #FF6B35;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📱 SmartSathi QR Code</h1>
+        <p>Scan to open website on your phone</p>
+        
+        <img id="qrImage" src="" alt="QR Code">
+        
+        <div class="url" id="urlDisplay">Loading...</div>
+        
+        <button onclick="copyLink()">📋 Copy Link</button>
+        <button onclick="downloadQR()">⬇️ Download QR</button>
+        
+        <div class="info">
+            <strong>✅ How to scan:</strong><br>
+            • Open phone camera<br>
+            • Point at QR code<br>
+            • Tap notification<br>
+            • Website opens!
+        </div>
+        
+        <a href="/" class="back-link">← Back to Home</a>
+    </div>
+
+    <script>
+        let currentUrl = window.location.origin;
+        
+        fetch('/get_url')
+            .then(r => r.json())
+            .then(d => {
+                if(d.url) currentUrl = d.url;
+                updateQR();
+            })
+            .catch(() => updateQR());
+        
+        function updateQR() {
+            document.getElementById('urlDisplay').innerHTML = currentUrl;
+            document.getElementById('qrImage').src = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(currentUrl);
+        }
+        
+        function copyLink() {
+            navigator.clipboard.writeText(currentUrl);
+            alert('✅ Link copied!');
+        }
+        
+        function downloadQR() {
+            var link = document.createElement('a');
+            link.download = 'SmartSathi_QR.png';
+            link.href = document.getElementById('qrImage').src;
+            link.click();
+            alert('✅ QR Downloaded!');
+        }
+    </script>
+</body>
+</html>

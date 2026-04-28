@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload - SmartSathi</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .upload-container { max-width: 600px; margin: 50px auto; padding: 30px; background: white; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; }
+        .upload-area { border: 2px dashed #FF6B35; border-radius: 20px; padding: 40px; margin: 20px 0; cursor: pointer; transition: 0.3s; }
+        .upload-area:hover { background: #FFF7ED; border-color: #8B5CF6; }
+        .file-list { margin-top: 30px; text-align: left; }
+        .file-item { background: #F8FAFC; padding: 12px; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .badge { display: inline-block; background: #10B981; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; }
+        .flash { padding: 12px; border-radius: 10px; margin-bottom: 15px; }
+        .flash.success { background: #D1FAE5; color: #065F46; }
+        .flash.error { background: #FEE2E2; color: #991B1B; }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/" class="logo-nav"><div class="logo-nav-icon">⚡</div><div class="logo-nav-text"><span class="smart">Smart</span><span class="sathi">Sathi</span></div></a>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/shopping">Shopping</a>
+        <a href="/food">Food</a>
+        <a href="/study">Study</a>
+        <a href="/upload">📁 Upload</a>
+        <a href="/pdf_generator">📄 PDF</a>
+        <a href="/referral">🔗 Refer</a>
+        <a href="/gamification">🏆 Rewards</a>
+        <a href="/location">📍 Near Me</a>
+        <a href="/qr_tool">📱 QR</a>
+        <a href="/price_compare">💰 Compare</a>
+        {% if logged_in %}<a href="/logout">Logout</a>{% else %}<a href="/login">Login</a>{% endif %}
+    </div>
+</div>
+
+<div class="upload-container">
+    <h1>📁 File Upload</h1>
+    <p>Upload Resume, Documents, Notes, Photos</p>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+    
+    <form method="POST" enctype="multipart/form-data">
+        <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+            <div style="font-size: 3rem;">📎</div>
+            <p>Click to upload or drag & drop</p>
+            <p style="font-size: 0.8rem; color: #888;">Supported: PDF, DOC, TXT, JPG, PNG</p>
+        </div>
+        <input type="file" name="file" id="fileInput" style="display: none;" onchange="this.form.submit()">
+    </form>
+    
+    <div class="file-list">
+        <h3>📋 Uploaded Files</h3>
+        <div class="file-item">
+            <span>📄 resume.pdf</span>
+            <span class="badge">Uploaded 2 days ago</span>
+        </div>
+        <div class="file-item">
+            <span>📝 notes.txt</span>
+            <span class="badge">Uploaded 5 days ago</span>
+        </div>
+    </div>
+    
+    <p style="margin-top: 20px; font-size: 0.8rem; color: #888;">Your files are stored securely</p>
+</div>
+
+<footer><p>© 2024 SmartSathi — File Upload</p></footer>
+</body>
+</html>

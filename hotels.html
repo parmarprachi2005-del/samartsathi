@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSathi - Hotels | Stay Booking</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .app-icon { height: 130px; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+        .oyo .app-icon { background: linear-gradient(135deg, #E32A2A, #B71C1C); }
+        .airbnb .app-icon { background: linear-gradient(135deg, #FF5A5F, #E00E1F); }
+        .booking .app-icon { background: linear-gradient(135deg, #003580, #001F4D); }
+        .agoda .app-icon { background: linear-gradient(135deg, #E31837, #B20710); }
+        .trivago .app-icon { background: linear-gradient(135deg, #0077B6, #005A8C); }
+        .cleartrip .app-icon { background: linear-gradient(135deg, #FF6B35, #E85D04); }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/" class="logo-nav"><div class="logo-nav-icon">⚡</div><div class="logo-nav-text"><span class="smart">Smart</span><span class="sathi">Sathi</span></div></a>
+    <div class="nav-links">
+        <a href="/">Home</a><a href="/shopping">🛍️ Shopping</a><a href="/food">🍔 Food</a><a href="/study">📚 Study</a>
+        <a href="/farming">🌾 Farming</a><a href="/medicine">💊 Medicine</a><a href="/skincare">✨ Skincare</a>
+        <div class="dropdown"><a href="#">📱 More ▼</a><div class="dropdown-content">
+            <a href="/entertainment">🎬 Entertainment</a><a href="/music">🎵 Music</a><a href="/gaming">🎮 Gaming</a>
+            <a href="/travel">🚗 Travel</a><a href="/hotels">🏨 Hotels</a><a href="/finance">💰 Finance</a>
+            <a href="/news">📰 News</a><a href="/sports">🏏 Sports</a><a href="/jobs">💼 Jobs</a>
+            <a href="/fitness">🏋️ Fitness</a><a href="/tools">🛠️ Tools</a><a href="/photo">🎨 Photo</a>
+            <a href="/social">🌐 Social</a><a href="/delivery">🚚 Delivery</a><a href="/books">📚 Books</a>
+        </div></div>
+        {% if logged_in %}<a href="/dashboard">👤 Dashboard</a><a href="/logout">🚪 Logout</a>
+        {% else %}<a href="/login">🔐 Login</a><a href="/signup">📝 Signup</a>{% endif %}
+    </div>
+</div>
+
+<div class="page-hero"><h1>🏨 Hotels & Stay Hub</h1><p>Book Hotels, Resorts, Homestays & More</p></div>
+
+<div class="app-grid">
+    <div class="app-card oyo" data-app="oyo" data-url="https://www.oyorooms.com" data-name="OYO"><div class="app-icon">🏨</div><div class="app-info"><div class="app-name">OYO</div><div class="app-category">Budget Hotels</div><div class="app-description">Affordable stays across India</div><div class="open-btn">🏨 Book Now →</div></div></div>
+    <div class="app-card airbnb" data-app="airbnb" data-url="https://www.airbnb.com" data-name="Airbnb"><div class="app-icon">🏠</div><div class="app-info"><div class="app-name">Airbnb</div><div class="app-category">Homestays & Villas</div><div class="app-description">Unique stays worldwide</div><div class="open-btn">🏠 Book Now →</div></div></div>
+    <div class="app-card booking" data-app="booking" data-url="https://www.booking.com" data-name="Booking.com"><div class="app-icon">🌍</div><div class="app-info"><div class="app-name">Booking.com</div><div class="app-category">Global Hotels</div><div class="app-description">Best hotel deals worldwide</div><div class="open-btn">🌍 Book Now →</div></div></div>
+    <div class="app-card agoda" data-app="agoda" data-url="https://www.agoda.com" data-name="Agoda"><div class="app-icon">🏝️</div><div class="app-info"><div class="app-name">Agoda</div><div class="app-category">Hotel Booking</div><div class="app-description">Great discounts on hotels</div><div class="open-btn">🏝️ Book Now →</div></div></div>
+    <div class="app-card trivago" data-app="trivago" data-url="https://www.trivago.in" data-name="Trivago"><div class="app-icon">🔍</div><div class="app-info"><div class="app-name">Trivago</div><div class="app-category">Hotel Comparison</div><div class="app-description">Compare hotel prices</div><div class="open-btn">🔍 Compare →</div></div></div>
+    <div class="app-card cleartrip" data-app="cleartrip" data-url="https://www.cleartrip.com" data-name="Cleartrip"><div class="app-icon">✈️</div><div class="app-info"><div class="app-name">Cleartrip</div><div class="app-category">Travel & Hotels</div><div class="app-description">Flights, hotels, activities</div><div class="open-btn">✈️ Book Now →</div></div></div>
+</div>
+
+<div id="appModal" class="modal"><div class="modal-content"><div class="modal-app-icon" id="modalIcon">🏨</div><h3 id="modalAppName">Open App</h3><p id="modalMessage">Open hotel booking app?</p><div class="modal-buttons"><button class="modal-btn open-app-btn" id="confirmOpen">✅ Open Now</button><button class="modal-btn cancel-btn" onclick="closeModal()">❌ Cancel</button></div></div></div>
+
+<a href="#" class="fab" id="pageFab">🏨</a>
+<footer><p>© 2024 SmartSathi — Your Hotel Companion 🏨</p></footer>
+
+<script>
+    let currentApp = null;
+    const appLinks = { oyo: { web: 'https://www.oyorooms.com', app: 'oyo://' }, airbnb: { web: 'https://www.airbnb.com', app: 'airbnb://' }, booking: { web: 'https://www.booking.com', app: 'booking://' }, agoda: { web: 'https://www.agoda.com', app: 'agoda://' }, trivago: { web: 'https://www.trivago.in', app: 'trivago://' }, cleartrip: { web: 'https://www.cleartrip.com', app: 'cleartrip://' } };
+    document.querySelectorAll('.app-card').forEach(card => { card.addEventListener('click', function(e) { if(e.target.classList.contains('open-btn')) return; currentApp = { name: this.getAttribute('data-name'), url: this.getAttribute('data-url'), appKey: this.getAttribute('data-app'), icon: this.querySelector('.app-icon')?.innerHTML || '🏨' }; showModal(currentApp); }); const btn = card.querySelector('.open-btn'); if(btn) btn.addEventListener('click', (e) => { e.stopPropagation(); currentApp = { name: card.getAttribute('data-name'), url: card.getAttribute('data-url'), appKey: card.getAttribute('data-app'), icon: card.querySelector('.app-icon')?.innerHTML || '🏨' }; showModal(currentApp); }); });
+    document.getElementById('pageFab').addEventListener('click', (e) => { e.preventDefault(); currentApp = { name: 'OYO', url: 'https://www.oyorooms.com', appKey: 'oyo', icon: '🏨' }; showModal(currentApp); });
+    function showModal(app) { document.getElementById('modalAppName').innerText = app.name; document.getElementById('modalIcon').innerHTML = app.icon || '🏨'; document.getElementById('modalMessage').innerHTML = `Open ${app.name} to book stay?`; document.getElementById('appModal').style.display = 'flex'; document.getElementById('confirmOpen').onclick = () => openApp(app); }
+    function openApp(app) { closeModal(); const appLink = appLinks[app.appKey]; if(appLink && appLink.app) { const a = document.createElement('a'); a.href = appLink.app; document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(() => { window.open(app.url, '_blank'); }, 1500); } else { window.open(app.url, '_blank'); } showToast(`🏨 Opening ${app.name}...`); }
+    function closeModal() { document.getElementById('appModal').style.display = 'none'; }
+    function showToast(msg) { let t = document.createElement('div'); t.className = 'toast'; t.innerHTML = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
+    window.onclick = function(e) { if(e.target === document.getElementById('appModal')) closeModal(); }
+</script>
+</body>
+</html>

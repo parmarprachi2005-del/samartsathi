@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSathi - Travel Hub | Cabs, Buses & Flights</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .app-icon { height: 130px; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+        .uber .app-icon { background: linear-gradient(135deg, #000000, #1A1A1A); }
+        .ola .app-icon { background: linear-gradient(135deg, #4CAF50, #2E7D32); }
+        .rapido .app-icon { background: linear-gradient(135deg, #FF6B35, #E85D04); }
+        .irctc .app-icon { background: linear-gradient(135deg, #1E3A5F, #0F2B45); }
+        .redbus .app-icon { background: linear-gradient(135deg, #D62326, #B20710); }
+        .makemytrip .app-icon { background: linear-gradient(135deg, #2874F0, #1A5BBF); }
+        .goibibo .app-icon { background: linear-gradient(135deg, #FF9800, #F57C00); }
+        .yatra .app-icon { background: linear-gradient(135deg, #8B5CF6, #6D28D9); }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/" class="logo-nav"><div class="logo-nav-icon">⚡</div><div class="logo-nav-text"><span class="smart">Smart</span><span class="sathi">Sathi</span></div></a>
+    <div class="nav-links">
+        <a href="/">Home</a><a href="/shopping">🛍️ Shopping</a><a href="/food">🍔 Food</a><a href="/study">📚 Study</a>
+        <a href="/farming">🌾 Farming</a><a href="/medicine">💊 Medicine</a><a href="/skincare">✨ Skincare</a>
+        <div class="dropdown"><a href="#">📱 More ▼</a><div class="dropdown-content">
+            <a href="/entertainment">🎬 Entertainment</a><a href="/music">🎵 Music</a><a href="/gaming">🎮 Gaming</a>
+            <a href="/travel">🚗 Travel</a><a href="/hotels">🏨 Hotels</a><a href="/finance">💰 Finance</a>
+            <a href="/news">📰 News</a><a href="/sports">🏏 Sports</a><a href="/jobs">💼 Jobs</a>
+            <a href="/fitness">🏋️ Fitness</a><a href="/tools">🛠️ Tools</a><a href="/photo">🎨 Photo</a>
+            <a href="/social">🌐 Social</a><a href="/delivery">🚚 Delivery</a><a href="/books">📚 Books</a>
+        </div></div>
+        {% if logged_in %}<a href="/dashboard">👤 Dashboard</a><a href="/logout">🚪 Logout</a>
+        {% else %}<a href="/login">🔐 Login</a><a href="/signup">📝 Signup</a>{% endif %}
+    </div>
+</div>
+
+<div class="page-hero"><h1>🚗 Travel & Transport Hub</h1><p>Book Cabs, Buses, Trains & Flights | Explore India</p></div>
+
+<div class="app-grid">
+    <div class="app-card uber" data-app="uber" data-url="https://www.uber.com" data-name="Uber"><div class="app-icon">🚕</div><div class="app-info"><div class="app-name">Uber</div><div class="app-category">Cab Booking</div><div class="app-description">Ride anywhere, anytime</div><div class="open-btn">🚗 Book Now →</div></div></div>
+    <div class="app-card ola" data-app="ola" data-url="https://www.olacabs.com" data-name="Ola"><div class="app-icon">🚖</div><div class="app-info"><div class="app-name">Ola Cabs</div><div class="app-category">Cab Booking</div><div class="app-description">India's largest ride-hailing app</div><div class="open-btn">🚗 Book Now →</div></div></div>
+    <div class="app-card rapido" data-app="rapido" data-url="https://www.rapido.bike" data-name="Rapido"><div class="app-icon">🛵</div><div class="app-info"><div class="app-name">Rapido</div><div class="app-category">Bike Taxi</div><div class="app-description">Fast & affordable bike rides</div><div class="open-btn">🛵 Book Now →</div></div></div>
+    <div class="app-card irctc" data-app="irctc" data-url="https://www.irctc.co.in" data-name="IRCTC"><div class="app-icon">🚂</div><div class="app-info"><div class="app-name">IRCTC</div><div class="app-category">Train Booking</div><div class="app-description">Book Indian Railway tickets</div><div class="open-btn">🚂 Book Now →</div></div></div>
+    <div class="app-card redbus" data-app="redbus" data-url="https://www.redbus.in" data-name="redBus"><div class="app-icon">🚌</div><div class="app-info"><div class="app-name">redBus</div><div class="app-category">Bus Booking</div><div class="app-description">Book bus tickets online</div><div class="open-btn">🚌 Book Now →</div></div></div>
+    <div class="app-card makemytrip" data-app="makemytrip" data-url="https://www.makemytrip.com" data-name="MakeMyTrip"><div class="app-icon">✈️</div><div class="app-info"><div class="app-name">MakeMyTrip</div><div class="app-category">Flights & Hotels</div><div class="app-description">Flight, hotel, holiday packages</div><div class="open-btn">✈️ Book Now →</div></div></div>
+    <div class="app-card goibibo" data-app="goibibo" data-url="https://www.goibibo.com" data-name="Goibibo"><div class="app-icon">🏨</div><div class="app-info"><div class="app-name">Goibibo</div><div class="app-category">Travel Booking</div><div class="app-description">Flights, hotels, buses, trains</div><div class="open-btn">🏨 Book Now →</div></div></div>
+    <div class="app-card yatra" data-app="yatra" data-url="https://www.yatra.com" data-name="Yatra"><div class="app-icon">🌍</div><div class="app-info"><div class="app-name">Yatra</div><div class="app-category">Online Travel</div><div class="app-description">Flights, hotels, holiday deals</div><div class="open-btn">🌍 Book Now →</div></div></div>
+</div>
+
+<div id="appModal" class="modal"><div class="modal-content"><div class="modal-app-icon" id="modalIcon">🚗</div><h3 id="modalAppName">Open App</h3><p id="modalMessage">Open travel app?</p><div class="modal-buttons"><button class="modal-btn open-app-btn" id="confirmOpen">✅ Open Now</button><button class="modal-btn cancel-btn" onclick="closeModal()">❌ Cancel</button></div></div></div>
+
+<a href="#" class="fab" id="pageFab">🚗</a>
+<footer><p>© 2024 SmartSathi — Your Travel Companion 🚗</p></footer>
+
+<script>
+    let currentApp = null;
+    const appLinks = { uber: { web: 'https://www.uber.com', app: 'uber://' }, ola: { web: 'https://www.olacabs.com', app: 'ola://' }, rapido: { web: 'https://www.rapido.bike', app: 'rapido://' }, irctc: { web: 'https://www.irctc.co.in', app: 'irctc://' }, redbus: { web: 'https://www.redbus.in', app: 'redbus://' }, makemytrip: { web: 'https://www.makemytrip.com', app: 'makemytrip://' }, goibibo: { web: 'https://www.goibibo.com', app: 'goibibo://' }, yatra: { web: 'https://www.yatra.com', app: 'yatra://' } };
+    document.querySelectorAll('.app-card').forEach(card => { card.addEventListener('click', function(e) { if(e.target.classList.contains('open-btn')) return; currentApp = { name: this.getAttribute('data-name'), url: this.getAttribute('data-url'), appKey: this.getAttribute('data-app'), icon: this.querySelector('.app-icon')?.innerHTML || '🚗' }; showModal(currentApp); }); const btn = card.querySelector('.open-btn'); if(btn) btn.addEventListener('click', (e) => { e.stopPropagation(); currentApp = { name: card.getAttribute('data-name'), url: card.getAttribute('data-url'), appKey: card.getAttribute('data-app'), icon: card.querySelector('.app-icon')?.innerHTML || '🚗' }; showModal(currentApp); }); });
+    document.getElementById('pageFab').addEventListener('click', (e) => { e.preventDefault(); currentApp = { name: 'Uber', url: 'https://www.uber.com', appKey: 'uber', icon: '🚗' }; showModal(currentApp); });
+    function showModal(app) { document.getElementById('modalAppName').innerText = app.name; document.getElementById('modalIcon').innerHTML = app.icon || '🚗'; document.getElementById('modalMessage').innerHTML = `Open ${app.name} to travel?`; document.getElementById('appModal').style.display = 'flex'; document.getElementById('confirmOpen').onclick = () => openApp(app); }
+    function openApp(app) { closeModal(); const appLink = appLinks[app.appKey]; if(appLink && appLink.app) { const a = document.createElement('a'); a.href = appLink.app; document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(() => { window.open(app.url, '_blank'); }, 1500); } else { window.open(app.url, '_blank'); } showToast(`🚗 Opening ${app.name}...`); }
+    function closeModal() { document.getElementById('appModal').style.display = 'none'; }
+    function showToast(msg) { let t = document.createElement('div'); t.className = 'toast'; t.innerHTML = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
+    window.onclick = function(e) { if(e.target === document.getElementById('appModal')) closeModal(); }
+</script>
+</body>
+</html>

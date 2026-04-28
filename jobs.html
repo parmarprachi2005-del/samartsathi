@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSathi - Jobs Hub | Career Opportunities</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .app-icon { height: 130px; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+        .linkedin .app-icon { background: linear-gradient(135deg, #0A66C2, #004182); }
+        .naukri .app-icon { background: linear-gradient(135deg, #1E8C3C, #166534); }
+        .indeed .app-icon { background: linear-gradient(135deg, #2163F3, #004ECB); }
+        .monster .app-icon { background: linear-gradient(135deg, #E31837, #B20710); }
+        .shine .app-icon { background: linear-gradient(135deg, #FF6B35, #E85D04); }
+        .foundit .app-icon { background: linear-gradient(135deg, #8B5CF6, #6D28D9); }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/" class="logo-nav"><div class="logo-nav-icon">⚡</div><div class="logo-nav-text"><span class="smart">Smart</span><span class="sathi">Sathi</span></div></a>
+    <div class="nav-links">
+        <a href="/">Home</a><a href="/shopping">🛍️ Shopping</a><a href="/food">🍔 Food</a><a href="/study">📚 Study</a>
+        <a href="/farming">🌾 Farming</a><a href="/medicine">💊 Medicine</a><a href="/skincare">✨ Skincare</a>
+        <div class="dropdown"><a href="#">📱 More ▼</a><div class="dropdown-content">
+            <a href="/entertainment">🎬 Entertainment</a><a href="/music">🎵 Music</a><a href="/gaming">🎮 Gaming</a>
+            <a href="/travel">🚗 Travel</a><a href="/hotels">🏨 Hotels</a><a href="/finance">💰 Finance</a>
+            <a href="/news">📰 News</a><a href="/sports">🏏 Sports</a><a href="/jobs">💼 Jobs</a>
+            <a href="/fitness">🏋️ Fitness</a><a href="/tools">🛠️ Tools</a><a href="/photo">🎨 Photo</a>
+            <a href="/social">🌐 Social</a><a href="/delivery">🚚 Delivery</a><a href="/books">📚 Books</a>
+        </div></div>
+        {% if logged_in %}<a href="/dashboard">👤 Dashboard</a><a href="/logout">🚪 Logout</a>
+        {% else %}<a href="/login">🔐 Login</a><a href="/signup">📝 Signup</a>{% endif %}
+    </div>
+</div>
+
+<div class="page-hero"><h1>💼 Jobs & Career Hub</h1><p>Find Your Dream Job | Apply Online</p></div>
+
+<div class="app-grid">
+    <div class="app-card linkedin" data-app="linkedin" data-url="https://www.linkedin.com" data-name="LinkedIn"><div class="app-icon">💼</div><div class="app-info"><div class="app-name">LinkedIn</div><div class="app-category">Professional Network</div><div class="app-description">Jobs, networking, career growth</div><div class="open-btn">💼 Apply Now →</div></div></div>
+    <div class="app-card naukri" data-app="naukri" data-url="https://www.naukri.com" data-name="Naukri"><div class="app-icon">📄</div><div class="app-info"><div class="app-name">Naukri</div><div class="app-category">Job Portal</div><div class="app-description">India's #1 job site</div><div class="open-btn">📄 Apply Now →</div></div></div>
+    <div class="app-card indeed" data-app="indeed" data-url="https://www.indeed.com" data-name="Indeed"><div class="app-icon">🔍</div><div class="app-info"><div class="app-name">Indeed</div><div class="app-category">Global Jobs</div><div class="app-description">Millions of jobs worldwide</div><div class="open-btn">🔍 Apply Now →</div></div></div>
+    <div class="app-card monster" data-app="monster" data-url="https://www.monsterindia.com" data-name="Monster"><div class="app-icon">👹</div><div class="app-info"><div class="app-name">Monster</div><div class="app-category">Recruitment</div><div class="app-description">Find jobs matching your skills</div><div class="open-btn">👹 Apply Now →</div></div></div>
+    <div class="app-card shine" data-app="shine" data-url="https://shine.com" data-name="Shine"><div class="app-icon">✨</div><div class="app-info"><div class="app-name">Shine</div><div class="app-category">Job Search</div><div class="app-description">Personalized job recommendations</div><div class="open-btn">✨ Apply Now →</div></div></div>
+    <div class="app-card foundit" data-app="foundit" data-url="https://www.foundit.in" data-name="Foundit"><div class="app-icon">🎯</div><div class="app-info"><div class="app-name">Foundit (Monster)</div><div class="app-category">Job Portal</div><div class="app-description">New jobs, career advice</div><div class="open-btn">🎯 Apply Now →</div></div></div>
+</div>
+
+<div id="appModal" class="modal"><div class="modal-content"><div class="modal-app-icon" id="modalIcon">💼</div><h3 id="modalAppName">Open App</h3><p id="modalMessage">Open job portal?</p><div class="modal-buttons"><button class="modal-btn open-app-btn" id="confirmOpen">✅ Open Now</button><button class="modal-btn cancel-btn" onclick="closeModal()">❌ Cancel</button></div></div></div>
+
+<a href="#" class="fab" id="pageFab">💼</a>
+<footer><p>© 2024 SmartSathi — Your Career Companion 💼</p></footer>
+
+<script>
+    let currentApp = null;
+    const appLinks = { linkedin: { web: 'https://www.linkedin.com', app: 'linkedin://' }, naukri: { web: 'https://www.naukri.com', app: 'naukri://' }, indeed: { web: 'https://www.indeed.com', app: 'indeed://' }, monster: { web: 'https://www.monsterindia.com', app: 'monster://' }, shine: { web: 'https://shine.com', app: 'shine://' }, foundit: { web: 'https://www.foundit.in', app: 'foundit://' } };
+    document.querySelectorAll('.app-card').forEach(card => { card.addEventListener('click', function(e) { if(e.target.classList.contains('open-btn')) return; currentApp = { name: this.getAttribute('data-name'), url: this.getAttribute('data-url'), appKey: this.getAttribute('data-app'), icon: this.querySelector('.app-icon')?.innerHTML || '💼' }; showModal(currentApp); }); const btn = card.querySelector('.open-btn'); if(btn) btn.addEventListener('click', (e) => { e.stopPropagation(); currentApp = { name: card.getAttribute('data-name'), url: card.getAttribute('data-url'), appKey: card.getAttribute('data-app'), icon: card.querySelector('.app-icon')?.innerHTML || '💼' }; showModal(currentApp); }); });
+    document.getElementById('pageFab').addEventListener('click', (e) => { e.preventDefault(); currentApp = { name: 'LinkedIn', url: 'https://www.linkedin.com', appKey: 'linkedin', icon: '💼' }; showModal(currentApp); });
+    function showModal(app) { document.getElementById('modalAppName').innerText = app.name; document.getElementById('modalIcon').innerHTML = app.icon || '💼'; document.getElementById('modalMessage').innerHTML = `Open ${app.name} for jobs?`; document.getElementById('appModal').style.display = 'flex'; document.getElementById('confirmOpen').onclick = () => openApp(app); }
+    function openApp(app) { closeModal(); const appLink = appLinks[app.appKey]; if(appLink && appLink.app) { const a = document.createElement('a'); a.href = appLink.app; document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(() => { window.open(app.url, '_blank'); }, 1500); } else { window.open(app.url, '_blank'); } showToast(`💼 Opening ${app.name}...`); }
+    function closeModal() { document.getElementById('appModal').style.display = 'none'; }
+    function showToast(msg) { let t = document.createElement('div'); t.className = 'toast'; t.innerHTML = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
+    window.onclick = function(e) { if(e.target === document.getElementById('appModal')) closeModal(); }
+</script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - SmartSathi</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .admin-nav {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        }
+        .admin-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            padding: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .admin-stat-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            transition: transform 0.3s;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .admin-stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .admin-stat-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+        .admin-stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #ff5e3a;
+        }
+        .admin-stat-label {
+            color: #666;
+            margin-top: 10px;
+        }
+        .admin-sidebar {
+            background: #1a1a2e;
+            color: white;
+            width: 250px;
+            position: fixed;
+            height: 100%;
+            left: 0;
+            top: 0;
+            padding-top: 80px;
+        }
+        .admin-sidebar a {
+            display: block;
+            color: white;
+            padding: 15px 25px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .admin-sidebar a:hover {
+            background: #ff5e3a;
+            padding-left: 35px;
+        }
+        .admin-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        @media (max-width: 768px) {
+            .admin-sidebar { width: 100%; height: auto; position: relative; padding-top: 20px; }
+            .admin-content { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="admin-sidebar">
+    <h2 style="text-align: center; margin-bottom: 30px;">🛡️ SmartSathi Admin</h2>
+    <a href="/admin">📊 Dashboard</a>
+    <a href="/admin/users">👥 User Management</a>
+    <a href="/admin/products">🛍️ Products</a>
+    <a href="/admin/stats">📈 Analytics</a>
+    <a href="/">🏠 Back to Site</a>
+    <a href="/logout">🚪 Logout</a>
+</div>
+
+<div class="admin-content">
+    <div style="background: white; padding: 20px; border-radius: 15px; margin-bottom: 20px;">
+        <h1>📊 Admin Dashboard</h1>
+        <p>Welcome back, <strong>{{ username }}</strong>! 👋</p>
+    </div>
+    
+    <div class="admin-stats-grid">
+        <div class="admin-stat-card" onclick="location.href='/admin/users'">
+            <div class="admin-stat-icon">👥</div>
+            <div class="admin-stat-number">{{ stats.total_users }}</div>
+            <div class="admin-stat-label">Total Users</div>
+        </div>
+        
+        <div class="admin-stat-card" onclick="location.href='/admin/products'">
+            <div class="admin-stat-icon">👟</div>
+            <div class="admin-stat-number">{{ stats.total_products }}</div>
+            <div class="admin-stat-label">Bathu Products</div>
+        </div>
+        
+        <div class="admin-stat-card">
+            <div class="admin-stat-icon">🛒</div>
+            <div class="admin-stat-number">{{ stats.total_orders }}</div>
+            <div class="admin-stat-label">Total Orders</div>
+        </div>
+        
+        <div class="admin-stat-card">
+            <div class="admin-stat-icon">💬</div>
+            <div class="admin-stat-number">{{ stats.active_sessions }}</div>
+            <div class="admin-stat-label">Active Sessions</div>
+        </div>
+    </div>
+    
+    <!-- Recent Activity -->
+    <div style="background: white; border-radius: 20px; padding: 25px; margin: 20px;">
+        <h3>📋 Quick Actions</h3>
+        <div style="display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap;">
+            <button class="card-btn" onclick="location.href='/admin/users'">Manage Users</button>
+            <button class="card-btn" onclick="location.href='/admin/products'">Manage Products</button>
+            <button class="card-btn" onclick="location.href='/admin/stats'">View Analytics</button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

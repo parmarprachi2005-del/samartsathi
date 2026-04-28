@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Compare - SmartSathi</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .compare-container { max-width: 800px; margin: 50px auto; padding: 30px; background: white; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .search-box { display: flex; gap: 10px; margin: 20px 0; }
+        .search-box input { flex: 1; padding: 12px; border: 1px solid #E2E8F0; border-radius: 50px; }
+        .result-card { border: 1px solid #E2E8F0; border-radius: 15px; padding: 15px; margin-bottom: 15px; transition: 0.3s; cursor: pointer; }
+        .result-card:hover { transform: translateX(5px); border-color: #FF6B35; }
+        .product-name { font-weight: bold; font-size: 1.1rem; }
+        .price { color: #FF6B35; font-weight: bold; font-size: 1.3rem; }
+        .amazon { border-left: 4px solid #FF9900; }
+        .flipkart { border-left: 4px solid #2874F0; }
+        .best-price { background: #10B981; color: white; padding: 2px 8px; border-radius: 20px; font-size: 0.7rem; display: inline-block; margin-left: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/" class="logo-nav"><div class="logo-nav-icon">⚡</div><div class="logo-nav-text"><span class="smart">Smart</span><span class="sathi">Sathi</span></div></a>
+    <div class="nav-links">
+        <a href="/">Home</a><a href="/shopping">Shopping</a><a href="/food">Food</a><a href="/study">Study

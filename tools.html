@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSathi - Tools Hub | Productivity & Utilities</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .app-icon { height: 130px; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+        .drive .app-icon { background: linear-gradient(135deg, #0F9D58, #0B8043); }
+        .dropbox .app-icon { background: linear-gradient(135deg, #0061FF, #004DCC); }
+        .zoom .app-icon { background: linear-gradient(135deg, #2D8CFF, #0B5CFF); }
+        .calendar .app-icon { background: linear-gradient(135deg, #4285F4, #1967D2); }
+        .todoist .app-icon { background: linear-gradient(135deg, #E44332, #C1351A); }
+        .evernote .app-icon { background: linear-gradient(135deg, #00A82D, #007A22); }
+        .teamviewer .app-icon { background: linear-gradient(135deg, #004EA8, #003580); }
+        .anydesk .app-icon { background: linear-gradient(135deg, #FF6B35, #E85D04); }
+        .grammarly .app-icon { background: linear-gradient(135deg, #15C39A, #0DAB7F); }
+        .vpn .app-icon { background: linear-gradient(135deg, #8B5CF6, #6D28D9); }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/" class="logo-nav"><div class="logo-nav-icon">⚡</div><div class="logo-nav-text"><span class="smart">Smart</span><span class="sathi">Sathi</span></div></a>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/shopping">🛍️ Shopping</a>
+        <a href="/food">🍔 Food</a>
+        <a href="/study">📚 Study</a>
+        <a href="/farming">🌾 Farming</a>
+        <a href="/medicine">💊 Medicine</a>
+        <a href="/skincare">✨ Skincare</a>
+        <a href="/entertainment">🎬 OTT</a>
+        <a href="/music">🎵 Music</a>
+        <a href="/gaming">🎮 Gaming</a>
+        <a href="/travel">🚗 Travel</a>
+        <a href="/hotels">🏨 Hotels</a>
+        <a href="/finance">💰 Finance</a>
+        <a href="/news">📰 News</a>
+        <a href="/sports">🏏 Sports</a>
+        <a href="/jobs">💼 Jobs</a>
+        <a href="/fitness">🏋️ Fitness</a>
+        <a href="/tools">🛠️ Tools</a>
+        <a href="/photo">🎨 Photo</a>
+        <a href="/social">🌐 Social</a>
+        <a href="/delivery">🚚 Delivery</a>
+        <a href="/books">📚 Books</a>
+        {% if logged_in %}
+            <a href="/dashboard">👤 Dashboard</a>
+            <a href="/logout">🚪 Logout</a>
+        {% else %}
+            <a href="/login">🔐 Login</a>
+            <a href="/signup">📝 Signup</a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="page-hero"><h1>🛠️ Tools & Utilities Hub</h1><p>Productivity Apps, Cloud Storage, Remote Access & More</p></div>
+
+<div class="app-grid">
+    <div class="app-card drive" data-app="drive" data-url="https://drive.google.com" data-name="Google Drive">
+        <div class="app-icon">☁️</div>
+        <div class="app-info">
+            <div class="app-name">Google Drive</div>
+            <div class="app-category">Cloud Storage</div>
+            <div class="app-description">Store, share, access files anywhere</div>
+            <div class="open-btn">☁️ Open →</div>
+        </div>
+    </div>
+    
+    <div class="app-card dropbox" data-app="dropbox" data-url="https://www.dropbox.com" data-name="Dropbox">
+        <div class="app-icon">📁</div>
+        <div class="app-info">
+            <div class="app-name">Dropbox</div>
+            <div class="app-category">File Sync</div>
+            <div class="app-description">Secure cloud storage & backup</div>
+            <div class="open-btn">📁 Open →</div>
+        </div>
+    </div>
+    
+    <div class="app-card zoom" data-app="zoom" data-url="https://zoom.us" data-name="Zoom">
+        <div class="app-icon">🎥</div>
+        <div class="app-info">
+            <div class="app-name">Zoom</div>
+            <div class="app-category">Video Conferencing</div>
+            <div class="app-description">Online meetings, webinars, calls</div>
+            <div class="open-btn">🎥 Join →</div>
+        </div>
+    </div>
+    
+    <div class="app-card calendar" data-app="calendar" data-url="https://calendar.google.com" data-name="Google Calendar">
+        <div class="app-icon">📅</div>
+        <div class="app-info">
+            <div class="app-name">Google Calendar</div>
+            <div class="app-category">Calendar & Schedule</div>
+            <div class="app-description">Schedule meetings, set reminders</div>
+            <div class="open-btn">📅 Open →</div>
+        </div>
+    </div>
+    
+    <div class="app-card todoist" data-app="todoist" data-url="https://todoist.com" data-name="Todoist">
+        <div class="app-icon">✅</div>
+        <div class="app-info">
+            <div class="app-name">Todoist</div>
+            <div class="app-category">Task Management</div>
+            <div class="app-description">Organize tasks, to-do lists</div>
+            <div class="open-btn">✅ Open →</div>
+        </div>
+    </div>
+    
+    <div class="app-card evernote" data-app="evernote" data-url="https://evernote.com" data-name="Evernote">
+        <div class="app-icon">📝</div>
+        <div class="app-info">
+            <div class="app-name">Evernote</div>
+            <div class="app-category">Note Taking</div>
+            <div class="app-description">Take notes, organize ideas</div>
+            <div class="open-btn">📝 Open →</div>
+        </div>
+    </div>
+    
+    <div class="app-card teamviewer" data-app="teamviewer" data-url="https://www.teamviewer.com" data-name="TeamViewer">
+        <div class="app-icon">🖥️</div>
+        <div class="app-info">
+            <div class="app-name">TeamViewer</div>
+            <div class="app-category">Remote Access</div>
+            <div class="app-description">Remote control, file sharing</div>
+            <div class="open-btn">🖥️ Connect →</div>
+        </div>
+    </div>
+    
+    <div class="app-card anydesk" data-app="anydesk" data-url="https://anydesk.com" data-name="AnyDesk">
+        <div class="app-icon">🖥️</div>
+        <div class="app-info">
+            <div class="app-name">AnyDesk</div>
+            <div class="app-category">Remote Desktop</div>
+            <div class="app-description">Fast remote access solution</div>
+            <div class="open-btn">🖥️ Connect →</div>
+        </div>
+    </div>
+    
+    <div class="app-card grammarly" data-app="grammarly" data-url="https://www.grammarly.com" data-name="Grammarly">
+        <div class="app-icon">✍️</div>
+        <div class="app-info">
+            <div class="app-name">Grammarly</div>
+            <div class="app-category">Writing Assistant</div>
+            <div class="app-description">Grammar check, spell check</div>
+            <div class="open-btn">✍️ Check →</div>
+        </div>
+    </div>
+    
+    <div class="app-card vpn" data-app="vpn" data-url="https://www.nordvpn.com" data-name="NordVPN">
+        <div class="app-icon">🔒</div>
+        <div class="app-info">
+            <div class="app-name">NordVPN</div>
+            <div class="app-category">VPN Service</div>
+            <div class="app-description">Secure & private browsing</div>
+            <div class="open-btn">🔒 Connect →</div>
+        </div>
+    </div>
+</div>
+
+<div id="appModal" class="modal"><div class="modal-content"><div class="modal-app-icon" id="modalIcon">🛠️</div><h3 id="modalAppName">Open App</h3><p id="modalMessage">Open tool app?</p><div class="modal-buttons"><button class="modal-btn open-app-btn" id="confirmOpen">✅ Open Now</button><button class="modal-btn cancel-btn" onclick="closeModal()">❌ Cancel</button></div></div></div>
+
+<a href="#" class="fab" id="pageFab">🛠️</a>
+<footer><p>© 2024 SmartSathi — Your Tools Companion 🛠️</p></footer>
+
+<script>
+    let currentApp = null;
+    const appLinks = {
+        drive: { web: 'https://drive.google.com', app: 'googledrive://' },
+        dropbox: { web: 'https://www.dropbox.com', app: 'dropbox://' },
+        zoom: { web: 'https://zoom.us', app: 'zoom.us://' },
+        calendar: { web: 'https://calendar.google.com', app: 'googlecalendar://' },
+        todoist: { web: 'https://todoist.com', app: 'todoist://' },
+        evernote: { web: 'https://evernote.com', app: 'evernote://' },
+        teamviewer: { web: 'https://www.teamviewer.com', app: 'teamviewer://' },
+        anydesk: { web: 'https://anydesk.com', app: 'anydesk://' },
+        grammarly: { web: 'https://www.grammarly.com', app: 'grammarly://' },
+        vpn: { web: 'https://www.nordvpn.com', app: 'nordvpn://' }
+    };
+    
+    document.querySelectorAll('.app-card').forEach(card => {
+        card.addEventListener('click', function(e) {
+            if(e.target.classList.contains('open-btn')) return;
+            currentApp = { name: this.getAttribute('data-name'), url: this.getAttribute('data-url'), appKey: this.getAttribute('data-app'), icon: this.querySelector('.app-icon')?.innerHTML || '🛠️' };
+            showModal(currentApp);
+        });
+        const btn = card.querySelector('.open-btn');
+        if(btn) btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            currentApp = { name: card.getAttribute('data-name'), url: card.getAttribute('data-url'), appKey: card.getAttribute('data-app'), icon: card.querySelector('.app-icon')?.innerHTML || '🛠️' };
+            showModal(currentApp);
+        });
+    });
+    
+    document.getElementById('pageFab').addEventListener('click', (e) => {
+        e.preventDefault();
+        currentApp = { name: 'Google Drive', url: 'https://drive.google.com', appKey: 'drive', icon: '🛠️' };
+        showModal(currentApp);
+    });
+    
+    function showModal(app) {
+        document.getElementById('modalAppName').innerText = app.name;
+        document.getElementById('modalIcon').innerHTML = app.icon || '🛠️';
+        document.getElementById('modalMessage').innerHTML = `Open ${app.name} to use?`;
+        document.getElementById('appModal').style.display = 'flex';
+        document.getElementById('confirmOpen').onclick = () => openApp(app);
+    }
+    
+    function openApp(app) {
+        closeModal();
+        const appLink = appLinks[app.appKey];
+        if(appLink && appLink.app) {
+            const a = document.createElement('a');
+            a.href = appLink.app;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(() => { window.open(app.url, '_blank'); }, 1500);
+        } else {
+            window.open(app.url, '_blank');
+        }
+        showToast(`🛠️ Opening ${app.name}...`);
+    }
+    
+    function closeModal() { document.getElementById('appModal').style.display = 'none'; }
+    function showToast(msg) { let t = document.createElement('div'); t.className = 'toast'; t.innerHTML = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3000); }
+    window.onclick = function(e) { if(e.target === document.getElementById('appModal')) closeModal(); }
+</script>
+</body>
+</html>
